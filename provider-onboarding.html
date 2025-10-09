@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Provider Subscription Plans - ServiceHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .access-flow {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+        
+        .flow-steps {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .flow-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            min-width: 200px;
+        }
+        
+        .flow-step:not(:last-child)::after {
+            content: "→";
+            position: absolute;
+            right: -1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            color: #764ba2;
+            font-weight: bold;
+        }
+        
+        .step-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #764ba2, #667eea);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .step-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .step-desc {
+            color: #666;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .pricing-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .pricing-card.recommended {
+            transform: scale(1.05);
+            border: 3px solid #764ba2;
+        }
+        
+        .pricing-card.recommended::before {
+            content: "MOST POPULAR";
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #764ba2;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .plan-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        
+        .plan-price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #764ba2;
+            margin-bottom: 0.5rem;
+        }
+        
+        .commission-rate {
+            background: #e8f5e8;
+            color: #28a745;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin: 1rem 0;
+            display: inline-block;
+        }
+        
+        .plan-features {
+            list-style: none;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+        
+        .plan-features li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .plan-features li::before {
+            content: "✓";
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .plan-button {
+            width: 100%;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+        
+        .plan-button.primary {
+            background: linear-gradient(135deg, #764ba2, #667eea);
+            color: white;
+        }
+        
+        .plan-button.secondary {
+            background: transparent;
+            color: #764ba2;
+            border: 2px solid #764ba2;
+        }
+        
+        .plan-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(118, 75, 162, 0.3);
+        }
+        
+        .access-requirement {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+            color: #856404;
+        }
+        
+        @media (max-width: 768px) {
+            .flow-steps {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .flow-step:not(:last-child)::after {
+                content: "↓";
+                right: auto;
+                top: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Join ServiceHub as a Provider</h1>
+            <p>Choose your subscription plan to start listing your services</p>
+        </div>
+        
+        <div class="access-flow">
+            <h2 style="color: #333; margin-bottom: 1rem;">📋 Required Steps to Access Provider Portal</h2>
+            <div class="flow-steps">
+                <div class="flow-step">
+                    <div class="step-circle">1</div>
+                    <div class="step-title">Subscribe Plan</div>
+                    <div class="step-desc">Choose and pay for your subscription plan</div>
+                </div>
+                <div class="flow-step">
+                    <div class="step-circle">2</div>
+                    <div class="step-title">Register Business</div>
+                    <div class="step-desc">Fill registration form with business details</div>
+                </div>
+                <div class="flow-step">
+                    <div class="step-circle">3</div>
+                    <div class="step-title">Get Login Details</div>
+                    <div class="step-desc">Receive auto-generated login credentials</div>
+                </div>
+                <div class="flow-step">
+                    <div class="step-circle">4</div>
+                    <div class="step-title">Access Dashboard</div>
+                    <div class="step-desc">Login and manage your services</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="access-requirement">
+            <h3>🔒 Subscription Required for All Access</h3>
+            <p><strong>You must subscribe to a plan first</strong> to access registration, login, and dashboard. No subscription = No access to any provider features.</p>
+        </div>
+
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <div class="plan-name">🌟 Starter Plan</div>
+                <div class="plan-price">$19.99<span style="font-size:1rem;">/month</span></div>
+                <div class="commission-rate">20% Commission</div>
+                <ul class="plan-features">
+                    <li>List up to 5 services</li>
+                    <li>Basic profile page</li>
+                    <li>Up to 20 bookings/month</li>
+                    <li>Email notifications</li>
+                    <li>Basic customer support</li>
+                    <li>Mobile app access</li>
+                    <li>Payment processing included</li>
+                </ul>
+                <button class="plan-button secondary" onclick="subscribePlan('starter', 19.99, 20)">
+                    Subscribe Starter Plan
+                </button>
+            </div>
+
+            <div class="pricing-card recommended">
+                <div class="plan-name">⚡ Professional Plan</div>
+                <div class="plan-price">$49.99<span style="font-size:1rem;">/month</span></div>
+                <div class="commission-rate">15% Commission</div>
+                <ul class="plan-features">
+                    <li>Unlimited service listings</li>
+                    <li>Enhanced profile with photos</li>
+                    <li>Unlimited bookings</li>
+                    <li>Priority search placement</li>
+                    <li>Advanced analytics dashboard</li>
+                    <li>SMS & email notifications</li>
+                    <li>Priority customer support</li>
+                    <li>Customer review management</li>
+                    <li>Custom booking forms</li>
+                </ul>
+                <button class="plan-button primary" onclick="subscribePlan('professional', 49.99, 15)">
+                    Subscribe Professional Plan
+                </button>
+            </div>
+
+            <div class="pricing-card">
+                <div class="plan-name">🏆 Enterprise Plan</div>
+                <div class="plan-price">$99.99<span style="font-size:1rem;">/month</span></div>
+                <div class="commission-rate">10% Commission</div>
+                <ul class="plan-features">
+                    <li>Everything in Professional</li>
+                    <li>Premium profile with video</li>
+                    <li>Top search placement guarantee</li>
+                    <li>Advanced CRM & lead management</li>
+                    <li>Custom branding options</li>
+                    <li>Multi-location management</li>
+                    <li>Team member accounts</li>
+                    <li>Dedicated account manager</li>
+                    <li>API access & integrations</li>
+                    <li>White-label solutions</li>
+                </ul>
+                <button class="plan-button primary" onclick="subscribePlan('enterprise', 99.99, 10)">
+                    Subscribe Enterprise Plan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Plan subscription function
+        function subscribePlan(planName, price, commission) {
+            const planDisplay = planName.charAt(0).toUpperCase() + planName.slice(1);
+            
+            if (confirm(`💳 Subscribe to ${planDisplay} Plan?\n\nCost: $${price}/month\nCommission: ${commission}%\n\nProceed to payment?`)) {
+                showPaymentModal(planName, price, commission);
+            }
+        }
+        
+        // Payment modal simulation
+        function showPaymentModal(planName, price, commission) {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0,0,0,0.8);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+            `;
+            
+            modal.innerHTML = `
+                <div style="background: white; padding: 3rem; border-radius: 15px; text-align: center; max-width: 400px; width: 90%;">
+                    <h3 style="margin-bottom: 2rem; color: #333;">💳 Complete Payment</h3>
+                    <div style="margin: 2rem 0;">
+                        <div style="border: 2px dashed #ccc; padding: 2rem; border-radius: 10px;">
+                            <p style="color: #666; margin-bottom: 1rem;">Payment Details</p>
+                            <input type="text" placeholder="Card Number (1234 5678 9012 3456)" style="width: 100%; padding: 1rem; margin: 0.5rem 0; border: 1px solid #ddd; border-radius: 5px;" value="1234 5678 9012 3456">
+                            <div style="display: flex; gap: 1rem;">
+                                <input type="text" placeholder="MM/YY" style="flex: 1; padding: 1rem; margin: 0.5rem 0; border: 1px solid #ddd; border-radius: 5px;" value="12/28">
+                                <input type="text" placeholder="CVC" style="flex: 1; padding: 1rem; margin: 0.5rem 0; border: 1px solid #ddd; border-radius: 5px;" value="123">
+                            </div>
+                            <input type="text" placeholder="Cardholder Name" style="width: 100%; padding: 1rem; margin: 0.5rem 0; border: 1px solid #ddd; border-radius: 5px;" value="John Smith">
+                        </div>
+                    </div>
+                    <button onclick="processPayment('${planName}', ${price}, ${commission})" 
+                            style="width: 100%; padding: 1rem; background: linear-gradient(135deg, #28a745, #20c997); 
+                                   color: white; border: none; border-radius: 8px; font-size: 1.1rem; 
+                                   font-weight: bold; cursor: pointer; margin: 1rem 0;">
+                        💰 Pay $${price}/month
+                    </button>
+                    <button onclick="closePaymentModal()" 
+                            style="width: 100%; padding: 1rem; background: #6c757d; color: white; 
+                                   border: none; border-radius: 8px; cursor: pointer;">
+                        Cancel
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+        
+        // Process payment and create subscription
+        function processPayment(planName, price, commission) {
+            const button = event.target;
+            button.textContent = '⏳ Processing Payment...';
+            button.disabled = true;
+            
+            setTimeout(() => {
+                // Create subscription data
+                const subscriptionData = {
+                    plan: planName,
+                    price: price,
+                    commission: commission,
+                    subscriptionDate: new Date().toISOString(),
+                    subscriptionActive: true,
+                    subscriptionId: 'SUB_' + Math.random().toString(36).substr(2, 9).toUpperCase(),
+                    nextBilling: new Date(Date.now() + 30*24*60*60*1000).toISOString(),
+                    paymentMethod: 'Credit Card',
+                    status: 'active'
+                };
+                
+                // Save to localStorage
+                localStorage.setItem('providerSubscription', JSON.stringify(subscriptionData));
+                
+                closePaymentModal();
+                
+                // Show success and redirect
+                alert(`✅ Payment Successful!\n\nSubscription Active: ${planName.charAt(0).toUpperCase() + planName.slice(1)} Plan\nSubscription ID: ${subscriptionData.subscriptionId}\n\nNow you can proceed to business registration!`);
+                
+                // Redirect to registration
+                setTimeout(() => {
+                    window.location.href = 'provider-registration.html';
+                }, 2000);
+                
+            }, 2000);
+        }
+        
+        function closePaymentModal() {
+            const modal = document.querySelector('div[style*="position: fixed"]');
+            if (modal) {
+                document.body.removeChild(modal);
+            }
+        }
+        
+        // Check if already subscribed
+        document.addEventListener('DOMContentLoaded', function() {
+            const subscription = localStorage.getItem('providerSubscription');
+            if (subscription) {
+                const subData = JSON.parse(subscription);
+                
+                if (subData.subscriptionActive) {
+                    const statusDiv = document.createElement('div');
+                    statusDiv.style.cssText = `
+                        background: #d4edda;
+                        border: 2px solid #28a745;
+                        border-radius: 15px;
+                        padding: 1.5rem;
+                        margin: 2rem 0;
+                        text-align: center;
+                        color: #155724;
+                    `;
+                    
+                    statusDiv.innerHTML = `
+                        <h3>✅ Already Subscribed</h3>
+                        <p>Current Plan: <strong>${subData.plan.charAt(0).toUpperCase() + subData.plan.slice(1)}</strong></p>
+                        <p>Subscription ID: ${subData.subscriptionId}</p>
+                        <button onclick="window.location.href='provider-registration.html'" 
+                                style="background: #28a745; color: white; border: none; padding: 1rem 2rem; 
+                                       border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 1rem;">
+                            Continue to Registration →
+                        </button>
+                    `;
+                    
+                    document.querySelector('.access-requirement').after(statusDiv);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

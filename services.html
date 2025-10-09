@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Enhanced Service Categories - ServiceHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .title {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .ai-badge {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--card-gradient);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .service-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+        }
+
+        .service-info h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .service-badge {
+            background: var(--badge-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .service-stats {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+
+        .stat {
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-icon {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .price-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .price {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--price-color);
+            margin-bottom: 5px;
+        }
+
+        .price-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .sub-services {
+            margin: 20px 0;
+        }
+
+        .sub-services-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sub-service-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .sub-service-item {
+            background: rgba(0, 0, 0, 0.05);
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .sub-service-item:hover {
+            background: var(--hover-color);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .book-btn {
+            width: 100%;
+            background: var(--btn-gradient);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .book-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Service-specific color schemes */
+        .home-services {
+            --card-gradient: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            --badge-color: #ff6b6b;
+            --price-color: #e74c3c;
+            --hover-color: rgba(255, 107, 107, 0.8);
+            --btn-gradient: linear-gradient(135deg, #ff6b6b, #ee5a24);
+        }
+
+        .home-services .service-icon {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+        }
+
+        .digital-marketing {
+            --card-gradient: linear-gradient(135deg, #4ecdc4, #44a08d);
+            --badge-color: #4ecdc4;
+            --price-color: #00b894;
+            --hover-color: rgba(78, 205, 196, 0.8);
+            --btn-gradient: linear-gradient(135deg, #4ecdc4, #44a08d);
+        }
+
+        .digital-marketing .service-icon {
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+        }
+
+        .web-development {
+            --card-gradient: linear-gradient(135deg, #667eea, #764ba2);
+            --badge-color: #667eea;
+            --price-color: #6c5ce7;
+            --hover-color: rgba(102, 126, 234, 0.8);
+            --btn-gradient: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .web-development .service-icon {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .graphic-design {
+            --card-gradient: linear-gradient(135deg, #fda085, #f093fb);
+            --badge-color: #fda085;
+            --price-color: #e17055;
+            --hover-color: rgba(253, 160, 133, 0.8);
+            --btn-gradient: linear-gradient(135deg, #fda085, #f093fb);
+        }
+
+        .graphic-design .service-icon {
+            background: linear-gradient(135deg, #fda085, #f093fb);
+        }
+
+        .content-writing {
+            --card-gradient: linear-gradient(135deg, #f093fb, #f5576c);
+            --badge-color: #f093fb;
+            --price-color: #e84393;
+            --hover-color: rgba(240, 147, 251, 0.8);
+            --btn-gradient: linear-gradient(135deg, #f093fb, #f5576c);
+        }
+
+        .content-writing .service-icon {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+        }
+
+        .business-consulting {
+            --card-gradient: linear-gradient(135deg, #4facfe, #00f2fe);
+            --badge-color: #4facfe;
+            --price-color: #0984e3;
+            --hover-color: rgba(79, 172, 254, 0.8);
+            --btn-gradient: linear-gradient(135deg, #4facfe, #00f2fe);
+        }
+
+        .business-consulting .service-icon {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+        }
+
+        .health-wellness {
+            --card-gradient: linear-gradient(135deg, #a8e6cf, #7fcdcd);
+            --badge-color: #a8e6cf;
+            --price-color: #00b894;
+            --hover-color: rgba(168, 230, 207, 0.8);
+            --btn-gradient: linear-gradient(135deg, #a8e6cf, #7fcdcd);
+        }
+
+        .health-wellness .service-icon {
+            background: linear-gradient(135deg, #a8e6cf, #7fcdcd);
+        }
+
+        .education-tutoring {
+            --card-gradient: linear-gradient(135deg, #ffb347, #ffcc33);
+            --badge-color: #ffb347;
+            --price-color: #e17055;
+            --hover-color: rgba(255, 179, 71, 0.8);
+            --btn-gradient: linear-gradient(135deg, #ffb347, #ffcc33);
+        }
+
+        .education-tutoring .service-icon {
+            background: linear-gradient(135deg, #ffb347, #ffcc33);
+        }
+
+        .automotive-services {
+            --card-gradient: linear-gradient(135deg, #74b9ff, #0984e3);
+            --badge-color: #74b9ff;
+            --price-color: #0984e3;
+            --hover-color: rgba(116, 185, 255, 0.8);
+            --btn-gradient: linear-gradient(135deg, #74b9ff, #0984e3);
+        }
+
+        .automotive-services .service-icon {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+        }
+
+        .pet-services {
+            --card-gradient: linear-gradient(135deg, #fd79a8, #fdcb6e);
+            --badge-color: #fd79a8;
+            --price-color: #e84393;
+            --hover-color: rgba(253, 121, 168, 0.8);
+            --btn-gradient: linear-gradient(135deg, #fd79a8, #fdcb6e);
+        }
+
+        .pet-services .service-icon {
+            background: linear-gradient(135deg, #fd79a8, #fdcb6e);
+        }
+
+        .event-planning {
+            --card-gradient: linear-gradient(135deg, #a29bfe, #6c5ce7);
+            --badge-color: #a29bfe;
+            --price-color: #6c5ce7;
+            --hover-color: rgba(162, 155, 254, 0.8);
+            --btn-gradient: linear-gradient(135deg, #a29bfe, #6c5ce7);
+        }
+
+        .event-planning .service-icon {
+            background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+        }
+
+        .security-services {
+            --card-gradient: linear-gradient(135deg, #636e72, #2d3436);
+            --badge-color: #636e72;
+            --price-color: #2d3436;
+            --hover-color: rgba(99, 110, 114, 0.8);
+            --btn-gradient: linear-gradient(135deg, #636e72, #2d3436);
+        }
+
+        .security-services .service-icon {
+            background: linear-gradient(135deg, #636e72, #2d3436);
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            color: #333;
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .service-stats {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .sub-service-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-btn">← Back to Home</a>
+
+    <div class="container">
+        <div class="header">
+            <h1 class="title">
+                🤖 AI-Enhanced Service Categories
+            </h1>
+            <p class="subtitle">Book any service instantly - AI matches you with verified experts in under 2 minutes!</p>
+            <div class="ai-badge">
+                ⚡ AI-Powered Service Discovery • 50% Faster Booking • 12+ Categories
+            </div>
+        </div>
+
+        <div class="services-grid">
+            <!-- HOME SERVICES -->
+            <div class="service-card home-services">
+                <div class="service-header">
+                    <div class="service-icon">🏠</div>
+                    <div class="service-info">
+                        <h3>Home Services</h3>
+                        <span class="service-badge">Most Popular</span>
+                    </div>
+                </div>
+
+                <div class="service-stats">
+                    <div class="stat">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-value">4.8</div>
+                        <div class="stat-label">Rating</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-icon">🕐</div>
+                        <div class="stat-value">2 hrs</div>
+                        <div class="stat-label">Response</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-value">2.5k+</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                </div>
+
+                <div class="price-section">
+                    <div class="price">₹299</div>
+                    <div class="price-label">Starting from</div>
+                </div>
+
+                <div class="sub-services">
+                    <div class="sub-services-title">🔧 Available Services</div>
+                    <div class="sub-service-grid">
+                        <div class="sub-service-item">🔧 Plumbing Repair</div>
+                        <div class="sub-service-item">⚡ Electrical Work</div>
+                        <div class="sub-service-item">🏠 Home Cleaning</div>
+                        <div class="sub-service-item">🎨 Interior Painting</div>
+                        <div class="sub-service-item">❄️ AC Installation</div>
+                        <div class="sub-service-item">🚿 Bathroom Fitting</div>
+                        <div class="sub-service-item">🪟 Window Cleaning</div>
+                        <div class="sub-service-item">🛠️ Appliance Repair</div>
+                    </div>
+                </div>
+
+                <button class="book-btn" onclick="bookService('home-services')">
+                    🏠 Book Home Services
+                </button>
+            </div>
+
+            <!-- DIGITAL MARKETING -->
+            <div class="service-card digital-marketing">
+                <div class="service-header">
+                    <div class="service-icon">📱</div>
+                    <div class="service-info">
+                        <h3>Digital Marketing</h3>
+                        <span class="service-badge">High ROI</span>
+                    </div>
+                </div>
+
+                <div class="service-stats">
+                    <div class="stat">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-value">4.9</div>
+                        <div class="stat-label">Rating</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-icon">🕐</div>
+                        <div class="stat-value">1 hr</div>
+                        <div class="stat-label">Response</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-value">1.8k+</div>
+                        <div class="stat-label">Campaigns</div>
+                    </div>
+                </div>
+
+                <div class="price-section">
+                    <div class="price">₹2,999</div>
+                    <div class="price-label">Starting from</div>
+                </div>
+
+                <div class="sub-services">
+                    <div class="sub-services-title">📊 Marketing Solutions</div>
+                    <div class="sub-service-grid">
+                        <div class="sub-service-item">📊 Social Media Ads</div>
+                        <div class="sub-service-item">🔍 SEO Optimization</div>
+                        <div class="sub-service-item">📧 Email Marketing</div>
+                        <div class="sub-service-item">📈 Google Ads PPC</div>
+                        <div class="sub-service-item">📝 Content Strategy</div>
+                        <div class="sub-service-item">📱 Influencer Marketing</div>
+                        <div class="sub-service-item">🎯 Lead Generation</div>
+                        <div class="sub-service-item">📊 Analytics Setup</div>
+                    </div>
+                </div>
+
+                <button class="book-btn" onclick="bookService('digital-marketing')">
+                    📱 Book Marketing
+                </button>
+            </div>
+
+            <!-- WEB DEVELOPMENT -->
+            <div class="service-card web-development">
+                <div class="service-header">
+                    <div class="service-icon">💻</div>
+                    <div class="service-info">
+                        <h3>Web Development</h3>
+                        <span class="service-badge">Tech Expert</span>
+                    </div>
+                </div>
+
+                <div class="service-stats">
+                    <div class="stat">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-value">4.7</div>
+                        <div class="stat-label">Rating</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-icon">🕐</div>
+                        <div class="stat-value">3 hrs</div>
+                        <div class="stat-label">Response</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-value">950+</div>
+                        <div class="stat-label">Projects</div>
+                    </div>
+                </div>
+
+                <div class="price-section">
+                    <div class="price">₹9,999</div>
+                    <div class="price-label">Starting from</div>
+                </div>
+
+                <div class="sub-services">
+                    <div class="sub-services-title">💻 Development Services</div>
+                    <div class="sub-service-grid">
+                        <div class="sub-service-item">🌐 Website Design</div>
+                        <div class="sub-service-item">📱 Mobile Apps</div>
+                        <div class="sub-service-item">🛒 E-commerce Store</div>
+                        <div class="sub-service-item">⚡ Landing Pages</div>
+                        <div class="sub-service-item">🎨 UI/UX Design</div>
+                        <div class="sub-service-item">🔧 WordPress Sites</div>
+                        <div class="sub-service-item">💳 Payment Integration</div>
+                        <div class="sub-service-item">🔒 Security Setup</div>
+                    </div>
+                </div>
+
+                <button class="book-btn" onclick="bookService('web-development')">
+                    💻 Book Development
+                </button>
+            </div>
+
+            <!-- GRAPHIC DESIGN -->
+            <div class="service-card graphic-design">
+                <div class="service-header">
+                    <div class="service-icon">🎨</div>
+                    <div class="service-info">
+                        <h3>Graphic Design</h3>
+                        <span class="service-badge">Creative</span>
+                    </div>
+                </div>
+
+                <div class="service-stats">
+                    <div class="stat">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-value">4.8</div>
+                        <div class="stat-label">Rating</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-icon">🕐</div>
+                        <div class="stat-value">2 hrs</div>
+                        <div class="stat-label">Response</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-value">3.2k+</div>
+                        <div class="stat-label">Designs</div>
+                    </div>
+                </div>
+
+                <div class="price-section">
+                    <div class="price">₹1,499</div>
+                    <div class="price-label">Starting from</div>
+                </div>
+
+                <div class="sub-services">
+                    <div class="sub-services-title">🎨 Design Services</div>
+                    <div class="sub-service-grid">
+                        <div class="sub-service-item">🎯 Logo Design</div>
+                        <div class="sub-service-item">📄 Business Cards</div>
+                        <div class="sub-service-item">📊 Brochure Design</div>
+                        <div class="sub-service-item">🖼️ Social Media Posts</div>
+                        <div class="sub-service-item">📱 App UI Design</div>
+                        <div class="sub-service-item">📰 Flyer Design</div>
+                        <div class="sub-service-item">🎪 Banner Design</div>
+                        <div class="sub-service-item">📚 Book Covers</div>
+                    </div>
+                </div>
+
+                <button class="book-btn" onclick="bookService('graphic-design')">
+                    🎨 Book Design
+                </button>
+            </div>
+
+            <!-- CONTENT WRITING -->
+            <div class="service-card content-writing">
+                <div class="service-header">
+                    <div class="service-icon">✍️</div>
+                    <div class="service-info">
+                        <h3>Content Writing</h3>
+                        <span class="service-badge">AI-Powered</span>
+                    </div>
+                </div>
+
+                <div class="service-stats">
+                    <div class="stat">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-value">4.9</div>
+                        <div class="stat-label">Rating</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-icon">🕐</div>
+                        <div class="stat-value">1 hr</div>
+                        <div class="stat-label">Response</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-value">4.1k+</div>
+                        <div class="stat-label">Articles</div>
+                    </div>
+                </div>
+
+                <div class="price-section">
+                    <div class="price">₹799</div>
+                    <div class="price-label">Starting from</div>
+                </div>
+
+                <div class="sub-services">
+                    <div class="sub-services-title">✍️ Writing Services</div>
+                    <div class="sub-service-grid">
+                        <div class="sub-service-item">📝 Blog Writing</div>
+                        <div class="sub-service-item">📰 Article Writing</div>
+                        <div class="sub-service-item">🎯 Copywriting</div>
+                        <div class="sub-service-item">📊 Product Descriptions</div>
+                        <div class="sub-service-item">📧 Email Content</div>
+                        <div class="sub-service-item">📚 Technical Writing</div>
+                        <div class="sub-service-item">🌐 Website Content</div>
+                        <div class="sub-service-item">📱 Social Media Posts</div>
+                    </div>
+                </div>
+
+                <button class="book-btn" onclick="bookService('content-writing')">
+                    ✍️ Book Writing
+                </button>
+            </div>
+
+            <!-- BUSINESS CONSULTING -->
+            <div class="service-card business-consulting">
+                <div class="service-header">
+                    <div class="service-icon">💼</div>
+                    <div class="service-info">
+                        <h3>Business Consulting</h3>
+                        <span class="service-badge">Expert</span>
+                    </div>
+                </div>
+
+                <div class="service-stats">
+                    <div class="stat">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-value">4.9</div>
+                        <div class="stat-label">Rating</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-icon">🕐</div>
+                        <div class="stat-value">30 min</div>
+                        <div class="stat-label">Response</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-value">850+</div>
+                        <div class="stat-label">Success</div>
+                    </div>
+                </div>
+
+                <div class="price-section">
+                    <div class="price">₹4,999</div>
+                    <div class="price-label">Starting from</div>
+                </div>
+
+                <div class="sub-services">
+                    <div class="sub-services-title">💼 Consulting Services</div>
+                    <div class="sub-service-grid">
+                        <div class="sub-service-item">📊 Business Planning</div>
+                        <div class="sub-service-item">💡 Strategy Consulting</div>
+                        <div class="sub-service-item">📈 Market Research</div>
+                        <div class="sub-service-item">💰 Financial Planning</div>
+                        <div class="sub-service-item">🎯 Brand Strategy</div>
+                        <div class="sub-service-item">📋 Operations Setup</div>
+                        <div class="sub-service-item">🚀 Startup Consulting</div>
+                        <div class="sub-service-item">📊 Performance Review</div>
+                    </div>
+                </div>
+
+                <button class="book-btn" onclick="bookService('business-consulting')">
+                    💼 Book Consulting
+                </button>
+            </div>
+
+            <!-- HEALTH & WELLNESS -->
+            <div class="service-card health-wellness">
+                <div class="service-header">
+                    <div class="service-icon">🏥</div>
+                    <div class="service-info">
+                        <h3>Health & Wellness</h3>
+                        <span class="service-badge">Certified</span>
+                    </div>
+                </div>
+
+                <div class="service-stats">
+                    <div class="stat">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-value">4.8</div>
+                        <div class="stat-label">Rating</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-icon">🕐</div>
+                        <div class="stat-value">1 hr</div>
+                        <div class="stat-label">Response</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-value">1.5k+</div>
+                        <div class="stat-label">Clients</div>
+                    </div>
+                </div>
+
+                <div class="price-section">
+                    <div class="price">₹1,999</div>
+                    <div class="price-label">Starting from</div>
+                </div>
+
+                <div class="sub-services">
+                    <div class="sub-services-title">🏥 Health Services</div>
+                    <div class="sub-service-grid">
+                        <div class="sub-service-item">💆 Massage Therapy</div>
+                        <div class="sub-service-item">🧘 Yoga Classes</div>
+                        <div class="sub-service-item">🏋️ Personal Training</div>
+                        <div class="sub-service-item">🍎 Nutrition Consulting</div>
+                        <div class="sub-service-item">🧠 Mental Health</div>
+                        <div class="sub-service-item">💊 Medicine Delivery</div>
+                        <div class="sub-service-item">🏠 Home Nursing</div>
+                        <div class="sub-service-item">🩺 Health Checkups</div>
+                    </div>
+                </div>
+
+                <button class="book-btn" onclick="bookService('health-wellness')">
+                    🏥 Book Health Services
+                </button>
+            </div>
+
+            <!-- EDUCATION & TUTORING -->
+            <div class="service-card education-tutoring">
+                <div class="service-header">
+                    <div class="service-icon">📚</div>
+                    <div class="service-info">
+                        <h3>Education & Tutoring</h3>
+                        <span class="service-badge">Expert Teachers</span>
+                    </div>
+                </div>
+
+                <div class="service-stats">
+                    <div class="stat">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-value">4.9</div>
+                        <div class="stat-label">Rating</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-icon">🕐</div>
+                        <div class="stat-value">2 hrs</div>
+                        <div class="stat-label">Response</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-value">2.8k+</div>
+                        <div class="stat-label">Students</div>
+                    </div>
+                </div>
+
+                <div class="price-section">
+                    <div class="price">₹799</div>
+                    <div class="price-label">Starting from</div>
+                </div>
+
+                <div class="sub-services">
+                    <div class="sub-services-title">📚 Learning Services</div>
+                    <div class="sub-service-grid">
+                        <div class="sub-service-item">🔢 Math Tutoring</div>
+                        <div class="sub-service-item">🧪 Science Classes</div>
+                        <div class="sub-service-item">🌍 English Speaking</div>
+                        <div class="sub-service-item">💻 Coding Classes</div>
+                        <div class="sub-service-item">🎵 Music Lessons</div>
+                        <div class="sub-service-item">🎨 Art Classes</div>
+                        <div class="sub-service-item">📝 Exam Preparation</div>
+                        <div class="sub-service-item">🏆 Skill Development</div>
+                    </div>
+                </div>
+
+                <button class="book-btn" onclick="bookService('education-tutoring')">
+                    📚 Book Tutoring
+                </button>
+            </div>
+
+            <!-- AUTOMOTIVE SERVICES -->
+            <div class="service-card automotive-services">
+                <div class="service-header">
+                    <div class="service-icon">🚗</div>
+                    <div class="service-info">
+                        <h3>Automotive Services</h3>
+                        <span class="service-badge">Mobile Service</span>
+                    </div>
+                </div>
+
+                <div class="service-stats">
+                    <div class="stat">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-value">4.7</div>
+                        <div class="stat-label">Rating</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-icon">🕐</div>
+                        <div class="stat-value">1 hr</div>
+                        <div class="stat-label">Response</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-value">1.2k+</div>
+                        <div class="stat-label">Repairs</div>
+                    </div>
+                </div>
+
+                <div class="price-section">
+                    <div class="price">₹1,299</div>
+                    <div class="price-label">Starting from</div>
+                </div>
+
+                <div class="sub-services">
+                    <div class="sub-services-title">🚗 Auto Services</div>
+                    <div class="sub-service-grid">
+                        <div class="sub-service-item">🔧 Car Repair</div>
+                        <div class="sub-service-item">🛞 Tire Service</div>
+                        <div class="sub-service-item">🚙 Car Wash</div>
+                        <div class="sub-service-item">⛽ Oil Change</div>
+                        <div class="sub-service-item">🔋 Battery Service</div>
+                        <div class="sub-service-item">❄️ AC Repair</div>
+                        <div class="sub-service-item">🚗 Car Painting</div>
+                        <div class="sub-service-item">📋 Inspection</div>
+                    </div>
+                </div>
+
+                <button class="book-btn" onclick="bookService('automotive-services')">
+                    🚗 Book Auto Service
+                </button>
+            </div>
+
+            <!-- PET SERVICES -->
+            <div class="service-card pet-services">
+                <div class="service-header">
+                    <div class="service-icon">🐕</div>
+                    <div class="service-info">
+                        <h3>Pet Services</h3>
+                        <span class="service-badge">Pet Care</span>
+                    </div>
+                </div>
+
+                <div class="service-stats">
+                    <div class="stat">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-value">4.8</div>
+                        <div class="stat-label">Rating</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-icon">🕐</div>
+                        <div class="stat-value">1 hr</div>
+                        <div class="stat-label">Response</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-value">950+</div>
+                        <div class="stat-label">Happy Pets</div>
+                    </div>
+                </div>
+
+                <div class="price-section">
+                    <div class="price">₹599</div>
+                    <div class="price-label">Starting from</div>
+                </div>
+
+                <div class="sub-services">
+                    <div class="sub-services-title">🐕 Pet Care Services</div>
+                    <div class="sub-service-grid">
+                        <div class="sub-service-item">🚶 Dog Walking</div>
+                        <div class="sub-service-item">✂️ Pet Grooming</div>
+                        <div class="sub-service-item">🏥 Vet Consultation</div>
+                        <div class="sub-service-item">🎾 Pet Training</div>
+                        <div class="sub-service-item">🏠 Pet Sitting</div>
+                        <div class="sub-service-item">💊 Medicine Delivery</div>
+                        <div class="sub-service-item">🛁 Pet Bathing</div>
+                        <div class="sub-service-item">📸 Pet Photography</div>
+                    </div>
+                </div>
+
+                <button class="book-btn" onclick="bookService('pet-services')">
+                    🐕 Book Pet Service
+                </button>
+            </div>
+
+            <!-- EVENT PLANNING -->
+            <div class="service-card event-planning">
+                <div class="service-header">
+                    <div class="service-icon">🎉</div>
+                    <div class="service-info">
+                        <h3>Event Planning</h3>
+                        <span class="service-badge">Full Service</span>
+                    </div>
+                </div>
+
+                <div class="service-stats">
+                    <div class="stat">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-value">4.9</div>
+                        <div class="stat-label">Rating</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-icon">🕐</div>
+                        <div class="stat-value">4 hrs</div>
+                        <div class="stat-label">Response</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-value">650+</div>
+                        <div class="stat-label">Events</div>
+                    </div>
+                </div>
+
+                <div class="price-section">
+                    <div class="price">₹9,999</div>
+                    <div class="price-label">Starting from</div>
+                </div>
+
+                <div class="sub-services">
+                    <div class="sub-services-title">🎉 Event Services</div>
+                    <div class="sub-service-grid">
+                        <div class="sub-service-item">💒 Wedding Planning</div>
+                        <div class="sub-service-item">🎂 Birthday Parties</div>
+                        <div class="sub-service-item">🏢 Corporate Events</div>
+                        <div class="sub-service-item">🎪 Theme Parties</div>
+                        <div class="sub-service-item">📸 Event Photography</div>
+                        <div class="sub-service-item">🎵 Entertainment</div>
+                        <div class="sub-service-item">🍽️ Catering Services</div>
+                        <div class="sub-service-item">🎈 Decoration</div>
+                    </div>
+                </div>
+
+                <button class="book-btn" onclick="bookService('event-planning')">
+                    🎉 Book Event Planning
+                </button>
+            </div>
+
+            <!-- SECURITY SERVICES -->
+            <div class="service-card security-services">
+                <div class="service-header">
+                    <div class="service-icon">🛡️</div>
+                    <div class="service-info">
+                        <h3>Security Services</h3>
+                        <span class="service-badge">24/7 Available</span>
+                    </div>
+                </div>
+
+                <div class="service-stats">
+                    <div class="stat">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-value">4.8</div>
+                        <div class="stat-label">Rating</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-icon">🕐</div>
+                        <div class="stat-value">30 min</div>
+                        <div class="stat-label">Response</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-value">780+</div>
+                        <div class="stat-label">Protected</div>
+                    </div>
+                </div>
+
+                <div class="price-section">
+                    <div class="price">₹3,999</div>
+                    <div class="price-label">Starting from</div>
+                </div>
+
+                <div class="sub-services">
+                    <div class="sub-services-title">🛡️ Security Solutions</div>
+                    <div class="sub-service-grid">
+                        <div class="sub-service-item">👮 Security Guards</div>
+                        <div class="sub-service-item">📹 CCTV Installation</div>
+                        <div class="sub-service-item">🚨 Alarm Systems</div>
+                        <div class="sub-service-item">🔐 Access Control</div>
+                        <div class="sub-service-item">🏠 Home Security</div>
+                        <div class="sub-service-item">🏢 Office Security</div>
+                        <div class="sub-service-item">🚗 Vehicle Security</div>
+                        <div class="sub-service-item">📱 Mobile Monitoring</div>
+                    </div>
+                </div>
+
+                <button class="book-btn" onclick="bookService('security-services')">
+                    🛡️ Book Security
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function bookService(serviceType) {
+            // Check if user is logged in
+            const currentUser = localStorage.getItem('currentUser');
+            
+            if (!currentUser) {
+                // Redirect to customer portal if not logged in
+                window.location.href = 'customer-portal.html';
+                return;
+            }
+
+            // If logged in, redirect to customer portal with service selection
+            localStorage.setItem('selectedService', serviceType);
+            window.location.href = 'customer-portal.html#book-' + serviceType;
+        }
+
+        // Add smooth animations on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all service cards
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.service-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(50px)';
+                card.style.transition = `all 0.6s ease ${index * 0.1}s`;
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>

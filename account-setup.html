@@ -1,0 +1,1591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Setup - Service Provider | MyServiceHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 10px;
+            overflow-x: hidden;
+        }
+        
+        .setup-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.15);
+            overflow: hidden;
+            animation: slideUp 0.8s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Header Section */
+        .header {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="pattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100%" height="100%" fill="url(%23pattern)"/></svg>');
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        /* Progress Steps */
+        .progress-container {
+            background: rgba(255,255,255,0.1);
+            padding: 25px 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .progress-step {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .progress-step.active {
+            color: white;
+            font-weight: 600;
+        }
+        
+        .step-circle {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .progress-step.active .step-circle {
+            background: white;
+            color: #28a745;
+            transform: scale(1.1);
+        }
+        
+        .progress-step.completed .step-circle {
+            background: #20c997;
+            color: white;
+        }
+        
+        .step-connector {
+            width: 40px;
+            height: 2px;
+            background: rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .step-connector.active {
+            background: white;
+        }
+        
+        /* Main Content */
+        .content-area {
+            padding: 40px;
+        }
+        
+        .step-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        .step-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .step-title {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .step-icon {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .step-description {
+            text-align: center;
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Form Styles */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            position: relative;
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .required {
+            color: #dc3545;
+            margin-left: 3px;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            background: #fff;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #28a745;
+            box-shadow: 0 0 0 4px rgba(40, 167, 69, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        /* Service Categories */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .category-card {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .category-card:hover {
+            border-color: #28a745;
+            background: rgba(40, 167, 69, 0.05);
+            transform: translateY(-3px);
+        }
+        
+        .category-card.selected {
+            border-color: #28a745;
+            background: rgba(40, 167, 69, 0.1);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.2);
+        }
+        
+        .category-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .category-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .category-desc {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .category-card input[type="checkbox"] {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 20px;
+            height: 20px;
+            transform: none;
+        }
+        
+        /* Service Items */
+        .services-container {
+            margin: 30px 0;
+        }
+        
+        .service-item {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .service-item:hover {
+            border-color: #28a745;
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.1);
+        }
+        
+        .service-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .service-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .remove-service {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .remove-service:hover {
+            background: #c82333;
+            transform: scale(1.05);
+        }
+        
+        .add-service-btn {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 20px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .add-service-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+        }
+        
+        /* File Upload */
+        .upload-area {
+            border: 2px dashed #28a745;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            margin: 20px 0;
+        }
+        
+        .upload-area:hover {
+            background: #e8f5e8;
+            border-color: #20c997;
+        }
+        
+        .upload-area input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .upload-content {
+            pointer-events: none;
+        }
+        
+        .upload-icon {
+            font-size: 4rem;
+            color: #28a745;
+            margin-bottom: 20px;
+        }
+        
+        .upload-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .upload-hint {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Navigation Buttons */
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 40px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .nav-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-back {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-back:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+        
+        .btn-next {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+        }
+        
+        .btn-next:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+        }
+        
+        .btn-next:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* Summary Cards */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .summary-card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 25px;
+        }
+        
+        .summary-card h3 {
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .summary-card-icon {
+            font-size: 1.5rem;
+            color: #28a745;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+        
+        .summary-label {
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .summary-value {
+            color: #333;
+            text-align: right;
+        }
+        
+        /* Success Animation */
+        .success-animation {
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .success-icon {
+            font-size: 5rem;
+            color: #28a745;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-15px); }
+            60% { transform: translateY(-8px); }
+        }
+        
+        .success-title {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .success-message {
+            color: #666;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 500px;
+            margin: 0 auto 30px;
+        }
+        
+        /* Tips & Recommendations */
+        .tips-section {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .tips-title {
+            color: #1976d2;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .tips-list {
+            color: #1565c0;
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .tips-list li {
+            margin: 8px 0;
+            line-height: 1.5;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+            
+            .setup-container {
+                border-radius: 15px;
+                margin: 5px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .progress-container {
+                padding: 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .content-area {
+                padding: 20px;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .categories-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .navigation {
+                padding: 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .summary-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="setup-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <h1>🚀 Service Provider Setup</h1>
+                <p>Let's get your business profile ready to receive orders and start earning money on MyServiceHub</p>
+            </div>
+        </div>
+        
+        <!-- Progress Steps -->
+        <div class="progress-container">
+            <div class="progress-step active" data-step="1">
+                <div class="step-circle">1</div>
+                <span>Business Info</span>
+            </div>
+            <div class="step-connector"></div>
+            <div class="progress-step" data-step="2">
+                <div class="step-circle">2</div>
+                <span>Services & Pricing</span>
+            </div>
+            <div class="step-connector"></div>
+            <div class="progress-step" data-step="3">
+                <div class="step-circle">3</div>
+                <span>Portfolio & Documents</span>
+            </div>
+            <div class="step-connector"></div>
+            <div class="progress-step" data-step="4">
+                <div class="step-circle">4</div>
+                <span>Review & Launch</span>
+            </div>
+        </div>
+        
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Step 1: Business Information -->
+            <div class="step-content active" id="step1">
+                <h2 class="step-title">
+                    <span class="step-icon">🏢</span>
+                    Business Information
+                </h2>
+                <p class="step-description">
+                    Tell us about your business so customers can find and trust you
+                </p>
+                
+                <form id="businessForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="businessName">Business Name <span class="required">*</span></label>
+                            <input type="text" id="businessName" name="businessName" required 
+                                   placeholder="Enter your business name" autocomplete="organization">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="ownerName">Your Full Name <span class="required">*</span></label>
+                            <input type="text" id="ownerName" name="ownerName" required 
+                                   placeholder="Your full name" autocomplete="name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address <span class="required">*</span></label>
+                            <input type="email" id="email" name="email" required 
+                                   placeholder="your@email.com" autocomplete="email">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone Number <span class="required">*</span></label>
+                            <input type="tel" id="phone" name="phone" required 
+                                   placeholder="+91 98765 43210" autocomplete="tel">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="city">City <span class="required">*</span></label>
+                            <input type="text" id="city" name="city" required 
+                                   placeholder="Your city" autocomplete="address-level2">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="pincode">Pincode <span class="required">*</span></label>
+                            <input type="text" id="pincode" name="pincode" required 
+                                   placeholder="123456" autocomplete="postal-code">
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label for="businessAddress">Complete Address <span class="required">*</span></label>
+                            <textarea id="businessAddress" name="businessAddress" required 
+                                      placeholder="Enter your complete business address with landmarks"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="experience">Years of Experience</label>
+                            <select id="experience" name="experience">
+                                <option value="">Select experience</option>
+                                <option value="0-1">Less than 1 year</option>
+                                <option value="1-3">1-3 years</option>
+                                <option value="3-5">3-5 years</option>
+                                <option value="5-10">5-10 years</option>
+                                <option value="10+">10+ years</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="serviceRadius">Service Area</label>
+                            <select id="serviceRadius" name="serviceRadius">
+                                <option value="">Select service area</option>
+                                <option value="5">Within 5 km</option>
+                                <option value="10">Within 10 km</option>
+                                <option value="20">Within 20 km</option>
+                                <option value="50">Within 50 km</option>
+                                <option value="unlimited">Anywhere in city</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label for="businessDescription">About Your Business</label>
+                            <textarea id="businessDescription" name="businessDescription" 
+                                      placeholder="Describe your business, specialties, and what makes you unique"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="tips-section">
+                        <h4 class="tips-title">💡 Profile Tips</h4>
+                        <ul class="tips-list">
+                            <li>Use a clear, professional business name</li>
+                            <li>Provide accurate contact information</li>
+                            <li>Write a compelling business description</li>
+                            <li>Be honest about your experience level</li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Step 2: Services & Pricing -->
+            <div class="step-content" id="step2">
+                <h2 class="step-title">
+                    <span class="step-icon">⚙️</span>
+                    Services & Categories
+                </h2>
+                <p class="step-description">
+                    Select the services you offer and set your pricing to attract customers
+                </p>
+                
+                <div class="categories-section">
+                    <h3 style="margin-bottom: 20px; color: #333;">Choose Your Service Categories:</h3>
+                    <div class="categories-grid" id="categoriesGrid">
+                        <div class="category-card" data-category="plumbing">
+                            <input type="checkbox" name="categories" value="plumbing">
+                            <div class="category-icon">🔧</div>
+                            <div class="category-name">Plumbing</div>
+                            <div class="category-desc">Repairs, installations, maintenance</div>
+                        </div>
+                        
+                        <div class="category-card" data-category="electrical">
+                            <input type="checkbox" name="categories" value="electrical">
+                            <div class="category-icon">⚡</div>
+                            <div class="category-name">Electrical</div>
+                            <div class="category-desc">Wiring, fixtures, troubleshooting</div>
+                        </div>
+                        
+                        <div class="category-card" data-category="cleaning">
+                            <input type="checkbox" name="categories" value="cleaning">
+                            <div class="category-icon">🧹</div>
+                            <div class="category-name">Home Cleaning</div>
+                            <div class="category-desc">Deep cleaning, regular maintenance</div>
+                        </div>
+                        
+                        <div class="category-card" data-category="painting">
+                            <input type="checkbox" name="categories" value="painting">
+                            <div class="category-icon">🎨</div>
+                            <div class="category-name">Painting</div>
+                            <div class="category-desc">Interior, exterior, touch-ups</div>
+                        </div>
+                        
+                        <div class="category-card" data-category="carpentry">
+                            <input type="checkbox" name="categories" value="carpentry">
+                            <div class="category-icon">🔨</div>
+                            <div class="category-name">Carpentry</div>
+                            <div class="category-desc">Furniture, repairs, installations</div>
+                        </div>
+                        
+                        <div class="category-card" data-category="beauty">
+                            <input type="checkbox" name="categories" value="beauty">
+                            <div class="category-icon">💄</div>
+                            <div class="category-name">Beauty & Wellness</div>
+                            <div class="category-desc">Salon services, spa treatments</div>
+                        </div>
+                        
+                        <div class="category-card" data-category="tutoring">
+                            <input type="checkbox" name="categories" value="tutoring">
+                            <div class="category-icon">📚</div>
+                            <div class="category-name">Tutoring</div>
+                            <div class="category-desc">Academic, skill development</div>
+                        </div>
+                        
+                        <div class="category-card" data-category="photography">
+                            <input type="checkbox" name="categories" value="photography">
+                            <div class="category-icon">📸</div>
+                            <div class="category-name">Photography</div>
+                            <div class="category-desc">Events, portraits, commercial</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="services-container">
+                    <h3 style="margin: 30px 0 20px; color: #333;">Your Service Offerings:</h3>
+                    <div id="servicesContainer">
+                        <div class="service-item">
+                            <div class="service-header">
+                                <div class="service-title">Service #1</div>
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Service Name <span class="required">*</span></label>
+                                    <input type="text" name="serviceName[]" required 
+                                           placeholder="e.g., Kitchen Plumbing Repair">
+                                </div>
+                                <div class="form-group">
+                                    <label>Category</label>
+                                    <select name="serviceCategory[]">
+                                        <option value="">Select category</option>
+                                        <option value="plumbing">Plumbing</option>
+                                        <option value="electrical">Electrical</option>
+                                        <option value="cleaning">Cleaning</option>
+                                        <option value="painting">Painting</option>
+                                        <option value="carpentry">Carpentry</option>
+                                        <option value="beauty">Beauty & Wellness</option>
+                                        <option value="tutoring">Tutoring</option>
+                                        <option value="photography">Photography</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Starting Price (₹)</label>
+                                    <input type="number" name="servicePrice[]" placeholder="500" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label>Price Type</label>
+                                    <select name="priceType[]">
+                                        <option value="fixed">Fixed Price</option>
+                                        <option value="hourly">Per Hour</option>
+                                        <option value="per_visit">Per Visit</option>
+                                        <option value="negotiable">Negotiable</option>
+                                    </select>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label>Service Description</label>
+                                    <textarea name="serviceDescription[]" 
+                                              placeholder="Describe what's included, your expertise, and special features"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="add-service-btn" onclick="addService()">
+                        <span>➕</span> Add Another Service
+                    </button>
+                </div>
+                
+                <div class="tips-section">
+                    <h4 class="tips-title">💰 Pricing Tips</h4>
+                    <ul class="tips-list">
+                        <li>Research competitor prices in your area</li>
+                        <li>Start with competitive rates to build reviews</li>
+                        <li>Offer package deals for multiple services</li>
+                        <li>Be transparent about additional costs</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Step 3: Portfolio & Documents -->
+            <div class="step-content" id="step3">
+                <h2 class="step-title">
+                    <span class="step-icon">📄</span>
+                    Portfolio & Documents
+                </h2>
+                <p class="step-description">
+                    Upload your work samples and documents to build trust with customers
+                </p>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Profile Photo</label>
+                        <div class="upload-area" onclick="document.getElementById('profilePhoto').click()">
+                            <input type="file" id="profilePhoto" accept=".jpg,.jpeg,.png" 
+                                   onchange="handleFileUpload(this, 'profile')">
+                            <div class="upload-content">
+                                <div class="upload-icon">📸</div>
+                                <div class="upload-text">Upload Profile Photo</div>
+                                <div class="upload-hint">JPG, PNG (Max 2MB)</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Work Samples/Portfolio</label>
+                        <div class="upload-area" onclick="document.getElementById('portfolioImages').click()">
+                            <input type="file" id="portfolioImages" accept=".jpg,.jpeg,.png" multiple 
+                                   onchange="handleFileUpload(this, 'portfolio')">
+                            <div class="upload-content">
+                                <div class="upload-icon">🖼️</div>
+                                <div class="upload-text">Upload Work Samples</div>
+                                <div class="upload-hint">Multiple images allowed</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Business License/Registration</label>
+                        <div class="upload-area" onclick="document.getElementById('businessLicense').click()">
+                            <input type="file" id="businessLicense" accept=".pdf,.jpg,.jpeg,.png" 
+                                   onchange="handleFileUpload(this, 'license')">
+                            <div class="upload-content">
+                                <div class="upload-icon">📋</div>
+                                <div class="upload-text">Upload Business License</div>
+                                <div class="upload-hint">PDF, JPG, PNG (Max 5MB)</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Identity Proof (Optional)</label>
+                        <div class="upload-area" onclick="document.getElementById('identityProof').click()">
+                            <input type="file" id="identityProof" accept=".pdf,.jpg,.jpeg,.png" 
+                                   onchange="handleFileUpload(this, 'identity')">
+                            <div class="upload-content">
+                                <div class="upload-icon">🆔</div>
+                                <div class="upload-text">Upload ID Proof</div>
+                                <div class="upload-hint">Aadhar/PAN/License</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tips-section">
+                    <h4 class="tips-title">📸 Portfolio Tips</h4>
+                    <ul class="tips-list">
+                        <li>Upload high-quality before/after photos</li>
+                        <li>Show variety in your work samples</li>
+                        <li>Include close-up details of craftsmanship</li>
+                        <li>Use good lighting for clear images</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Step 4: Review & Launch -->
+            <div class="step-content" id="step4">
+                <h2 class="step-title">
+                    <span class="step-icon">🎯</span>
+                    Review & Launch
+                </h2>
+                <p class="step-description">
+                    Review your profile and launch your business on MyServiceHub
+                </p>
+                
+                <div class="summary-grid" id="summaryContainer">
+                    <!-- Summary will be populated by JavaScript -->
+                </div>
+                
+                <div class="terms-section" style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 25px; border-radius: 12px; margin: 30px 0;">
+                    <h4 style="color: #856404; margin-bottom: 15px;">📝 Final Agreement</h4>
+                    <div style="display: flex; align-items: flex-start; gap: 10px; margin: 15px 0;">
+                        <input type="checkbox" id="finalTerms" required style="margin-top: 3px;">
+                        <label for="finalTerms" style="color: #856404; cursor: pointer;">
+                            I agree to the <a href="#" style="color: #007bff;">Terms of Service</a>, 
+                            <a href="#" style="color: #007bff;">Privacy Policy</a>, and confirm that all 
+                            information provided is accurate <span class="required">*</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navigation -->
+        <div class="navigation">
+            <button class="nav-btn btn-back" onclick="previousStep()" id="backBtn" style="display: none;">
+                ← Previous Step
+            </button>
+            <div style="flex: 1; text-align: center;">
+                <span id="stepIndicator">Step 1 of 4</span>
+            </div>
+            <button class="nav-btn btn-next" onclick="nextStep()" id="nextBtn">
+                Next Step →
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let serviceCount = 1;
+        let setupData = {};
+        
+        // Check if coming from business registration and pre-populate data
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user has completed business registration and payment
+            const businessData = JSON.parse(localStorage.getItem('businessRegistration') || '{}');
+            const paymentData = JSON.parse(localStorage.getItem('paymentCompleted') || '{}');
+            
+            if (businessData.status === 'business_registered' && paymentData.status === 'completed') {
+                // Pre-populate the form with business registration data
+                if (businessData.businessName) {
+                    document.getElementById('businessName').value = businessData.businessName;
+                }
+                if (businessData.ownerName) {
+                    document.getElementById('ownerName').value = businessData.ownerName;
+                }
+                if (businessData.email) {
+                    document.getElementById('email').value = businessData.email;
+                }
+                if (businessData.phone) {
+                    document.getElementById('phone').value = businessData.phone;
+                }
+                if (businessData.city) {
+                    document.getElementById('city').value = businessData.city;
+                }
+                if (businessData.pincode) {
+                    document.getElementById('pincode').value = businessData.pincode;
+                }
+                if (businessData.businessAddress) {
+                    document.getElementById('businessAddress').value = businessData.businessAddress;
+                }
+                if (businessData.experience) {
+                    document.getElementById('experience').value = businessData.experience;
+                }
+                if (businessData.businessDescription) {
+                    document.getElementById('businessDescription').value = businessData.businessDescription;
+                }
+                if (businessData.serviceRadius) {
+                    document.getElementById('serviceRadius').value = businessData.serviceRadius;
+                }
+                
+                // Auto-select primary service category if available
+                if (businessData.primaryService) {
+                    const categoryCard = document.querySelector(`[data-category="${businessData.primaryService}"]`);
+                    if (categoryCard) {
+                        const checkbox = categoryCard.querySelector('input[type="checkbox"]');
+                        checkbox.checked = true;
+                        categoryCard.classList.add('selected');
+                    }
+                }
+                
+                // Show success message about pre-population
+                setTimeout(() => {
+                    alert(`🎯 Welcome ${businessData.ownerName}!
+                    
+✅ Your business registration data has been loaded
+✅ Plan: ${paymentData.planName.toUpperCase()} (₹${paymentData.amount.toLocaleString()})
+
+Please complete the remaining steps to set up your detailed service portfolio and receive your login credentials.`);
+                }, 1000);
+                
+            } else if (!businessData.status) {
+                // If no business registration, redirect to portal
+                if (confirm('❌ Business registration not found. Would you like to start from the beginning?')) {
+                    window.location.href = 'service-provider-portal.html';
+                }
+            }
+            
+            // Rest of your existing DOMContentLoaded code...
+            updateUI();
+            loadDraftData();
+            setupEventListeners();
+            console.log('🚀 Account Setup initialized');
+        });
+        
+        // Event Listeners
+        function setupEventListeners() {
+            // Category selection
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const checkbox = this.querySelector('input[type="checkbox"]');
+                    checkbox.checked = !checkbox.checked;
+                    this.classList.toggle('selected', checkbox.checked);
+                });
+            });
+        }
+        
+        // Navigation
+        function nextStep() {
+            if (validateCurrentStep()) {
+                saveCurrentStep();
+                if (currentStep < 4) {
+                    currentStep++;
+                    updateUI();
+                } else {
+                    submitSetup();
+                }
+            }
+        }
+        
+        function previousStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateUI();
+            }
+        }
+        
+        // Enhanced validation function
+        function validateCurrentStep() {
+            const currentStepElement = document.getElementById(`step${currentStep}`);
+            const requiredFields = currentStepElement.querySelectorAll('[required]');
+            let isValid = true;
+            let errorMessages = [];
+            
+            // Basic required fields validation
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.style.borderColor = '#dc3545';
+                    errorMessages.push(`${field.previousElementSibling.textContent.replace('*', '').trim()} is required`);
+                    isValid = false;
+                } else {
+                    field.style.borderColor = '#e9ecef';
+                }
+            });
+            
+            // Step 2 specific validations
+            if (currentStep === 2) {
+                // Check if at least one category is selected
+                const selectedCategories = document.querySelectorAll('input[name="categories"]:checked');
+                if (selectedCategories.length === 0) {
+                    errorMessages.push('Please select at least one service category');
+                    isValid = false;
+                }
+                
+                // Check if at least one service has a name
+                const serviceNames = document.querySelectorAll('input[name="serviceName[]"]');
+                let hasServiceName = false;
+                
+                serviceNames.forEach(field => {
+                    if (field.value.trim()) {
+                        hasServiceName = true;
+                    }
+                });
+                
+                if (!hasServiceName) {
+                    errorMessages.push('Please enter at least one service name');
+                    isValid = false;
+                }
+            }
+            
+            // Step 4 specific validation
+            if (currentStep === 4) {
+                const finalTerms = document.getElementById('finalTerms');
+                if (!finalTerms.checked) {
+                    errorMessages.push('Please agree to the terms and conditions');
+                    isValid = false;
+                }
+            }
+            
+            // Show detailed error message
+            if (!isValid) {
+                let errorText = '❌ Please fix these issues:\n\n';
+                errorMessages.forEach((msg, index) => {
+                    errorText += `${index + 1}. ${msg}\n`;
+                });
+                alert(errorText);
+            }
+            
+            return isValid;
+        }
+        
+        // Save current step data
+        function saveCurrentStep() {
+            const stepElement = document.getElementById(`step${currentStep}`);
+            const formData = new FormData(stepElement.querySelector('form') || stepElement);
+            
+            for (let [key, value] of formData.entries()) {
+                if (setupData[key]) {
+                    if (Array.isArray(setupData[key])) {
+                        setupData[key].push(value);
+                    } else {
+                        setupData[key] = [setupData[key], value];
+                    }
+                } else {
+                    setupData[key] = value;
+                }
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('serviceProviderSetup', JSON.stringify(setupData));
+        }
+        
+        // Load draft data
+        function loadDraftData() {
+            const savedData = localStorage.getItem('serviceProviderSetup');
+            if (savedData && confirm('📄 Found saved progress. Continue from where you left off?')) {
+                setupData = JSON.parse(savedData);
+                // Populate form fields with saved data
+                populateFields();
+            }
+        }
+        
+        // Populate fields with saved data
+        function populateFields() {
+            Object.keys(setupData).forEach(key => {
+                const field = document.querySelector(`[name="${key}"]`);
+                if (field) {
+                    if (field.type === 'checkbox') {
+                        field.checked = true;
+                        field.closest('.category-card')?.classList.add('selected');
+                    } else {
+                        field.value = setupData[key];
+                    }
+                }
+            });
+        }
+        
+        // Update UI for current step
+        function updateUI() {
+            // Hide all step contents
+            document.querySelectorAll('.step-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Show current step
+            document.getElementById(`step${currentStep}`).classList.add('active');
+            
+            // Update progress
+            updateProgressSteps();
+            
+            // Update navigation
+            const backBtn = document.getElementById('backBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const stepIndicator = document.getElementById('stepIndicator');
+            
+            backBtn.style.display = currentStep > 1 ? 'flex' : 'none';
+            stepIndicator.textContent = `Step ${currentStep} of 4`;
+            
+            if (currentStep === 4) {
+                nextBtn.innerHTML = '🚀 Launch My Business';
+                populateSummary();
+            } else {
+                nextBtn.innerHTML = 'Next Step →';
+            }
+        }
+        
+        // Update progress steps
+        function updateProgressSteps() {
+            document.querySelectorAll('.progress-step').forEach((step, index) => {
+                const stepNum = index + 1;
+                
+                if (stepNum < currentStep) {
+                    step.classList.add('completed');
+                    step.classList.remove('active');
+                } else if (stepNum === currentStep) {
+                    step.classList.add('active');
+                    step.classList.remove('completed');
+                } else {
+                    step.classList.remove('active', 'completed');
+                }
+            });
+            
+            document.querySelectorAll('.step-connector').forEach((connector, index) => {
+                if (index < currentStep - 1) {
+                    connector.classList.add('active');
+                } else {
+                    connector.classList.remove('active');
+                }
+            });
+        }
+        
+        // Add new service
+        function addService() {
+            serviceCount++;
+            const container = document.getElementById('servicesContainer');
+            const serviceHTML = `
+                <div class="service-item">
+                    <div class="service-header">
+                        <div class="service-title">Service #${serviceCount}</div>
+                        <button type="button" class="remove-service" onclick="removeService(this)">✕ Remove</button>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Service Name <span class="required">*</span></label>
+                            <input type="text" name="serviceName[]" required placeholder="e.g., Kitchen Plumbing Repair">
+                        </div>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select name="serviceCategory[]">
+                                <option value="">Select category</option>
+                                <option value="plumbing">Plumbing</option>
+                                <option value="electrical">Electrical</option>
+                                <option value="cleaning">Cleaning</option>
+                                <option value="painting">Painting</option>
+                                <option value="carpentry">Carpentry</option>
+                                <option value="beauty">Beauty & Wellness</option>
+                                <option value="tutoring">Tutoring</option>
+                                <option value="photography">Photography</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Starting Price (₹)</label>
+                            <input type="number" name="servicePrice[]" placeholder="500" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Price Type</label>
+                            <select name="priceType[]">
+                                <option value="fixed">Fixed Price</option>
+                                <option value="hourly">Per Hour</option>
+                                <option value="per_visit">Per Visit</option>
+                                <option value="negotiable">Negotiable</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Service Description</label>
+                            <textarea name="serviceDescription[]" placeholder="Describe what's included, your expertise, and special features"></textarea>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', serviceHTML);
+        }
+        
+        // Remove service
+        function removeService(button) {
+            if (document.querySelectorAll('.service-item').length > 1) {
+                button.closest('.service-item').remove();
+                updateServiceNumbers();
+            } else {
+                alert('⚠️ At least one service is required!');
+            }
+        }
+        
+        // Update service numbers
+        function updateServiceNumbers() {
+            document.querySelectorAll('.service-item').forEach((item, index) => {
+                item.querySelector('.service-title').textContent = `Service #${index + 1}`;
+            });
+            serviceCount = document.querySelectorAll('.service-item').length;
+        }
+        
+        // File upload handling
+        function handleFileUpload(input, type) {
+            const files = input.files;
+            const uploadArea = input.closest('.upload-area');
+            const content = uploadArea.querySelector('.upload-content');
+            
+            if (files.length > 0) {
+                let message = files.length === 1 ? files[0].name : `${files.length} files selected`;
+                content.innerHTML = `
+                    <div class="upload-icon">✅</div>
+                    <div class="upload-text">${message}</div>
+                    <div class="upload-hint">Upload successful</div>
+                `;
+                uploadArea.style.borderColor = '#28a745';
+                uploadArea.style.background = '#e8f5e8';
+            }
+        }
+        
+        // Populate summary
+        function populateSummary() {
+            const summaryContainer = document.getElementById('summaryContainer');
+            
+            const businessCard = `
+                <div class="summary-card">
+                    <h3><span class="summary-card-icon">🏢</span> Business Information</h3>
+                    <div class="summary-item">
+                        <span class="summary-label">Business Name:</span>
+                        <span class="summary-value">${setupData.businessName || 'Not provided'}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Owner:</span>
+                        <span class="summary-value">${setupData.ownerName || 'Not provided'}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Email:</span>
+                        <span class="summary-value">${setupData.email || 'Not provided'}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Phone:</span>
+                        <span class="summary-value">${setupData.phone || 'Not provided'}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">City:</span>
+                        <span class="summary-value">${setupData.city || 'Not provided'}</span>
+                    </div>
+                </div>
+            `;
+            
+            const categoriesSelected = document.querySelectorAll('input[name="categories"]:checked');
+            const categoriesText = Array.from(categoriesSelected).map(cb => cb.value).join(', ') || 'None selected';
+            
+            const servicesCard = `
+                <div class="summary-card">
+                    <h3><span class="summary-card-icon">⚙️</span> Services & Categories</h3>
+                    <div class="summary-item">
+                        <span class="summary-label">Categories:</span>
+                        <span class="summary-value">${categoriesText}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Services Listed:</span>
+                        <span class="summary-value">${serviceCount} service(s)</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Service Radius:</span>
+                        <span class="summary-value">${setupData.serviceRadius || 'Not specified'}</span>
+                    </div>
+                </div>
+            `;
+            
+            summaryContainer.innerHTML = businessCard + servicesCard;
+        }
+        
+        // Submit setup and generate login credentials
+        function submitSetup() {
+            const nextBtn = document.getElementById('nextBtn');
+            nextBtn.textContent = '⏳ Setting up your account...';
+            nextBtn.disabled = true;
+            
+            setTimeout(() => {
+                nextBtn.textContent = '✅ Generating login credentials...';
+                
+                // Generate login credentials
+                const loginCredentials = generateLoginCredentials();
+                
+                // Save final data with credentials
+                const accountData = {
+                    ...setupData,
+                    ...loginCredentials,
+                    setupCompletedAt: new Date().toISOString(),
+                    status: 'pending_verification',
+                    accountId: generateAccountId()
+                };
+                
+                localStorage.setItem('providerAccountSetup', JSON.stringify(accountData));
+                
+                // Clear draft
+                localStorage.removeItem('serviceProviderSetup');
+                
+                setTimeout(() => {
+                    showLoginCredentials(loginCredentials);
+                }, 1500);
+                
+            }, 3000);
+        }
+        
+        // Generate secure login credentials
+        function generateLoginCredentials() {
+            const email = setupData.email || 'provider@example.com';
+            const tempPassword = generateSecurePassword();
+            
+            return {
+                loginEmail: email,
+                temporaryPassword: tempPassword,
+                mustChangePassword: true,
+                credentialsGeneratedAt: new Date().toISOString()
+            };
+        }
+        
+        // Generate secure password
+        function generateSecurePassword() {
+            const chars = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789@#$';
+            let password = '';
+            for (let i = 0; i < 12; i++) {
+                password += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return password;
+        }
+        
+        // Generate account ID
+        function generateAccountId() {
+            return 'SP' + Date.now() + Math.random().toString(36).substr(2, 5).toUpperCase();
+        }
+        
+        // Show login credentials screen
+        function showLoginCredentials(credentials) {
+            // Get business and payment data
+            const businessData = JSON.parse(localStorage.getItem('businessRegistration') || '{}');
+            const paymentData = JSON.parse(localStorage.getItem('paymentCompleted') || '{}');
+            
+            document.querySelectorAll('.step-content').forEach(content => {
+                content.style.display = 'none';
+            });
+            
+            const credentialsScreen = document.createElement('div');
+            credentialsScreen.className = 'step-content';
+            credentialsScreen.style.display = 'block';
+            credentialsScreen.innerHTML = `
+                <div class="success-animation">
+                    <div class="success-icon">🎉</div>
+                    <h2 class="success-title">Account Setup Complete!</h2>
+                    
+                    <div style="background: #e8f5e8; border: 2px solid #28a745; border-radius: 15px; padding: 30px; margin: 30px 0; text-align: left;">
+                        <h3 style="color: #2d5a2d; text-align: center; margin-bottom: 20px;">✅ Your Complete Business Profile</h3>
+                        
+                        <div style="background: white; padding: 20px; border-radius: 10px; margin: 15px 0;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin: 8px 0;">
+                                <strong style="color: #333;">Business:</strong>
+                                <span style="background: #f8f9fa; padding: 5px 10px; border-radius: 5px;">${businessData.businessName || 'N/A'}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin: 8px 0;">
+                                <strong style="color: #333;">Plan:</strong>
+                                <span style="background: #f8f9fa; padding: 5px 10px; border-radius: 5px;">${paymentData.planName?.toUpperCase() || 'N/A'} (₹${paymentData.amount?.toLocaleString() || 'N/A'})</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin: 8px 0;">
+                                <strong style="color: #333;">Account ID:</strong>
+                                <span style="background: #f8f9fa; padding: 5px 10px; border-radius: 5px;">${businessData.accountId || 'N/A'}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: #e8f5e8; border: 2px solid #28a745; border-radius: 15px; padding: 30px; margin: 30px 0; text-align: left;">
+                        <h3 style="color: #2d5a2d; text-align: center; margin-bottom: 20px;">🔐 Your Login Credentials</h3>
+                        
+                        <div style="background: white; padding: 20px; border-radius: 10px; margin: 15px 0;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin: 10px 0;">
+                                <strong style="color: #333;">Email:</strong>
+                                <span style="font-family: monospace; background: #f8f9fa; padding: 5px 10px; border-radius: 5px;">${credentials.loginEmail}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin: 10px 0;">
+                                <strong style="color: #333;">Password:</strong>
+                                <span style="font-family: monospace; background: #f8f9fa; padding: 5px 10px; border-radius: 5px;">${credentials.temporaryPassword}</span>
+                            </div>
+                        </div>
+                        
+                        <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                            <h4 style="color: #856404; margin-bottom: 10px;">⚠️ Important Security Notes:</h4>
+                            <ul style="color: #856404; margin: 0; padding-left: 20px;">
+                                <li>This is a temporary password - you'll be asked to change it on first login</li>
+                                <li>Keep these credentials secure and private</li>
+                                <li>Login credentials have also been sent to your email</li>
+                                <li>Your account is pending verification (24-48 hours)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px; justify-content: center; margin-top: 30px;">
+                        <button onclick="copyCredentials()" style="background: #007bff; color: white; border: none; padding: 15px 25px; border-radius: 50px; cursor: pointer; font-weight: 600;">
+                            📋 Copy Credentials
+                        </button>
+                        <button onclick="goToLogin()" style="background: #28a745; color: white; border: none; padding: 15px 25px; border-radius: 50px; cursor: pointer; font-weight: 600;">
+                            🔐 Login to Dashboard
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.querySelector('.content-area').appendChild(credentialsScreen);
+            document.querySelector('.navigation').style.display = 'none';
+        }
+        
+        // Copy credentials to clipboard
+        function copyCredentials() {
+            const credentials = JSON.parse(localStorage.getItem('providerAccountSetup'));
+            const credText = `MyServiceHub Login Credentials
+Email: ${credentials.loginEmail}
+Password: ${credentials.temporaryPassword}
+
+Please change your password after first login.`;
+            
+            navigator.clipboard.writeText(credText).then(() => {
+                alert('✅ Credentials copied to clipboard!');
+            });
+        }
+        
+        // Go to login page
+        function goToLogin() {
+            window.location.href = 'provider-login.html';
+        }
+        
+        console.log('🎯 Service Provider Account Setup loaded successfully!');
+    </script>
+</body>
+</html>

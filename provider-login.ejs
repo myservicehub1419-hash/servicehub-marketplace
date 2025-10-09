@@ -1,0 +1,188 @@
+<% layout('layout') -%>
+
+<div class="auth-container">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-7">
+                <div class="auth-card">
+                    <!-- Login Header -->
+                    <div class="auth-header text-center mb-4">
+                        <div class="logo mb-3">
+                            <i class="fas fa-briefcase fa-3x text-primary"></i>
+                        </div>
+                        <h2 class="mb-2">Welcome Back</h2>
+                        <p class="text-muted">Sign in to your provider account</p>
+                    </div>
+
+                    <!-- Login Form -->
+                    <form id="loginForm" class="needs-validation" novalidate>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-envelope"></i>
+                                </span>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                                <div class="invalid-feedback">Please provide a valid email address.</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-lock"></i>
+                                </span>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <div class="invalid-feedback">Please provide your password.</div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="rememberMe" name="rememberMe">
+                                    <label class="form-check-label" for="rememberMe">
+                                        Remember me
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 text-end">
+                                <a href="/provider/forgot-password" class="text-primary text-decoration-none">
+                                    Forgot Password?
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-primary btn-lg" id="loginBtn">
+                                <i class="fas fa-sign-in-alt"></i> Sign In
+                            </button>
+                        </div>
+
+                        <!-- Quick Login Options -->
+                        <div class="text-center mb-3">
+                            <small class="text-muted">Or continue with</small>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <button type="button" class="btn btn-outline-danger w-100" id="googleLogin">
+                                    <i class="fab fa-google"></i> Google
+                                </button>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <button type="button" class="btn btn-outline-primary w-100" id="linkedinLogin">
+                                    <i class="fab fa-linkedin"></i> LinkedIn
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Registration Link -->
+                    <div class="text-center mt-4">
+                        <p class="text-muted">Don't have an account? 
+                            <a href="/provider/register" class="text-primary text-decoration-none fw-bold">Register as Provider</a>
+                        </p>
+                    </div>
+
+                    <!-- Features Preview -->
+                    <div class="features-preview mt-4">
+                        <h6 class="text-center mb-3">Why choose MyServiceHub?</h6>
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <i class="fas fa-users fa-2x text-primary mb-2"></i>
+                                <small class="d-block">10K+ Customers</small>
+                            </div>
+                            <div class="col-4">
+                                <i class="fas fa-star fa-2x text-warning mb-2"></i>
+                                <small class="d-block">4.8/5 Rating</small>
+                            </div>
+                            <div class="col-4">
+                                <i class="fas fa-rupee-sign fa-2x text-success mb-2"></i>
+                                <small class="d-block">Quick Payments</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('loginForm');
+    const loginBtn = document.getElementById('loginBtn');
+    
+    // Password toggle
+    document.getElementById('togglePassword').addEventListener('click', function() {
+        const password = document.getElementById('password');
+        const icon = this.querySelector('i');
+        
+        if (password.type === 'password') {
+            password.type = 'text';
+            icon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            password.type = 'password';
+            icon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    });
+
+    // Form submission
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        if (!form.checkValidity()) {
+            e.stopPropagation();
+            form.classList.add('was-validated');
+            return;
+        }
+
+        loginBtn.disabled = true;
+        loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing In...';
+
+        try {
+            const formData = new FormData(form);
+            const data = {
+                email: formData.get('email'),
+                password: formData.get('password'),
+                rememberMe: formData.get('rememberMe') === 'on'
+            };
+
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                localStorage.setItem('token', result.token);
+                showNotification('Login Successful!', 'Welcome back to MyServiceHub', 'success');
+                
+                // Redirect based on onboarding step
+                setTimeout(() => {
+                    window.location.href = result.nextStep || '/provider/dashboard';
+                }, 1500);
+                
+            } else {
+                throw new Error(result.message || 'Login failed');
+            }
+
+        } catch (error) {
+            console.error('Login error:', error);
+            showNotification('Login Failed', error.message, 'error');
+        } finally {
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
+        }
+    });
+});
+</script>

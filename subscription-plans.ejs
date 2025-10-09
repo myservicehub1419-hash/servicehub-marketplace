@@ -1,0 +1,508 @@
+<% layout('layout') -%>
+
+<div class="subscription-container">
+    <div class="container">
+        <!-- Header -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8 text-center">
+                <h1 class="display-4 fw-bold mb-3">Choose Your Plan</h1>
+                <p class="lead text-muted">Select the perfect plan to start your journey as a service provider</p>
+                
+                <!-- Progress Indicator -->
+                <div class="onboarding-progress mt-4">
+                    <div class="progress mb-2" style="height: 8px;">
+                        <div class="progress-bar bg-primary" style="width: 75%"></div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <small class="text-success"><i class="fas fa-check"></i> Registered</small>
+                        <small class="text-success"><i class="fas fa-check"></i> Verified</small>
+                        <small class="text-primary fw-bold">3. Subscribe</small>
+                        <small class="text-muted">4. Profile</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pricing Toggle -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-auto">
+                <div class="pricing-toggle">
+                    <span class="toggle-label">Monthly</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="pricingToggle">
+                        <span class="slider"></span>
+                    </label>
+                    <span class="toggle-label">
+                        Yearly 
+                        <span class="badge bg-success ms-1">Save 20%</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subscription Plans -->
+        <div class="row justify-content-center" id="pricingPlans">
+            <!-- Plans will be loaded dynamically -->
+        </div>
+
+        <!-- Features Comparison -->
+        <div class="row justify-content-center mt-5">
+            <div class="col-lg-10">
+                <div class="comparison-table">
+                    <h3 class="text-center mb-4">Feature Comparison</h3>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>Features</th>
+                                    <th class="text-center">Basic</th>
+                                    <th class="text-center">Standard</th>
+                                    <th class="text-center">Premium</th>
+                                    <th class="text-center">Enterprise</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Service Listings</strong></td>
+                                    <td class="text-center">5</td>
+                                    <td class="text-center">20</td>
+                                    <td class="text-center">Unlimited</td>
+                                    <td class="text-center">Unlimited</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Commission Rate</strong></td>
+                                    <td class="text-center">8%</td>
+                                    <td class="text-center">6%</td>
+                                    <td class="text-center">4%</td>
+                                    <td class="text-center">2%</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Profile Badge</strong></td>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                                    <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                                    <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Priority Support</strong></td>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                                    <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Advanced Analytics</strong></td>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                                    <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Custom Branding</strong></td>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center"><i class="fas fa-check text-success"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQs -->
+        <div class="row justify-content-center mt-5">
+            <div class="col-lg-8">
+                <h3 class="text-center mb-4">Frequently Asked Questions</h3>
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                Can I change my plan later?
+                            </button>
+                        </h2>
+                        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes, you can upgrade or downgrade your plan at any time. Changes will be reflected in your next billing cycle.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                What happens if I cancel my subscription?
+                            </button>
+                        </h2>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                You can cancel anytime. Your account will remain active until the end of your current billing period.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                Are there any setup fees?
+                            </button>
+                        </h2>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                No, there are no setup fees. You only pay the monthly or yearly subscription fee.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Payment Modal -->
+<div class="modal fade" id="paymentModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Complete Payment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="payment-summary">
+                    <h6>Payment Summary</h6>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <strong>Plan:</strong> <span id="selectedPlanName"></span>
+                        </div>
+                        <div class="col-sm-6">
+                            <strong>Amount:</strong> ₹<span id="selectedPlanAmount"></span>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+                <div id="paymentOptions">
+                    <h6>Payment Method</h6>
+                    <div class="payment-methods">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="paymentMethod" id="razorpay" value="razorpay" checked>
+                            <label class="form-check-label" for="razorpay">
+                                <img src="/images/razorpay-logo.png" alt="Razorpay" style="height: 20px;"> Credit/Debit Card, UPI, Net Banking
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="proceedPayment">
+                    <i class="fas fa-credit-card"></i> Pay Now
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.subscription-container {
+    padding: 2rem 0;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+}
+
+.pricing-toggle {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: white;
+    padding: 1rem;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 30px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #007bff;
+}
+
+input:checked + .slider:before {
+    transform: translateX(30px);
+}
+
+.plan-card {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.plan-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.plan-card.recommended {
+    border: 3px solid #007bff;
+    transform: scale(1.05);
+}
+
+.plan-card.recommended::before {
+    content: "RECOMMENDED";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 0.5rem;
+    background: linear-gradient(45deg, #007bff, #0056b3);
+    color: white;
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.plan-price {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.plan-period {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.plan-features {
+    list-style: none;
+    padding: 0;
+}
+
+.plan-features li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.plan-features li:last-child {
+    border-bottom: none;
+}
+
+.plan-features li i {
+    color: #28a745;
+    margin-right: 0.5rem;
+}
+
+.comparison-table {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.onboarding-progress {
+    background: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+}
+</style>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let currentPlans = [];
+    let selectedPlan = null;
+    let isYearly = false;
+
+    // Load subscription plans
+    loadSubscriptionPlans();
+
+    // Pricing toggle
+    document.getElementById('pricingToggle').addEventListener('change', function() {
+        isYearly = this.checked;
+        renderPlans();
+    });
+
+    async function loadSubscriptionPlans() {
+        try {
+            const response = await fetch('/api/subscription/plans', {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            
+            const result = await response.json();
+            if (result.success) {
+                currentPlans = result.plans;
+                renderPlans();
+            }
+        } catch (error) {
+            console.error('Error loading plans:', error);
+        }
+    }
+
+    function renderPlans() {
+        const container = document.getElementById('pricingPlans');
+        container.innerHTML = '';
+
+        currentPlans.forEach((plan, index) => {
+            const price = isYearly ? plan.price * 10 : plan.price; // 20% discount for yearly
+            const period = isYearly ? '/year' : '/month';
+            const savings = isYearly ? Math.round(plan.price * 2.4) : 0; // 20% savings
+
+            const planHTML = `
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="plan-card ${plan.recommended ? 'recommended' : ''}" data-plan="${plan.id}">
+                        <div class="text-center mb-4">
+                            <h4 class="plan-name">${plan.name}</h4>
+                            <div class="plan-price">₹${price.toLocaleString()}</div>
+                            <div class="plan-period">${period}</div>
+                            ${savings > 0 ? `<div class="text-success small">Save ₹${savings} annually</div>` : ''}
+                        </div>
+                        
+                        <p class="text-muted text-center">${plan.description}</p>
+                        
+                        <ul class="plan-features">
+                            ${plan.features.map(feature => `
+                                <li>
+                                    <i class="fas ${feature.included ? 'fa-check' : 'fa-times'} ${feature.included ? 'text-success' : 'text-danger'}"></i>
+                                    ${feature.name} ${feature.limit > 0 ? `(${feature.limit})` : ''}
+                                </li>
+                            `).join('')}
+                        </ul>
+                        
+                        <div class="text-center mt-4">
+                            <div class="commission-info mb-3">
+                                <small class="text-muted">Commission Rate:</small>
+                                <div class="fw-bold text-primary">${(plan.commissionRate * 100)}%</div>
+                            </div>
+                            
+                            <button class="btn ${plan.recommended ? 'btn-primary' : 'btn-outline-primary'} w-100 select-plan-btn">
+                                ${plan.name === 'Basic' ? 'Start Free Trial' : 'Choose Plan'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            container.insertAdjacentHTML('beforeend', planHTML);
+        });
+
+        // Add click handlers
+        document.querySelectorAll('.select-plan-btn').forEach((btn, index) => {
+            btn.addEventListener('click', () => selectPlan(currentPlans[index]));
+        });
+    }
+
+    function selectPlan(plan) {
+        selectedPlan = plan;
+        
+        // Update modal content
+        document.getElementById('selectedPlanName').textContent = plan.name;
+        document.getElementById('selectedPlanAmount').textContent = 
+            (isYearly ? plan.price * 10 : plan.price).toLocaleString();
+
+        // Show payment modal
+        const modal = new bootstrap.Modal(document.getElementById('paymentModal'));
+        modal.show();
+    }
+
+    // Payment processing
+    document.getElementById('proceedPayment').addEventListener('click', async function() {
+        if (!selectedPlan) return;
+
+        this.disabled = true;
+        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+        try {
+            // Create subscription
+            const response = await fetch('/api/subscription/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({
+                    planId: selectedPlan.id,
+                    interval: isYearly ? 'yearly' : 'monthly'
+                })
+            });
+
+            const result = await response.json();
+            
+            if (result.success) {
+                // Initialize Razorpay payment
+                const options = {
+                    key: 'rzp_test_your_key_id', // Replace with your actual key
+                    subscription_id: result.razorpaySubscription.id,
+                    name: 'MyServiceHub',
+                    description: `${selectedPlan.name} Subscription`,
+                    handler: function(response) {
+                        // Payment successful
+                        showNotification('Payment Successful!', 'Your subscription is now active.', 'success');
+                        
+                        setTimeout(() => {
+                            window.location.href = '/provider/profile-setup';
+                        }, 2000);
+                    },
+                    prefill: {
+                        email: '<%= user.email %>',
+                        contact: '<%= user.phone %>'
+                    },
+                    theme: {
+                        color: '#007bff'
+                    }
+                };
+
+                const razorpay = new Razorpay(options);
+                razorpay.open();
+                
+            } else {
+                throw new Error(result.message || 'Failed to create subscription');
+            }
+
+        } catch (error) {
+            console.error('Payment error:', error);
+            showNotification('Payment Failed', error.message, 'error');
+        } finally {
+            this.disabled = false;
+            this.innerHTML = '<i class="fas fa-credit-card"></i> Pay Now';
+        }
+    });
+});
+</script>

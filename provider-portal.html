@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Provider Portal - MyServiceHub AI</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            color: white;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* FLOATING PARTICLES */
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            animation: particleFloat 20s infinite linear;
+        }
+        
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(100vh) translateX(0px) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px) scale(0);
+                opacity: 0;
+            }
+        }
+        
+        /* HEADER */
+        .header {
+            text-align: center;
+            padding: 50px 20px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .logo {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tagline {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            margin-bottom: 40px;
+        }
+        
+        /* MAIN CONTENT */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* HERO SECTION */
+        .hero-section {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero-description {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .cta-button {
+            padding: 16px 32px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-button.primary {
+            background: linear-gradient(45deg, #4CAF50, #66BB6A);
+            color: white;
+            box-shadow: 0 8px 30px rgba(76, 175, 80, 0.3);
+        }
+        
+        .cta-button.secondary {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.6s ease;
+        }
+        
+        .cta-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+        }
+        
+        .cta-button.primary:hover {
+            box-shadow: 0 15px 40px rgba(76, 175, 80, 0.5);
+        }
+        
+        .cta-button.secondary:hover {
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 15px 40px rgba(255, 255, 255, 0.2);
+        }
+        
+        /* FEATURES GRID */
+        .features-section {
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 50px;
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.4s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .feature-description {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        /* STATS SECTION */
+        .stats-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 60px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+        
+        .stat-item {
+            padding: 20px;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #4CAF50, #66BB6A);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 600;
+        }
+        
+        /* SUCCESS STORIES */
+        .stories-section {
+            margin-bottom: 60px;
+        }
+        
+        .stories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        
+        .story-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .story-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+        }
+        
+        .story-quote {
+            font-style: italic;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
+        .story-author {
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #4CAF50, #66BB6A);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+        }
+        
+        /* AI ASSISTANT */
+        .ai-assistant {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .ai-toggle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            animation: float-ai 3s ease-in-out infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        @keyframes float-ai {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .ai-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
+        }
+        
+        /* AI CHAT WINDOW */
+        .ai-chat-window {
+            position: fixed;
+            bottom: 95px;
+            right: 20px;
+            width: 350px;
+            height: 450px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            transform: translateY(20px) scale(0.95);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            z-index: 1001;
+            overflow: hidden;
+        }
+        
+        .ai-chat-window.active {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .ai-header {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .ai-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .ai-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+        
+        .ai-info h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        
+        .ai-info small {
+            opacity: 0.9;
+            font-size: 0.8rem;
+        }
+        
+        .ai-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .ai-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .ai-messages {
+            height: 280px;
+            overflow-y: auto;
+            padding: 15px;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .ai-message {
+            max-width: 85%;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            animation: messageSlideIn 0.3s ease;
+        }
+        
+        @keyframes messageSlideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .ai-message.bot {
+            background: #f0f8ff;
+            padding: 12px 15px;
+            border-radius: 15px 15px 15px 5px;
+            border-left: 3px solid #667eea;
+            align-self: flex-start;
+        }
+        
+        .ai-message.user {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 15px;
+            border-radius: 15px 15px 5px 15px;
+            align-self: flex-end;
+        }
+        
+        .ai-input-area {
+            padding: 15px;
+            border-top: 1px solid #f0f0f0;
+            background: #fafafa;
+        }
+        
+        .quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+        
+        .quick-action {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            padding: 6px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .quick-action:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .ai-input-container {
+            display: flex;
+            gap: 8px;
+            align-items: flex-end;
+        }
+        
+        .ai-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+        
+        .ai-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .ai-send {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+        }
+        
+        .ai-send:hover {
+            transform: scale(1.1);
+        }
+        
+        /* MOBILE RESPONSIVE */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-description {
+                font-size: 1.1rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .cta-button {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .feature-card {
+                padding: 25px 20px;
+            }
+            
+            .ai-chat-window {
+                width: 90vw;
+                right: 5vw;
+                height: 70vh;
+            }
+            
+            .ai-messages {
+                height: calc(70vh - 140px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- FLOATING PARTICLES -->
+    <div class="particles-container" id="particlesContainer"></div>
+
+    <!-- HEADER -->
+    <div class="header">
+        <h1 class="logo">MyServiceHub AI</h1>
+        <p class="tagline">Transform Your Service Business</p>
+        <p class="subtitle">Join thousands of providers earning more with AI-powered customer matching</p>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <!-- HERO SECTION -->
+        <div class="hero-section">
+            <h2 class="hero-title">🚀 Ready to Grow Your Business?</h2>
+            <p class="hero-description">
+                Join the smartest provider platform in India. Our AI matches you with perfect customers, 
+                optimizes your earnings, and helps you build a 5-star reputation automatically.
+            </p>
+            
+            <div class="cta-buttons">
+                <button class="cta-button primary" onclick="window.location.href='provider-registration.html'">
+                    <i class="fas fa-rocket"></i>
+                    <span>Join as Provider</span>
+                </button>
+                <button class="cta-button secondary" onclick="window.location.href='provider-login.html'">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Already a Provider? Login</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- FEATURES SECTION -->
+        <div class="features-section">
+            <h3 class="section-title">🤖 AI-Powered Features</h3>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">🎯</span>
+                    <h4 class="feature-title">Smart Customer Matching</h4>
+                    <p class="feature-description">
+                        Our AI analyzes customer needs and matches them with your exact skills and location. 
+                        98% accuracy rate, 40% more bookings guaranteed.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">📈</span>
+                    <h4 class="feature-title">Earnings Optimization</h4>
+                    <p class="feature-description">
+                        Get real-time insights on pricing, peak hours, and service demand. 
+                        Average providers increase earnings by 45% in first 3 months.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">⭐</span>
+                    <h4 class="feature-title">Reputation Management</h4>
+                    <p class="feature-description">
+                        AI helps you maintain perfect 5-star ratings by predicting customer satisfaction 
+                        and suggesting improvement areas before issues arise.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">💰</span>
+                    <h4 class="feature-title">Instant Payments</h4>
+                    <p class="feature-description">
+                        Secure, fast payments processed within 2 hours. Multiple payment methods, 
+                        transparent pricing, zero hidden fees.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">📊</span>
+                    <h4 class="feature-title">Business Analytics</h4>
+                    <p class="feature-description">
+                        Track your growth with detailed analytics, customer insights, and AI-powered 
+                        recommendations for business expansion.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">🛡️</span>
+                    <h4 class="feature-title">Full Protection</h4>
+                    <p class="feature-description">
+                        Complete insurance coverage, verified customers only, 24/7 support, 
+                        and dispute resolution with AI assistance.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- STATS SECTION -->
+        <div class="stats-section">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">15,000+</div>
+                    <div class="stat-label">Active Providers</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Customer Satisfaction</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">₹45K</div>
+                    <div class="stat-label">Average Monthly Earnings</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">40%</div>
+                    <div class="stat-label">Earnings Increase</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SUCCESS STORIES -->
+        <div class="stories-section">
+            <h3 class="section-title">🌟 Success Stories</h3>
+            <div class="stories-grid">
+                <div class="story-card">
+                    <p class="story-quote">
+                        "MyServiceHub AI changed my life! From ₹15K to ₹60K per month in just 4 months. 
+                        The AI matching is incredible - I only get high-quality customers now."
+                    </p>
+                    <div class="story-author">
+                        <div class="author-avatar">R</div>
+                        <div>
+                            <strong>Rajesh Kumar</strong><br>
+                            <small>Home Cleaning Services, Delhi</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="story-card">
+                    <p class="story-quote">
+                        "The AI recommendations helped me optimize my pricing and service timing. 
+                        Now I'm the #1 rated AC repair provider in my area with 150+ five-star reviews!"
+                    </p>
+                    <div class="story-author">
+                        <div class="author-avatar">P</div>
+                        <div>
+                            <strong>Priya Sharma</strong><br>
+                            <small>AC Repair Services, Mumbai</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="story-card">
+                    <p class="story-quote">
+                        "Started as a side business, now it's my full-time career! The platform's AI 
+                        helps me manage 20+ jobs per week efficiently while maintaining quality."
+                    </p>
+                    <div class="story-author">
+                        <div class="author-avatar">A</div>
+                        <div>
+                            <strong>Amit Patel</strong><br>
+                            <small>Plumbing Services, Bangalore</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI ASSISTANT -->
+    <div class="ai-assistant">
+        <button class="ai-toggle" onclick="toggleAI()">🤖</button>
+    </div>
+
+    <!-- AI CHAT WINDOW -->
+    <div class="ai-chat-window" id="aiChat">
+        <div class="ai-header">
+            <div class="ai-info">
+                <div class="ai-avatar">🤖</div>
+                <div>
+                    <h4>AI Provider Assistant</h4>
+                    <small>Online • Ready to help!</small>
+                </div>
+            </div>
+            <button class="ai-close" onclick="toggleAI()">×</button>
+        </div>
+        
+        <div class="ai-messages" id="aiMessages">
+            <div class="ai-message bot">
+                🚀 **Welcome to MyServiceHub AI!**
+                
+                Ready to transform your service business with AI?
+                
+                **What I can help with:**
+                • Explain how AI matching works
+                • Show earning potential & success stories
+                • Guide you through the signup process
+                • Answer questions about our platform
+                
+                **Quick Facts:**
+                ✅ 15,000+ successful providers
+                ✅ Average 40% earnings increase
+                ✅ 98% customer satisfaction
+                ✅ AI matches you with perfect customers
+                
+                **Ready to get started or have questions?** 😊
+            </div>
+        </div>
+        
+        <div class="ai-input-area">
+            <div class="quick-actions">
+                <div class="quick-action" onclick="askAI('How does AI matching work?')">🤖 AI Matching</div>
+                <div class="quick-action" onclick="askAI('How much can I earn?')">💰 Earnings</div>
+                <div class="quick-action" onclick="askAI('How do I get started?')">🚀 Get Started</div>
+                <div class="quick-action" onclick="askAI('Is it really free?')">🆓 Pricing</div>
+            </div>
+            <div class="ai-input-container">
+                <input type="text" class="ai-input" id="aiInput" placeholder="Ask me anything..." onkeypress="handleAIEnter(event)">
+                <button class="ai-send" onclick="sendAIMessage()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create particles
+        function createParticles() {
+            const container = document.getElementById('particlesContainer');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // AI Assistant
+        let aiOpen = false;
+
+        function toggleAI() {
+            aiOpen = !aiOpen;
+            document.getElementById('aiChat').classList.toggle('active', aiOpen);
+            
+            if (aiOpen) {
+                document.getElementById('aiInput').focus();
+            }
+        }
+
+        function sendAIMessage() {
+            const input = document.getElementById('aiInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                addAIMessage(message, 'user');
+                input.value = '';
+                
+                setTimeout(() => {
+                    const response = getAIResponse(message);
+                    addAIMessage(response, 'bot');
+                }, 800);
+            }
+        }
+
+        function addAIMessage(text, type) {
+            const messagesContainer = document.getElementById('aiMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `ai-message ${type}`;
+            messageDiv.textContent = text;
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function getAIResponse(message) {
+            const msg = message.toLowerCase();
+            
+            if (msg.includes('matching') || msg.includes('ai') || msg.includes('how')) {
+                return `🤖 **AI Matching Explained:**
+
+Our revolutionary AI system:
+
+📊 **Analyzes Your Profile:**
+• Skills, experience, location
+• Service quality & ratings
+• Availability & preferences
+• Pricing & specializations
+
+🎯 **Finds Perfect Customers:**
+• Matches customer needs with your expertise
+• Considers location, budget, timing
+• Filters out low-quality requests
+• Prioritizes repeat customers
+
+📈 **Results:**
+• 98% match accuracy rate
+• 40% more bookings on average
+• 60% reduction in time wasted
+• Higher customer satisfaction
+
+**It's like having a personal business manager working 24/7!** 🚀`;
+            }
+            
+            if (msg.includes('earn') || msg.includes('money') || msg.includes('income')) {
+                return `💰 **Earnings Potential:**
+
+**Average Monthly Earnings by Experience:**
+
+🆕 **New Providers:**
+• Month 1: ₹8K-15K (learning phase)
+• Month 3: ₹18K-28K (AI optimization kicks in)
+• Month 6: ₹25K-40K (established reputation)
+
+⭐ **Experienced Providers:**
+• With AI: ₹35K-65K/month
+• Top performers: ₹80K-1.2L/month
+• Enterprise users: ₹1.5L+/month
+
+**Success Factors:**
+• AI matching = more customers
+• Reputation management = higher rates
+• Analytics insights = better decisions
+• Platform tools = time savings
+
+**Real Example:** Rajesh went from ₹15K → ₹60K in 4 months! 📈
+
+Ready to start your earning journey? 🚀`;
+            }
+            
+            if (msg.includes('start') || msg.includes('signup') || msg.includes('join')) {
+                return `🚀 **Getting Started is Easy:**
+
+**Step-by-Step Process:**
+
+**1. 📝 Quick Registration (2 mins)**
+• Basic info & contact details
+• Choose your services
+• Set your service area
+
+**2. 💰 Select Your Plan**
+• Free Starter (basic features)
+• AI Professional (recommended - ₹499/month)
+• AI Enterprise (advanced - ₹899/month)
+
+**3. 🔧 Complete Profile Setup**
+• Add photos & portfolio
+• Set pricing & availability
+• Verify credentials
+
+**4. 🎯 Go Live & Start Earning!**
+• AI starts matching customers
+• Accept jobs you want
+• Get paid instantly
+
+**Ready to begin?** Click "Join as Provider" button above! 
+
+**Questions about any step?** Just ask me! 😊`;
+            }
+            
+            if (msg.includes('free') || msg.includes('cost') || msg.includes('price')) {
+                return `🆓 **Transparent Pricing:**
+
+**FREE to Start:**
+• ✅ Create your profile
+• ✅ List basic services
+• ✅ Accept manual bookings
+• ✅ Standard payment processing
+• ❌ No AI features
+
+**AI Professional (₹499/month):**
+• ✅ Everything in Free
+• ✅ AI customer matching
+• ✅ Earnings optimization
+• ✅ Reputation management
+• ✅ Business analytics
+• ✅ Priority support
+
+**AI Enterprise (₹899/month):**
+• ✅ Everything in Professional
+• ✅ Advanced AI predictions
+• ✅ Market analysis
+• ✅ Dedicated account manager
+• ✅ Custom integrations
+
+**ROI Promise:** Most providers earn back their plan cost in the first week! 
+
+**Start free, upgrade when you see results!** 💎`;
+            }
+            
+            return `🎯 **Hi! I'm your AI assistant.**
+
+I can help you with:
+
+🤖 **Platform Features**: How AI matching works
+💰 **Earnings Info**: Income potential & success stories  
+🚀 **Getting Started**: Step-by-step signup process
+🆓 **Pricing**: Plans, costs & value comparison
+📊 **Success Stories**: Real provider experiences
+❓ **Any Questions**: Just ask me anything!
+
+**Quick Stats:**
+• 15,000+ active providers
+• 40% average earnings increase
+• 98% customer satisfaction
+• AI matches you with perfect customers
+
+**Ready to join the AI revolution?** Click "Join as Provider" above! 🚀
+
+What would you like to know? 😊`;
+        }
+
+        function askAI(question) {
+            document.getElementById('aiInput').value = question;
+            sendAIMessage();
+        }
+
+        function handleAIEnter(event) {
+            if (event.key === 'Enter') {
+                sendAIMessage();
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            console.log('🚀 Provider Portal Ready!');
+        });
+    </script>
+</body>
+</html>

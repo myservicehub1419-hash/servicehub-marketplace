@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Notifications - ServiceHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .notifications-section {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .notification-card {
+            border: 2px solid #e1e8ed;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .notification-card.unread {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .notification-title {
+            font-weight: 700;
+            color: #333;
+        }
+
+        .notification-time {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .notification-message {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">🔔 Notifications</div>
+            <a href="customer-portal.html" class="back-btn">← Back to Dashboard</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="notifications-section">
+            <h2 class="section-title">📬 Your Notifications</h2>
+            <div id="notificationsContainer">
+                <div class="empty-state">
+                    <h3>No notifications</h3>
+                    <p>You'll receive notifications here when service providers respond</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadNotifications();
+        });
+
+        function loadNotifications() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const notifications = JSON.parse(localStorage.getItem('customerNotifications') || '[]');
+            
+            const userNotifications = notifications
+                .filter(n => n.customerId === currentUser.email)
+                .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+            const container = document.getElementById('notificationsContainer');
+            
+            if (userNotifications.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No notifications</h3>
+                        <p>You'll receive notifications here when service providers respond</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = userNotifications.map(notification => `
+                <div class="notification-card ${!notification.read ? 'unread' : ''}">
+                    <div class="notification-header">
+                        <span class="notification-title">${notification.providerName || 'Service Provider'}</span>
+                        <span class="notification-time">${formatTime(notification.timestamp)}</span>
+                    </div>
+                    <div class="notification-message">${notification.message}</div>
+                </div>
+            `).join('');
+
+            // Mark all as read
+            notifications.forEach(n => {
+                if (n.customerId === currentUser.email) {
+                    n.read = true;
+                }
+            });
+            localStorage.setItem('customerNotifications', JSON.stringify(notifications));
+        }
+
+        function formatTime(timestamp) {
+            return new Date(timestamp).toLocaleString();
+        }
+    </script>
+</body>
+</html>

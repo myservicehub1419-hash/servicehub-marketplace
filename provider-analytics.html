@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 AI Analytics & Growth Intelligence - MyServiceHub AI</title>
+    
+    <!-- FORCE BROWSER UPDATE -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            min-height: 100vh;
+            color: white;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* INCREDIBLE ANIMATED BACKGROUND */
+        .animated-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -3;
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c, #4facfe, #00f2fe);
+            background-size: 400% 400%;
+            animation: gradientFlow 15s ease infinite;
+        }
+        
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* FLOATING PARTICLES */
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: particleFloat 20s infinite linear;
+        }
+        
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(100vh) translateX(0px) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px) scale(0);
+                opacity: 0;
+            }
+        }
+        
+        /* CONTENT OVERLAY */
+        .content-overlay {
+            position: relative;
+            z-index: 1;
+            background: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(15px);
+            min-height: 100vh;
+        }
+        
+        /* SIDEBAR */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(25px);
+            border-right: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 30px 0;
+            z-index: 100;
+            transition: all 0.4s ease;
+            overflow-y: auto;
+        }
+        
+        .sidebar-header {
+            padding: 0 30px 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #4CAF50, #66BB6A, #81C784);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+        
+        .provider-welcome {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .nav-menu {
+            list-style: none;
+        }
+        
+        .nav-item {
+            margin-bottom: 8px;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 30px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.4s ease;
+            position: relative;
+            font-weight: 500;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .nav-link i {
+            width: 20px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        
+        /* MAIN CONTENT */
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+            min-height: 100vh;
+        }
+        
+        .top-bar {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 20px 30px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .page-title {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff, #4CAF50);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .analytics-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .time-selector {
+            padding: 10px 15px;
+            background: rgba(76, 175, 80, 0.1);
+            border: 2px solid rgba(76, 175, 80, 0.3);
+            border-radius: 12px;
+            color: #4CAF50;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .ai-insights-toggle {
+            padding: 10px 15px;
+            background: rgba(102, 126, 234, 0.2);
+            border: 2px solid rgba(102, 126, 234, 0.5);
+            border-radius: 12px;
+            color: #667eea;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+        
+        .ai-insights-toggle:hover {
+            background: rgba(102, 126, 234, 0.3);
+            transform: scale(1.05);
+        }
+        
+        /* AI INTELLIGENCE BANNER */
+        .ai-intelligence-banner {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ai-intelligence-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: aiShimmer 3s ease-in-out infinite;
+        }
+        
+        @keyframes aiShimmer {
+            0%, 100% { left: -100%; }
+            50% { left: 100%; }
+        }
+        
+        .ai-intelligence-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .intelligence-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .intelligence-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .ai-score {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .score-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 5px;
+        }
+        
+        .score-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .intelligence-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .intelligence-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .intelligence-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .intelligence-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .intelligence-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        /* ANALYTICS GRID */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .chart-container {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            color: #333;
+        }
+        
+        .chart-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #333;
+        }
+        
+        .chart-wrapper {
+            position: relative;
+            height: 300px;
+        }
+        
+        .kpi-grid {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .kpi-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            color: #333;
+            transition: all 0.4s ease;
+        }
+        
+        .kpi-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(76, 175, 80, 0.2);
+        }
+        
+        .kpi-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .kpi-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: linear-gradient(45deg, #4CAF50, #66BB6A);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+        }
+        
+        .kpi-value {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #4CAF50;
+            margin-bottom: 8px;
+        }
+        
+        .kpi-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        .kpi-trend {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+        }
+        
+        .trend-up {
+            color: #4CAF50;
+        }
+        
+        .trend-down {
+            color: #f44336;
+        }
+        
+        /* AI PREDICTIONS SECTION */
+        .ai-predictions {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .predictions-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .predictions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .prediction-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .prediction-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .prediction-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        .confidence-badge {
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .prediction-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .prediction-description {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        /* GROWTH OPPORTUNITIES */
+        .growth-opportunities {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .opportunity-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            color: #333;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .opportunity-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .opportunity-card:hover::before {
+            left: 100%;
+        }
+        
+        .opportunity-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 20px 50px rgba(76, 175, 80, 0.25);
+        }
+        
+        .opportunity-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            background: linear-gradient(45deg, #4CAF50, #66BB6A);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .opportunity-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .opportunity-description {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        
+        .opportunity-impact {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #4CAF50;
+        }
+        
+        /* AI ASSISTANT */
+        .ai-assistant {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .ai-toggle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.5);
+            transition: all 0.4s ease;
+            animation: float-ai 4s ease-in-out infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        @keyframes float-ai {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        .ai-toggle:hover {
+            transform: scale(1.15) rotate(15deg);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.8);
+        }
+        
+        /* AI CHAT WINDOW */
+        .ai-chat-window {
+            position: fixed;
+            bottom: 95px;
+            right: 20px;
+            width: 380px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(25px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            box-shadow: 0 30px 100px rgba(0, 0, 0, 0.3);
+            transform: translateY(50px) scale(0.9);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            z-index: 1001;
+            overflow: hidden;
+        }
+        
+        .ai-chat-window.active {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .ai-header {
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb);
+            color: white;
+            padding: 20px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 18px 18px 0 0;
+        }
+        
+        .ai-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .ai-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .ai-info h4 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+        
+        .ai-info small {
+            opacity: 0.9;
+            font-size: 0.85rem;
+        }
+        
+        .ai-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .ai-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+        
+        .ai-messages {
+            height: 320px;
+            overflow-y: auto;
+            padding: 20px;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .ai-message {
+            max-width: 85%;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            animation: messageSlideIn 0.5s ease;
+        }
+        
+        @keyframes messageSlideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .ai-message.bot {
+            background: linear-gradient(135deg, #f0f8ff, #e6f3ff);
+            padding: 15px 18px;
+            border-radius: 18px 18px 18px 6px;
+            border-left: 4px solid #667eea;
+            align-self: flex-start;
+        }
+        
+        .ai-message.user {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 18px;
+            border-radius: 18px 18px 6px 18px;
+            align-self: flex-end;
+        }
+        
+        .ai-input-area {
+            padding: 20px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            background: rgba(248, 249, 250, 0.9);
+            border-radius: 0 0 18px 18px;
+        }
+        
+        .quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .quick-action {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            padding: 8px 12px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            font-weight: 600;
+        }
+        
+        .quick-action:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-4px) scale(1.05);
+        }
+        
+        .ai-input-container {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+        
+        .ai-input {
+            flex: 1;
+            padding: 12px 18px;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            border-radius: 25px;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+        
+        .ai-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+        
+        .ai-send {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .ai-send:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.5);
+        }
+        
+        /* MOBILE RESPONSIVE */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 20px 15px;
+            }
+            
+            .analytics-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .chart-wrapper {
+                height: 250px;
+            }
+            
+            .intelligence-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            
+            .predictions-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .growth-opportunities {
+                grid-template-columns: 1fr;
+            }
+            
+            .ai-chat-window {
+                width: 90vw;
+                right: 5vw;
+                height: 80vh;
+            }
+            
+            .ai-messages {
+                height: calc(80vh - 180px);
+            }
+            
+            .intelligence-header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ANIMATED BACKGROUND -->
+    <div class="animated-background"></div>
+    <div class="particles-container" id="particlesContainer"></div>
+
+    <!-- CONTENT OVERLAY -->
+    <div class="content-overlay">
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">MyServiceHub AI</div>
+                <div class="provider-welcome">AI Analytics & Growth</div>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="provider-dashboard.html" class="nav-link">
+                        <i class="fas fa-home"></i>
+                        <span>AI Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="provider-orders.html" class="nav-link">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span>Smart Orders</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="provider-jobs.html" class="nav-link">
+                        <i class="fas fa-briefcase"></i>
+                        <span>Active Jobs</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="provider-reputation.html" class="nav-link">
+                        <i class="fas fa-star"></i>
+                        <span>Reputation AI</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="provider-analytics.html" class="nav-link active">
+                        <i class="fas fa-chart-line"></i>
+                        <span>AI Analytics</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-wallet"></i>
+                        <span>Smart Earnings</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <!-- TOP BAR -->
+            <div class="top-bar">
+                <h1 class="page-title">📊 AI Analytics & Growth Intelligence</h1>
+                <div class="analytics-controls">
+                    <select class="time-selector" onchange="updateTimeframe(this.value)">
+                        <option value="7d">Last 7 Days</option>
+                        <option value="30d" selected>Last 30 Days</option>
+                        <option value="90d">Last 90 Days</option>
+                        <option value="1y">Last Year</option>
+                    </select>
+                    <button class="ai-insights-toggle" onclick="toggleAIInsights()">
+                        <i class="fas fa-robot"></i> AI Insights
+                    </button>
+                </div>
+            </div>
+
+            <!-- AI INTELLIGENCE BANNER -->
+            <div class="ai-intelligence-banner">
+                <div class="ai-intelligence-content">
+                    <div class="intelligence-header">
+                        <h2 class="intelligence-title">
+                            <i class="fas fa-brain"></i>
+                            AI Business Intelligence Dashboard
+                        </h2>
+                        <div class="ai-score">
+                            <div class="score-value">94</div>
+                            <div class="score-label">AI Growth Score</div>
+                        </div>
+                    </div>
+                    
+                    <div class="intelligence-grid">
+                        <div class="intelligence-item">
+                            <div class="intelligence-icon">📈</div>
+                            <div class="intelligence-value">+35%</div>
+                            <div class="intelligence-label">Growth Trajectory</div>
+                        </div>
+                        <div class="intelligence-item">
+                            <div class="intelligence-icon">🎯</div>
+                            <div class="intelligence-value">87%</div>
+                            <div class="intelligence-label">Goal Achievement</div>
+                        </div>
+                        <div class="intelligence-item">
+                            <div class="intelligence-icon">🚀</div>
+                            <div class="intelligence-value">₹29K</div>
+                            <div class="intelligence-label">Predicted Next Month</div>
+                        </div>
+                        <div class="intelligence-item">
+                            <div class="intelligence-icon">🏆</div>
+                            <div class="intelligence-value">Top 8%</div>
+                            <div class="intelligence-label">Market Position</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ANALYTICS GRID -->
+            <div class="analytics-grid">
+                <!-- REVENUE CHART -->
+                <div class="chart-container">
+                    <h3 class="chart-title">
+                        <i class="fas fa-chart-line"></i>
+                        AI Revenue Analytics
+                    </h3>
+                    <div class="chart-wrapper">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- KPI CARDS -->
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <div>
+                                <div class="kpi-value">₹18,750</div>
+                                <div class="kpi-label">Monthly Revenue</div>
+                            </div>
+                            <div class="kpi-icon">
+                                <i class="fas fa-rupee-sign"></i>
+                            </div>
+                        </div>
+                        <div class="kpi-trend trend-up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+23% vs last month</span>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <div>
+                                <div class="kpi-value">47</div>
+                                <div class="kpi-label">Total Orders</div>
+                            </div>
+                            <div class="kpi-icon">
+                                <i class="fas fa-shopping-bag"></i>
+                            </div>
+                        </div>
+                        <div class="kpi-trend trend-up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+18% vs last month</span>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <div>
+                                <div class="kpi-value">4.8⭐</div>
+                                <div class="kpi-label">AI Rating Score</div>
+                            </div>
+                            <div class="kpi-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <div class="kpi-trend trend-up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+0.2 vs last month</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI PREDICTIONS -->
+            <div class="ai-predictions">
+                <h3 class="predictions-title">
+                    <i class="fas fa-crystal-ball"></i>
+                    AI Growth Predictions & Forecasts
+                </h3>
+                <div class="predictions-grid">
+                    <div class="prediction-card">
+                        <div class="prediction-header">
+                            <div class="prediction-title">Revenue Forecast</div>
+                            <div class="confidence-badge">95% Confidence</div>
+                        </div>
+                        <div class="prediction-value">₹29,200</div>
+                        <div class="prediction-description">
+                            AI predicts 35% revenue growth next month based on current trends, seasonal patterns, and market demand analysis.
+                        </div>
+                    </div>
+
+                    <div class="prediction-card">
+                        <div class="prediction-header">
+                            <div class="prediction-title">Rating Trajectory</div>
+                            <div class="confidence-badge">92% Confidence</div>
+                        </div>
+                        <div class="prediction-value">5.0⭐</div>
+                        <div class="prediction-description">
+                            With current improvement rate, you'll achieve perfect 5.0-star rating within 3 weeks by focusing on punctuality.
+                        </div>
+                    </div>
+
+                    <div class="prediction-card">
+                        <div class="prediction-header">
+                            <div class="prediction-title">Market Position</div>
+                            <div class="confidence-badge">89% Confidence</div>
+                        </div>
+                        <div class="prediction-value">Top 5%</div>
+                        <div class="prediction-description">
+                            AI forecasts you'll reach top 5% provider status in your area within 2 months with current growth trajectory.
+                        </div>
+                    </div>
+
+                    <div class="prediction-card">
+                        <div class="prediction-header">
+                            <div class="prediction-title">Booking Volume</div>
+                            <div class="confidence-badge">87% Confidence</div>
+                        </div>
+                        <div class="prediction-value">68 Orders</div>
+                        <div class="prediction-description">
+                            Expected 45% increase in monthly bookings due to improved rating, customer satisfaction, and seasonal demand.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GROWTH OPPORTUNITIES -->
+            <div class="growth-opportunities">
+                <div class="opportunity-card">
+                    <div class="opportunity-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="opportunity-title">Peak Hours Optimization</div>
+                    <div class="opportunity-description">
+                        AI detected 73% of orders come between 6-9 PM. Extending availability during these hours could increase bookings significantly.
+                    </div>
+                    <div class="opportunity-impact">Impact: +30% bookings, +₹5,600/month</div>
+                </div>
+
+                <div class="opportunity-card">
+                    <div class="opportunity-icon">
+                        <i class="fas fa-plus-circle"></i>
+                    </div>
+                    <div class="opportunity-title">Service Expansion</div>
+                    <div class="opportunity-description">
+                        High demand for "AC Services" in your area. Adding this service could tap into premium pricing market segment.
+                    </div>
+                    <div class="opportunity-impact">Impact: +40% profit margin, +₹8,000/month</div>
+                </div>
+
+                <div class="opportunity-card">
+                    <div class="opportunity-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="opportunity-title">Dynamic Pricing</div>
+                    <div class="opportunity-description">
+                        Your 4.8-star rating supports 15% rate increase. AI analysis shows minimal customer loss risk with this adjustment.
+                    </div>
+                    <div class="opportunity-impact">Impact: +15% revenue, +₹2,800/month</div>
+                </div>
+
+                <div class="opportunity-card">
+                    <div class="opportunity-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="opportunity-title">Customer Retention</div>
+                    <div class="opportunity-description">
+                        Implementing follow-up calls and maintenance reminders could increase repeat customer rate from current 34% to 55%.
+                    </div>
+                    <div class="opportunity-impact">Impact: +25% repeat orders, +₹4,200/month</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI ASSISTANT -->
+    <div class="ai-assistant">
+        <button class="ai-toggle" onclick="toggleAI()">🤖</button>
+    </div>
+
+    <!-- AI CHAT WINDOW -->
+    <div class="ai-chat-window" id="aiChat">
+        <div class="ai-header">
+            <div class="ai-info">
+                <div class="ai-avatar">🤖</div>
+                <div>
+                    <h4>AI Growth Assistant</h4>
+                    <small>Online • Analyzing growth opportunities</small>
+                </div>
+            </div>
+            <button class="ai-close" onclick="toggleAI()">×</button>
+        </div>
+        
+        <div class="ai-messages" id="aiMessages">
+            <div class="ai-message bot">
+                📊 **AI Growth Intelligence Active!**
+                
+                **🚀 Current Status**: 94/100 AI Growth Score (Excellent!)
+                
+                **📈 Key Insights**:
+                • Revenue: ₹18,750 (+23% growth)
+                • Orders: 47 total (+18% increase)
+                • Rating: 4.8⭐ (trending to 5.0⭐)
+                • Market Position: Top 8% in your area
+                
+                **🎯 Next Month Prediction**: ₹29,200 (95% confidence)
+                
+                **💡 Top Growth Opportunities**:
+                1. Peak hours optimization (+₹5,600/month)
+                2. AC Services expansion (+₹8,000/month)  
+                3. Dynamic pricing (+₹2,800/month)
+                
+                **Total Growth Potential**: +₹16,400/month! 🚀
+                
+                Ready to unlock your growth potential?
+            </div>
+        </div>
+        
+        <div class="ai-input-area">
+            <div class="quick-actions">
+                <div class="quick-action" onclick="askAI('Growth strategy recommendations')">🚀 Growth Plan</div>
+                <div class="quick-action" onclick="askAI('Revenue optimization tips')">💰 Revenue Tips</div>
+                <div class="quick-action" onclick="askAI('Market analysis insights')">📊 Market Analysis</div>
+                <div class="quick-action" onclick="askAI('Competitor benchmarking')">🎯 Competitor Intel</div>
+            </div>
+            <div class="ai-input-container">
+                <input type="text" class="ai-input" id="aiInput" placeholder="Ask about growth, analytics, or predictions..." onkeypress="handleAIEnter(event)">
+                <button class="ai-send" onclick="sendAIMessage()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create particles
+        function createParticles() {
+            const container = document.getElementById('particlesContainer');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // Initialize Revenue Chart
+        function initializeCharts() {
+            const ctx = document.getElementById('revenueChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Predicted'],
+                    datasets: [{
+                        label: 'Revenue (₹)',
+                        data: [3200, 4800, 5200, 5550, 6800],
+                        borderColor: '#4CAF50',
+                        backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }, {
+                        label: 'AI Prediction',
+                        data: [null, null, null, 5550, 6800],
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        borderDash: [5, 5],
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Revenue Growth with AI Predictions'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '₹' + value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Update timeframe
+        function updateTimeframe(period) {
+            showNotification(`📊 AI is analyzing data for ${period}...`, 'info');
+            
+            setTimeout(() => {
+                showNotification(`✨ Analytics updated! New insights discovered for selected period.`, 'success');
+            }, 2000);
+        }
+
+        // Toggle AI Insights
+        function toggleAIInsights() {
+            showNotification('🤖 AI is generating advanced business insights and growth recommendations...', 'info');
+            
+            setTimeout(() => {
+                showNotification('🧠 Advanced AI insights activated! Deep market analysis and competitive intelligence now available.', 'success');
+            }, 3000);
+        }
+
+        // AI Assistant
+        let aiOpen = false;
+
+        function toggleAI() {
+            aiOpen = !aiOpen;
+            document.getElementById('aiChat').classList.toggle('active', aiOpen);
+            
+            if (aiOpen) {
+                document.getElementById('aiInput').focus();
+            }
+        }
+
+        function sendAIMessage() {
+            const input = document.getElementById('aiInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                addAIMessage(message, 'user');
+                input.value = '';
+                
+                setTimeout(() => {
+                    const response = getAIResponse(message);
+                    addAIMessage(response, 'bot');
+                }, 1000);
+            }
+        }
+
+        function addAIMessage(text, type) {
+            const messagesContainer = document.getElementById('aiMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `ai-message ${type}`;
+            messageDiv.textContent = text;
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function getAIResponse(message) {
+            const msg = message.toLowerCase();
+            
+            if (msg.includes('growth') || msg.includes('strategy') || msg.includes('plan')) {
+                return `🚀 **AI Growth Strategy Master Plan**:
+
+**📊 Current Performance Analysis**:
+• Growth Score: 94/100 (Excellent tier)
+• Revenue Trajectory: +35% month-over-month
+• Market Position: Top 8% (trending to Top 5%)
+• Customer Satisfaction: 96% positive sentiment
+
+**🎯 90-Day Growth Roadmap**:
+
+**Month 1 - Foundation** (Target: ₹23,000):
+• Implement peak hours optimization (6-9 PM focus)
+• Increase rates by 10% (market supports it)
+• Launch customer follow-up system
+• **Expected Impact**: +23% revenue growth
+
+**Month 2 - Expansion** (Target: ₹28,500):
+• Add AC Services to portfolio  
+• Implement dynamic weekend pricing
+• Focus on 5.0⭐ rating achievement
+• **Expected Impact**: +24% additional growth
+
+**Month 3 - Optimization** (Target: ₹35,000):
+• Premium service tier launch
+• Referral program activation
+• Market leadership positioning
+• **Expected Impact**: +23% compounding growth
+
+**🏆 Total Transformation**: ₹18,750 → ₹35,000 (+87% in 90 days)
+
+**AI Success Probability**: 91% with full implementation!`;
+            }
+            
+            if (msg.includes('revenue') || msg.includes('money') || msg.includes('earning') || msg.includes('optimization')) {
+                return `💰 **AI Revenue Optimization Blueprint**:
+
+**🎯 Current Revenue Analysis**:
+• Monthly: ₹18,750 (+23% growth)
+• Average Order: ₹399
+• Monthly Orders: 47 (+18% increase)
+• Peak Performance: 6-9 PM (73% of orders)
+
+**🚀 Immediate Revenue Boosters**:
+
+**1. Peak Hours Strategy** (+₹5,600/month):
+• Extend availability 6-9 PM daily
+• Add Saturday/Sunday premium slots
+• **ROI**: 30% booking increase guaranteed
+
+**2. Dynamic Pricing** (+₹2,800/month):
+• Increase rates 15% (supported by 4.8⭐ rating)
+• Weekend premium: +20%
+• Emergency calls: +30%
+• **Risk**: <3% customer loss (AI calculated)
+
+**3. Service Portfolio Expansion** (+₹8,000/month):
+• Add AC Services (high-margin, high-demand)
+• Premium eco-friendly tier
+• Maintenance packages
+• **Profit Margin**: 40% higher than current
+
+**💎 Advanced Strategies**:
+• Customer retention program: +25% repeat orders
+• Referral incentives: +35% new customers
+• Seasonal pricing optimization: +18% during peak periods
+
+**🏆 Total Monthly Potential**: ₹35,150 (+87% increase)!`;
+            }
+            
+            if (msg.includes('market') || msg.includes('competitor') || msg.includes('analysis')) {
+                return `📊 **AI Market Intelligence Report**:
+
+**🏆 Your Market Position**:
+• Current Ranking: Top 8% in Gurgaon area
+• Rating: 4.8⭐ (vs market avg: 4.2⭐)
+• Response Time: 15 min (vs avg: 45 min)
+• Completion Rate: 98% (vs avg: 89%)
+
+**🎯 Competitive Analysis**:
+
+**Top Competitors**:
+• **Provider A**: 4.9⭐, ₹450 avg, 28 orders/month
+• **Provider B**: 4.7⭐, ₹380 avg, 52 orders/month  
+• **Provider C**: 4.6⭐, ₹420 avg, 35 orders/month
+
+**🚀 Your Competitive Advantages**:
+• **Speed**: Fastest response time in area
+• **Quality**: 2nd highest rating
+• **Growth**: +35% vs market avg +12%
+• **Specialization**: Eco-friendly unique positioning
+
+**📈 Market Opportunities**:
+• **AC Services**: 40% higher margins, low competition
+• **Premium Tier**: Only 15% of providers offer it
+• **Weekend Slots**: 60% availability gap in market
+
+**💡 AI Strategic Insights**:
+• You're 0.1⭐ from market leadership
+• Price point 12% below premium potential
+• Service expansion could capture 23% more market share
+
+**🎯 Path to Market Dominance**: 
+Focus on 5.0⭐ rating + AC services = #1 provider status in 8 weeks!`;
+            }
+            
+            if (msg.includes('competitor') || msg.includes('benchmark')) {
+                return `🎯 **AI Competitive Intelligence Dashboard**:
+
+**📊 Provider Benchmarking Analysis**:
+
+**🥇 Top Provider (Target to Beat)**:
+• Rating: 4.9⭐ (vs your 4.8⭐)
+• Monthly Revenue: ~₹22,000 (vs your ₹18,750)
+• Orders: 35/month (vs your 47/month)
+• **Key Advantage**: Slightly higher rating
+• **Your Edge**: Higher volume, better growth rate
+
+**📈 Performance Comparison**:
+• **Customer Satisfaction**: You 96% vs Market 89%
+• **Response Time**: You 15min vs Market 45min
+• **Growth Rate**: You +35% vs Market +12%
+• **Service Quality**: You 4.8⭐ vs Market 4.2⭐
+
+**🎯 Gap Analysis**:
+• **Rating Gap**: 0.1⭐ (3 weeks to close)
+• **Revenue Gap**: ₹3,250 (1 month to close)
+• **Market Share**: You 12% vs Leader 18%
+
+**💡 AI Competitive Strategy**:
+
+**Short-term (4 weeks)**:
+• Focus on punctuality → 4.9⭐ rating
+• Increase order value → close revenue gap
+• **Result**: Match market leader
+
+**Long-term (12 weeks)**:
+• Add premium services → exceed leader
+• Build referral network → dominate market
+• **Result**: Become #1 provider with 25%+ market share
+
+**🏆 Success Probability**: 94% chance of market leadership in 3 months!`;
+            }
+            
+            return `📊 **AI Growth & Analytics Assistant Ready!**
+
+I can help you with:
+
+🚀 **Growth Strategy**: 90-day roadmaps and expansion plans
+💰 **Revenue Optimization**: Pricing, services, and income maximization
+📊 **Market Analysis**: Competitive intelligence and positioning
+🎯 **Performance Benchmarking**: Compare against top providers
+📈 **Predictive Analytics**: Forecasts and trend analysis
+🧠 **Business Intelligence**: Deep insights and recommendations
+
+**Current Snapshot**:
+• AI Growth Score: 94/100 (Excellent!)
+• Revenue: ₹18,750 (+23% growth)
+• Market Position: Top 8% (trending to Top 5%)
+• Next Month Prediction: ₹29,200 (95% confidence)
+
+**🎯 Top Opportunity**: Peak hours optimization = +₹5,600/month
+
+**💡 AI Insight**: You're only 3 weeks away from 5.0⭐ rating and market leadership!
+
+**🏆 Growth Potential**: ₹35,000/month achievable in 90 days with AI optimization!
+
+What aspect of your business growth would you like to analyze? 🚀`;
+        }
+
+        function askAI(question) {
+            document.getElementById('aiInput').value = question;
+            sendAIMessage();
+        }
+
+        function handleAIEnter(event) {
+            if (event.key === 'Enter') {
+                sendAIMessage();
+            }
+        }
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 25px;
+                border-radius: 12px;
+                color: white;
+                font-weight: 600;
+                z-index: 10000;
+                animation: slideInRight 0.5s ease;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                max-width: 400px;
+            `;
+            
+            switch(type) {
+                case 'success':
+                    notification.style.background = 'linear-gradient(45deg, #4CAF50, #66BB6A)';
+                    break;
+                case 'error':
+                    notification.style.background = 'linear-gradient(45deg, #f44336, #ef5350)';
+                    break;
+                default:
+                    notification.style.background = 'linear-gradient(45deg, #667eea, #764ba2)';
+            }
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.5s ease forwards';
+                setTimeout(() => notification.remove(), 500);
+            }, 4000);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            initializeCharts();
+            
+            // Simulate real-time data updates
+            setInterval(() => {
+                // Update growth score occasionally
+                if (Math.random() < 0.05) { // 5% chance
+                    showNotification('📊 AI detected positive trend! Growth score updated: +2 points this week.', 'success');
+                }
+            }, 60000); // Every minute
+            
+            console.log('📊 AI Analytics & Growth Intelligence Ready!');
+        });
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            
+            @keyframes slideOutRight {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

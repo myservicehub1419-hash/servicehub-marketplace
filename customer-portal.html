@@ -1,0 +1,1829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ServiceHub - Customer Portal</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-profile {
+            padding: 10px 20px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 25px;
+            font-weight: 600;
+        }
+
+        .logout-btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #ff3838;
+            transform: translateY(-2px);
+        }
+
+        /* SUPER SIMPLE BACK BUTTON */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 3px solid #667eea;
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            cursor: pointer;
+            font-size: 28px;
+            color: #667eea;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .back-button:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        .back-button:active {
+            transform: scale(0.95);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .auth-section {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            margin: 50px auto;
+        }
+
+        .auth-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .auth-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .auth-switch {
+            margin-top: 20px;
+            color: #666;
+        }
+
+        .auth-switch button {
+            background: none;
+            border: none;
+            color: #667eea;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: underline;
+        }
+
+        /* FORGOT PASSWORD STYLES */
+        .forgot-password-link {
+            display: block;
+            margin-top: 15px;
+            color: #667eea;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-decoration: underline;
+            transition: all 0.3s ease;
+        }
+
+        .forgot-password-link:hover {
+            color: #764ba2;
+        }
+
+        #forgot-password-section {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            margin: 50px auto;
+            display: none;
+        }
+
+        .back-to-login {
+            background: none;
+            border: none;
+            color: #667eea;
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-decoration: underline;
+            margin-top: 15px;
+        }
+
+        .back-to-login:hover {
+            color: #764ba2;
+        }
+
+        .recovery-success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+        }
+
+        .recovery-error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+        }
+
+        .dashboard {
+            display: none;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .service-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .service-description {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .service-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .book-btn {
+            width: 100%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .book-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 40px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .welcome-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .welcome-title {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .welcome-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .portal-nav {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .nav-btn {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 5px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .nav-btn.active {
+            background: rgba(255, 255, 255, 0.9) !important;
+            color: #667eea !important;
+        }
+
+        .nav-btn:not(.active) {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* AI Chatbot Styles */
+        #ai-chat-messages::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        #ai-chat-messages::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 2px;
+        }
+
+        .user-ai-message {
+            display: flex;
+            justify-content: flex-end;
+            margin: 8px 0;
+        }
+
+        .user-ai-message div {
+            background: linear-gradient(135deg, #667eea, #764ba2) !important;
+            color: white !important;
+            padding: 8px 12px;
+            border-radius: 14px;
+            border-bottom-right-radius: 4px;
+            max-width: 85%;
+            font-size: 12px;
+            line-height: 1.4;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        .ai-message {
+            display: flex;
+            justify-content: flex-start;
+            margin: 8px 0;
+        }
+
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #666;
+            font-style: italic;
+            font-size: 11px;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 2px;
+        }
+
+        .typing-dot {
+            width: 4px;
+            height: 4px;
+            background: #667eea;
+            border-radius: 50%;
+            animation: typingDot 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typingDot {
+            0%, 60%, 100% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+            30% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        /* CALL ACTION BUTTONS IN AI CHAT */
+        .call-action-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            justify-content: center;
+        }
+
+        .call-btn {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .call-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+        }
+
+        .video-call-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .video-call-btn:hover {
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* IMPROVED OUTGOING CALL OVERLAY STYLES */
+        .outgoing-call-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 25000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .outgoing-call-container {
+            background: white;
+            border-radius: 30px;
+            width: 400px;
+            height: 550px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+            text-align: center;
+        }
+
+        .outgoing-call-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            position: relative;
+        }
+
+        .outgoing-call-header h3 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .outgoing-call-header p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .outgoing-call-avatar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .outgoing-avatar-image {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 70px;
+            color: white;
+            margin-bottom: 25px;
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+            animation: ringPulse 1.5s infinite;
+            border: 4px solid rgba(255, 255, 255, 0.8);
+        }
+
+        @keyframes ringPulse {
+            0%, 100% { 
+                transform: scale(1); 
+                box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+            }
+            50% { 
+                transform: scale(1.05); 
+                box-shadow: 0 20px 50px rgba(102, 126, 234, 0.6);
+            }
+        }
+
+        .outgoing-call-info {
+            margin-bottom: 25px;
+        }
+
+        .outgoing-call-info h4 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .outgoing-call-info p {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .outgoing-call-status {
+            font-size: 1.2rem;
+            color: #667eea;
+            font-weight: 600;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.7; }
+        }
+
+        /* INSTANT CONNECT BUTTON */
+        .instant-connect-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .instant-connect-btn:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
+
+        .outgoing-call-controls {
+            background: white;
+            padding: 25px;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            border-top: 1px solid #e9ecef;
+            flex-wrap: wrap;
+        }
+
+        .hang-up-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            font-size: 32px;
+            background: #ff4757;
+            color: white;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(255, 71, 87, 0.4);
+        }
+
+        .hang-up-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(255, 71, 87, 0.6);
+        }
+
+        .call-close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .call-close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Call Duration Timer */
+        .call-timer {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* CALL STATUS INDICATOR */
+        .call-status-connected {
+            background: #28a745;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            animation: none;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        /* NOTIFICATION ANIMATIONS */
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideOutRight {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+            .container {
+                padding: 10px;
+            }
+            #ai-chat-window {
+                width: 300px !important;
+                height: 380px !important;
+                bottom: 75px;
+                right: 10px;
+            }
+            #chat-toggle-btn {
+                width: 55px !important;
+                height: 55px !important;
+                font-size: 20px !important;
+            }
+            .outgoing-call-container {
+                width: 350px;
+                height: 500px;
+            }
+            .back-button {
+                top: 15px;
+                left: 15px;
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+            }
+            .auth-section, #forgot-password-section {
+                margin: 20px auto;
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- SUPER SIMPLE BACK BUTTON - ALWAYS WORKS -->
+    <button class="back-button" onclick="goBack()" title="Go Back">
+        ←
+    </button>
+
+    <div class="container">
+        <div class="header" id="userInfo" style="display: none;">
+            <div class="logo" onclick="goHome()">ServiceHub</div>
+            <div class="user-info">
+                <div class="user-profile" id="userProfile">Guest</div>
+                <button class="logout-btn" onclick="handleLogout()">Logout</button>
+            </div>
+        </div>
+
+        <!-- Authentication Section -->
+        <div class="auth-section" id="authSection">
+            <h2 class="auth-title" id="authTitle">Login to ServiceHub</h2>
+            
+            <div class="auth-form">
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+                <div class="form-group" id="nameGroup" style="display: none;">
+                    <label for="fullName">Full Name:</label>
+                    <input type="text" id="fullName" placeholder="Enter your full name">
+                </div>
+                <button class="auth-btn" id="authBtn" onclick="handleAuth()">Login</button>
+                
+                <!-- FORGOT PASSWORD LINK -->
+                <div id="forgotPasswordLink" style="display: block;">
+                    <span class="forgot-password-link" onclick="showForgotPassword()">
+                        🔐 Forgot your password?
+                    </span>
+                </div>
+            </div>
+            <div class="auth-switch">
+                <span id="authSwitchText">Don't have an account?</span>
+                <button onclick="switchAuthMode()" id="authSwitchBtn">Sign Up</button>
+            </div>
+        </div>
+
+        <!-- FORGOT PASSWORD SECTION -->
+        <div id="forgot-password-section">
+            <h2 class="auth-title">🔐 Forgot Password</h2>
+            <p style="color: #666; margin-bottom: 20px; line-height: 1.5;">
+                No worries! Enter your email address and we'll help you recover your account.
+            </p>
+            
+            <div id="recovery-message"></div>
+            
+            <div class="auth-form">
+                <div class="form-group">
+                    <label for="recovery-email">Email Address:</label>
+                    <input type="email" id="recovery-email" placeholder="Enter your registered email" required>
+                </div>
+                <button class="auth-btn" onclick="sendPasswordReset()">
+                    📧 Send Recovery Link
+                </button>
+            </div>
+            
+            <button class="back-to-login" onclick="showLoginForm()">
+                ← Back to Login
+            </button>
+        </div>
+
+        <!-- Portal Navigation -->
+        <div id="portal-nav" class="portal-nav" style="display: none;">
+            <div class="row text-center" style="display: flex; justify-content: center;">
+                <div style="flex: 1;">
+                    <button id="nav-dashboard" class="nav-btn active">
+                        <div>📊</div>
+                        <div>Dashboard</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div class="dashboard" id="dashboard">
+            <div class="welcome-card">
+                <h1 class="welcome-title">Welcome to ServiceHub! 🚀</h1>
+                <p class="welcome-subtitle">Your one-stop solution for all professional services</p>
+            </div>
+
+            <h2 class="section-title">Our Services</h2>
+            <div class="services-grid">
+                <!-- Home Services -->
+                <div class="service-card" onclick="navigateToService('home-services')">
+                    <span class="service-icon">🏠</span>
+                    <h3 class="service-title">Home Services</h3>
+                    <p class="service-description">Plumbing, electrical, cleaning, and maintenance services for your home</p>
+                    <div class="service-price">Starting from ₹299</div>
+                    <button class="book-btn">Book Now</button>
+                </div>
+
+                <!-- Digital Marketing -->
+                <div class="service-card" onclick="navigateToService('digital-marketing')">
+                    <span class="service-icon">📱</span>
+                    <h3 class="service-title">Digital Marketing</h3>
+                    <p class="service-description">SEO, social media marketing, PPC campaigns, and online advertising</p>
+                    <div class="service-price">Starting from ₹2,999</div>
+                    <button class="book-btn">Book Now</button>
+                </div>
+
+                <!-- Web Development -->
+                <div class="service-card" onclick="navigateToService('web-development')">
+                    <span class="service-icon">💻</span>
+                    <h3 class="service-title">Web Development</h3>
+                    <p class="service-description">Website design, development, e-commerce solutions, and web applications</p>
+                    <div class="service-price">Starting from ₹9,999</div>
+                    <button class="book-btn">Book Now</button>
+                </div>
+
+                <!-- Graphic Design -->
+                <div class="service-card" onclick="navigateToService('graphic-design')">
+                    <span class="service-icon">🎨</span>
+                    <h3 class="service-title">Graphic Design</h3>
+                    <p class="service-description">Logo design, brochures, business cards, and creative design services</p>
+                    <div class="service-price">Starting from ₹1,499</div>
+                    <button class="book-btn">Book Now</button>
+                </div>
+
+                <!-- Content Writing -->
+                <div class="service-card" onclick="navigateToService('content-writing')">
+                    <span class="service-icon">✍️</span>
+                    <h3 class="service-title">Content Writing</h3>
+                    <p class="service-description">Blog writing, copywriting, technical writing, and content strategy</p>
+                    <div class="service-price">Starting from ₹799</div>
+                    <button class="book-btn">Book Now</button>
+                </div>
+
+                <!-- Business Consulting -->
+                <div class="service-card" onclick="navigateToService('business-consulting')">
+                    <span class="service-icon">📊</span>
+                    <h3 class="service-title">Business Consulting</h3>
+                    <p class="service-description">Strategy consulting, business planning, market research, and growth advisory</p>
+                    <div class="service-price">Starting from ₹4,999</div>
+                    <button class="book-btn">Book Now</button>
+                </div>
+
+                <!-- Health & Wellness -->
+                <div class="service-card" onclick="navigateToService('health-wellness')">
+                    <span class="service-icon">🧘</span>
+                    <h3 class="service-title">Health & Wellness</h3>
+                    <p class="service-description">Massage therapy, yoga classes, nutrition consulting, and wellness services</p>
+                    <div class="service-price">Starting from ₹1,999</div>
+                    <button class="book-btn">Book Now</button>
+                </div>
+
+                <!-- Education & Tutoring -->
+                <div class="service-card" onclick="navigateToService('education-tutoring')">
+                    <span class="service-icon">📚</span>
+                    <h3 class="service-title">Education & Tutoring</h3>
+                    <p class="service-description">Math, science, language tutoring, exam preparation, and skill development</p>
+                    <div class="service-price">Starting from ₹799</div>
+                    <button class="book-btn">Book Now</button>
+                </div>
+
+                <!-- Automotive Services -->
+                <div class="service-card" onclick="navigateToService('automotive-services')">
+                    <span class="service-icon">🚗</span>
+                    <h3 class="service-title">Automotive Services</h3>
+                    <p class="service-description">Car repair, maintenance, washing, and automotive care services</p>
+                    <div class="service-price">Starting from ₹1,299</div>
+                    <button class="book-btn">Book Now</button>
+                </div>
+
+                <!-- Pet Services -->
+                <div class="service-card" onclick="navigateToService('pet-services')">
+                    <span class="service-icon">🐕</span>
+                    <h3 class="service-title">Pet Services</h3>
+                    <p class="service-description">Pet grooming, veterinary care, pet sitting, and training services</p>
+                    <div class="service-price">Starting from ₹599</div>
+                    <button class="book-btn">Book Now</button>
+                </div>
+
+                <!-- Event Planning -->
+                <div class="service-card" onclick="navigateToService('event-planning')">
+                    <span class="service-icon">🎉</span>
+                    <h3 class="service-title">Event Planning</h3>
+                    <p class="service-description">Wedding planning, corporate events, birthday parties, and event coordination</p>
+                    <div class="service-price">Starting from ₹9,999</div>
+                    <button class="book-btn">Book Now</button>
+                </div>
+
+                <!-- Security Services -->
+                <div class="service-card" onclick="navigateToService('security-services')">
+                    <span class="service-icon">🛡️</span>
+                    <h3 class="service-title">Security Services</h3>
+                    <p class="service-description">Security guards, CCTV installation, alarm systems, and security solutions</p>
+                    <div class="service-price">Starting from ₹3,999</div>
+                    <button class="book-btn">Book Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI CHATBOT WIDGET WITH ENHANCED CALL FUNCTIONALITY -->
+    <div id="ai-chatbot" style="position: fixed; bottom: 25px; right: 25px; z-index: 10000; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
+        <!-- Chat Toggle Button -->
+        <button id="chat-toggle-btn" onclick="toggleAIChatbot()" style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; color: white; font-size: 24px; cursor: pointer; box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center;">
+            🤖
+        </button>
+
+        <!-- Chat Window -->
+        <div id="ai-chat-window" style="position: absolute; bottom: 75px; right: 0; width: 320px; height: 420px; background: white; border-radius: 16px; display: none; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,0.2); overflow: hidden; border: 2px solid rgba(102, 126, 234, 0.1);">
+            <!-- Chat Header -->
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h3 style="margin: 0; font-size: 16px; font-weight: 600;">ServiceHub AI</h3>
+                    <p style="margin: 0; font-size: 11px; opacity: 0.9;">Your Assistant</p>
+                </div>
+                <button onclick="toggleAIChatbot()" style="background: rgba(255,255,255,0.2); border: none; color: white; font-size: 16px; cursor: pointer; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                    ✕
+                </button>
+            </div>
+
+            <!-- Quick Action Buttons with Enhanced Call Options -->
+            <div style="background: #f8f9fa; padding: 10px; display: flex; gap: 6px; flex-wrap: wrap; border-bottom: 1px solid #e9ecef;">
+                <button onclick="sendQuickMessage('Find Services')" style="background: #e3f2fd; color: #1976d2; border: none; padding: 6px 10px; border-radius: 15px; font-size: 10px; cursor: pointer; font-weight: 500; flex: 1;">🔍 Services</button>
+                <button onclick="sendQuickMessage('My Orders')" style="background: #e8f5e8; color: #2e7d32; border: none; padding: 6px 10px; border-radius: 15px; font-size: 10px; cursor: pointer; font-weight: 500; flex: 1;">📦 Orders</button>
+                <button onclick="sendQuickMessage('Contact Provider')" style="background: #fff3e0; color: #f57c00; border: none; padding: 6px 10px; border-radius: 15px; font-size: 10px; cursor: pointer; font-weight: 500; flex: 1;">📞 Call</button>
+            </div>
+
+            <!-- Chat Messages Area -->
+            <div id="ai-chat-messages" style="flex: 1; padding: 12px; overflow-y: auto; background: #f8f9fa; display: flex; flex-direction: column; gap: 10px;">
+                <div class="ai-message">
+                    <div style="background: linear-gradient(135deg, #e3f2fd, #bbdefb); color: #1565c0; padding: 10px 12px; border-radius: 14px; border-bottom-left-radius: 4px; max-width: 90%; font-size: 12px; line-height: 1.4; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                        <strong>Hi! Welcome to ServiceHub! 👋</strong><br><br>
+                        I'm your AI assistant and I'm here to help you with:<br>
+                        🔍 Finding the right services<br>
+                        📦 Managing your bookings<br>
+                        💬 Connecting with support<br>
+                        📞 Contacting service providers<br><br>
+                        <em>How can I assist you today?</em>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Input Area -->
+            <div style="padding: 12px; border-top: 1px solid #e9ecef; background: white;">
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <input type="text" id="ai-chat-input" placeholder="Ask me anything..." style="flex: 1; padding: 8px 12px; border: 2px solid #e1e8ed; border-radius: 20px; outline: none; font-size: 12px; transition: all 0.3s ease;" onkeypress="if(event.key=='Enter') sendAIMessage()" onfocus="this.style.borderColor='#667eea'" onblur="this.style.borderColor='#e1e8ed'">
+                    <button onclick="sendAIMessage()" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 8px 12px; border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: 600; transition: all 0.3s ease; min-width: 50px;">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- IMPROVED OUTGOING CALL OVERLAY -->
+    <div id="outgoing-call-overlay" class="outgoing-call-overlay">
+        <div class="outgoing-call-container">
+            <div class="outgoing-call-header">
+                <h3 id="outgoing-call-type">Calling...</h3>
+                <p id="outgoing-provider-name">Support</p>
+                <button class="call-close-btn" onclick="cancelOutgoingCall()">✕</button>
+            </div>
+            
+            <div class="outgoing-call-avatar">
+                <div class="outgoing-avatar-image" id="outgoing-avatar">🎧</div>
+                <div class="outgoing-call-info">
+                    <h4 id="outgoing-participant-name">Support Team</h4>
+                    <p id="outgoing-participant-role">Customer Support</p>
+                    <div class="outgoing-call-status" id="outgoing-call-status">Connecting...</div>
+                    <button id="instant-connect-btn" class="instant-connect-btn" onclick="instantConnect()" style="display: none;">
+                        ⚡ Connect Now
+                    </button>
+                </div>
+            </div>
+            
+            <div class="outgoing-call-controls">
+                <button class="hang-up-btn" onclick="cancelOutgoingCall()">📞</button>
+            </div>
+            
+            <div class="call-timer" id="call-timer" style="display: none;">00:00</div>
+        </div>
+    </div>
+
+    <script>
+        // Global Variables - SUPER SIMPLE
+        let isLoginMode = true;
+        let aiChatOpen = false;
+        let conversationHistory = [];
+        let isOutgoingCall = false;
+        let outgoingCallTimer = null;
+        let callDurationTimer = null;
+        let callStartTime = null;
+
+        // BULLETPROOF BACK BUTTON FUNCTION
+        function goBack() {
+            console.log('Back button clicked!');
+            
+            // Check what's currently visible
+            const authSection = document.getElementById('authSection');
+            const forgotSection = document.getElementById('forgot-password-section');
+            const dashboard = document.getElementById('dashboard');
+            
+            // Simple logic: what's visible?
+            if (forgotSection.style.display === 'block') {
+                // From forgot password → go to login
+                console.log('Going back from forgot password to login');
+                showLoginForm();
+            } else if (dashboard.classList.contains('active')) {
+                // From dashboard → logout confirmation
+                console.log('Going back from dashboard');
+                if (confirm('Do you want to logout and return to login?')) {
+                    handleLogout();
+                }
+            } else {
+                // From login → exit app
+                console.log('Going back from login - asking to exit');
+                if (confirm('Do you want to exit ServiceHub?')) {
+                    window.close();
+                    // Fallback
+                    setTimeout(() => {
+                        window.location.href = 'about:blank';
+                    }, 100);
+                }
+            }
+        }
+
+        // SIMPLE INITIALIZATION
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('ServiceHub Portal loaded - initializing...');
+            
+            // Initialize everything
+            initNotificationSystem();
+            checkAuthStatus();
+            
+            // Add event listeners for form inputs
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            
+            if (emailInput) {
+                emailInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        handleAuth();
+                    }
+                });
+            }
+            
+            if (passwordInput) {
+                passwordInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        handleAuth();
+                    }
+                });
+            }
+
+            // Keyboard shortcut for back (ESC key)
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    goBack();
+                }
+            });
+        });
+
+        // Check authentication status
+        function checkAuthStatus() {
+            const currentUser = localStorage.getItem('currentUser');
+            if (currentUser) {
+                try {
+                    const userData = JSON.parse(currentUser);
+                    showDashboard(userData);
+                } catch (e) {
+                    console.error('Error parsing user data:', e);
+                    localStorage.removeItem('currentUser');
+                    showAuth();
+                }
+            } else {
+                showAuth();
+            }
+        }
+
+        // Show authentication section
+        function showAuth() {            
+            document.getElementById('authSection').style.display = 'block';
+            document.getElementById('forgot-password-section').style.display = 'none';
+            document.getElementById('dashboard').classList.remove('active');
+            document.getElementById('userInfo').style.display = 'none';
+            document.getElementById('portal-nav').style.display = 'none';
+        }
+
+        // Show dashboard
+        function showDashboard(userData) {            
+            document.getElementById('authSection').style.display = 'none';
+            document.getElementById('forgot-password-section').style.display = 'none';
+            document.getElementById('dashboard').classList.add('active');
+            document.getElementById('userInfo').style.display = 'flex';
+            document.getElementById('portal-nav').style.display = 'block';
+            document.getElementById('userProfile').textContent = userData.name;
+        }
+
+        // Go home (logo click)
+        function goHome() {
+            const currentUser = localStorage.getItem('currentUser');
+            if (currentUser) {
+                showDashboard(JSON.parse(currentUser));
+            } else {
+                showAuth();
+            }
+        }
+
+        // Switch between login and signup modes
+        function switchAuthMode() {
+            isLoginMode = !isLoginMode;
+            const authTitle = document.getElementById('authTitle');
+            const authBtn = document.getElementById('authBtn');
+            const authSwitchText = document.getElementById('authSwitchText');
+            const authSwitchBtn = document.getElementById('authSwitchBtn');
+            const nameGroup = document.getElementById('nameGroup');
+            const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+
+            if (isLoginMode) {
+                authTitle.textContent = 'Login to ServiceHub';
+                authBtn.textContent = 'Login';
+                authSwitchText.textContent = "Don't have an account?";
+                authSwitchBtn.textContent = 'Sign Up';
+                nameGroup.style.display = 'none';
+                forgotPasswordLink.style.display = 'block';
+            } else {
+                authTitle.textContent = 'Sign Up for ServiceHub';
+                authBtn.textContent = 'Sign Up';
+                authSwitchText.textContent = 'Already have an account?';
+                authSwitchBtn.textContent = 'Login';
+                nameGroup.style.display = 'block';
+                forgotPasswordLink.style.display = 'none';
+            }
+        }
+
+        // Handle authentication (login/signup)
+        function handleAuth() {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const fullName = document.getElementById('fullName').value.trim();
+
+            if (!email || !password) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            if (!isLoginMode && !fullName) {
+                alert('Please enter your full name');
+                return;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Please enter a valid email address');
+                return;
+            }
+
+            if (isLoginMode) {
+                // Login logic
+                const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+                const user = users.find(u => u.email === email && u.password === password);
+                
+                if (user) {
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    showDashboard(user);
+                    clearForm();
+                } else {
+                    alert('Invalid credentials. Please check your email and password.');
+                }
+            } else {
+                // Signup logic
+                const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+                
+                if (users.find(u => u.email === email)) {
+                    alert('An account with this email already exists');
+                    return;
+                }
+
+                const newUser = {
+                    name: fullName,
+                    email: email,
+                    password: password,
+                    joinDate: new Date().toISOString()
+                };
+
+                users.push(newUser);
+                localStorage.setItem('registeredUsers', JSON.stringify(users));
+                localStorage.setItem('currentUser', JSON.stringify(newUser));
+                showDashboard(newUser);
+                clearForm();
+                alert('Account created successfully! Welcome to ServiceHub!');
+            }
+        }
+
+        // Clear form fields
+        function clearForm() {
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('fullName').value = '';
+        }
+
+        // Logout function
+        function handleLogout() {
+            localStorage.removeItem('currentUser');
+            showAuth();
+            clearForm();
+        }
+
+        // PASSWORD RECOVERY FUNCTIONS
+        function showForgotPassword() {            
+            document.getElementById('authSection').style.display = 'none';
+            document.getElementById('forgot-password-section').style.display = 'block';
+        }
+
+        function showLoginForm() {            
+            document.getElementById('forgot-password-section').style.display = 'none';
+            document.getElementById('authSection').style.display = 'block';
+            if (!isLoginMode) {
+                switchAuthMode();
+            }
+        }
+
+        function sendPasswordReset() {
+            const email = document.getElementById('recovery-email').value.trim();
+            const messageDiv = document.getElementById('recovery-message');
+
+            if (!email) {
+                messageDiv.innerHTML = '<div class="recovery-error">Please enter your email address</div>';
+                return;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                messageDiv.innerHTML = '<div class="recovery-error">Please enter a valid email address</div>';
+                return;
+            }
+
+            // Check if email exists in registered users
+            const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+            const user = users.find(u => u.email === email);
+
+            if (!user) {
+                messageDiv.innerHTML = '<div class="recovery-error">No account found with this email address.</div>';
+                return;
+            }
+
+            messageDiv.innerHTML = '<div class="recovery-success">Password reset instructions have been sent to your email address.</div>';
+        }
+
+        // NAVIGATION FUNCTION
+        function navigateToService(serviceType) {
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) {
+                alert('Please login first to book services');
+                return;
+            }
+
+            // Navigate to service pages
+            switch(serviceType) {
+                case 'home-services':
+                    window.open('home-services.html', '_blank');
+                    break;
+                case 'digital-marketing':
+                    window.open('digital-marketing.html', '_blank');
+                    break;
+                case 'web-development':
+                    window.open('web-development.html', '_blank');
+                    break;
+                case 'graphic-design':
+                    window.open('graphic-design.html', '_blank');
+                    break;
+                case 'content-writing':
+                    window.open('content-writing.html', '_blank');
+                    break;
+                case 'business-consulting':
+                    window.open('business-consulting.html', '_blank');
+                    break;
+                case 'health-wellness':
+                    window.open('health-wellness.html', '_blank');
+                    break;
+                case 'education-tutoring':
+                    window.open('education-tutoring.html', '_blank');
+                    break;
+                case 'automotive-services':
+                    window.open('automotive-services.html', '_blank');
+                    break;
+                case 'pet-services':
+                    window.open('pet-services.html', '_blank');
+                    break;
+                case 'event-planning':
+                    window.open('event-planning.html', '_blank');
+                    break;
+                case 'security-services':
+                    window.open('security-services.html', '_blank');
+                    break;
+                default:
+                    alert('Service page coming soon!');
+            }
+        }
+
+        // AI Chatbot Functions
+        function toggleAIChatbot() {
+            const chatWindow = document.getElementById('ai-chat-window');
+            const toggleBtn = document.getElementById('chat-toggle-btn');
+            
+            if (aiChatOpen) {
+                chatWindow.style.display = 'none';
+                toggleBtn.innerHTML = '🤖';
+                toggleBtn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                aiChatOpen = false;
+            } else {
+                chatWindow.style.display = 'flex';
+                toggleBtn.innerHTML = '✕';
+                toggleBtn.style.background = 'linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%)';
+                aiChatOpen = true;
+                setTimeout(() => {
+                    document.getElementById('ai-chat-input').focus();
+                }, 300);
+            }
+        }
+
+        function sendQuickMessage(message) {
+            document.getElementById('ai-chat-input').value = message;
+            sendAIMessage();
+        }
+
+        function sendAIMessage() {
+            const input = document.getElementById('ai-chat-input');
+            const messagesContainer = document.getElementById('ai-chat-messages');
+            const userMessage = input.value.trim();
+
+            if (!userMessage) return;
+
+            const userDiv = document.createElement('div');
+            userDiv.className = 'user-ai-message';
+            userDiv.innerHTML = `<div>${userMessage}</div>`;
+            messagesContainer.appendChild(userDiv);
+
+            input.value = '';
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            showTypingIndicator();
+            conversationHistory.push({ type: 'user', message: userMessage });
+
+            setTimeout(() => {
+                hideTypingIndicator();
+                const aiResponse = generateAIResponse(userMessage.toLowerCase());
+                addAIMessage(aiResponse);
+                conversationHistory.push({ type: 'ai', message: aiResponse });
+            }, 1200);
+        }
+
+        function showTypingIndicator() {
+            const messagesContainer = document.getElementById('ai-chat-messages');
+            const typingDiv = document.createElement('div');
+            typingDiv.id = 'typing-indicator';
+            typingDiv.className = 'ai-message';
+            typingDiv.innerHTML = `
+                <div style="background: #f0f0f0; padding: 8px 12px; border-radius: 14px; border-bottom-left-radius: 4px; max-width: 60%;">
+                    <div class="typing-indicator">AI is typing</div>
+                    <div class="typing-dots">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+            `;
+            messagesContainer.appendChild(typingDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function hideTypingIndicator() {
+            const indicator = document.getElementById('typing-indicator');
+            if (indicator) indicator.remove();
+        }
+
+        function addAIMessage(message) {
+            const messagesContainer = document.getElementById('ai-chat-messages');
+            const aiDiv = document.createElement('div');
+            aiDiv.className = 'ai-message';
+            aiDiv.innerHTML = `<div style="background: linear-gradient(135deg, #e3f2fd, #bbdefb); color: #1565c0; padding: 10px 12px; border-radius: 14px; border-bottom-left-radius: 4px; max-width: 90%; font-size: 12px; line-height: 1.4; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">${message}</div>`;
+            messagesContainer.appendChild(aiDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function generateAIResponse(userInput) {
+            if (userInput.includes('find') || userInput.includes('service') || userInput.includes('services')) {
+                return `<strong>🔍 Available Services:</strong><br><br>
+                We offer a wide range of professional services:<br><br>
+                🏠 Home Services (₹299+)<br>
+                💻 Web Development (₹9,999+)<br>
+                📱 Digital Marketing (₹2,999+)<br>
+                🎨 Graphic Design (₹1,499+)<br>
+                ✍️ Content Writing (₹799+)<br>
+                📊 Business Consulting (₹4,999+)<br><br>
+                Click on any service card above to book or learn more!`;
+            }
+
+            if (userInput.includes('order') || userInput.includes('booking') || userInput.includes('orders')) {
+                const bookings = JSON.parse(localStorage.getItem('userBookings') || '[]');
+                if (bookings.length === 0) {
+                    return `<strong>📦 Your Orders:</strong><br><br>
+                    You don't have any orders yet.<br><br>
+                    Browse our services above and book your first service to get started!`;
+                } else {
+                    return `<strong>📦 Your Orders:</strong><br><br>
+                    You have ${bookings.length} orders in your account.<br><br>
+                    Check your email for order confirmations and updates.`;
+                }
+            }
+
+            // ENHANCED CONTACT PROVIDER RESPONSE WITH CALL OPTIONS
+            if (userInput.includes('contact') && userInput.includes('provider')) {
+                const currentBookings = JSON.parse(localStorage.getItem('userBookings') || '[]');
+                const acceptedBookings = currentBookings.filter(b => b.status === 'accepted');
+                
+                if (acceptedBookings.length === 0) {
+                    return `<strong>📞 Contact Service Provider:</strong><br><br>
+                    You don't have any active bookings with assigned providers yet.<br><br>
+                    Book a service first, and once a provider accepts your request, you'll be able to contact them directly!<br><br>
+                    Would you like to browse our services?`;
+                }
+
+                const latestBooking = acceptedBookings[acceptedBookings.length - 1];
+                return `<strong>📞 Contact Your Service Provider:</strong><br><br>
+                <strong>Provider:</strong> ${latestBooking.providerName}<br>
+                <strong>Service:</strong> ${latestBooking.serviceCategory}<br>
+                <strong>Phone:</strong> ${latestBooking.providerPhone}<br><br>
+                
+                <div class="call-action-buttons">
+                    <button class="call-btn" onclick="initiateCall('${latestBooking.providerName}', 'voice')">
+                        📞 Voice Call
+                    </button>
+                    <button class="call-btn video-call-btn" onclick="initiateCall('${latestBooking.providerName}', 'video')">
+                        📹 Video Call
+                    </button>
+                </div>`;
+            }
+
+            if (userInput.includes('support') || userInput.includes('help')) {
+                return `<strong>💬 Need Support?</strong><br><br>
+                I'm here to help! You can:<br><br>
+                📧 Email us at support@servicehub.com<br>
+                📞 Call us at +91-XXXXXXXXX<br>
+                💬 Continue chatting with me<br><br>
+                
+                <div class="call-action-buttons">
+                    <button class="call-btn" onclick="initiateCall('Support Team', 'voice')">
+                        📞 Call Support
+                    </button>
+                    <button class="call-btn video-call-btn" onclick="initiateCall('Support Team', 'video')">
+                        📹 Video Support
+                    </button>
+                </div>`;
+            }
+
+            if (userInput.includes('price') || userInput.includes('cost') || userInput.includes('pricing')) {
+                return `<strong>💰 Our Pricing:</strong><br><br>
+                We offer competitive pricing for all services:<br><br>
+                🏠 Home Services: ₹299+<br>
+                📱 Digital Marketing: ₹2,999+<br>
+                💻 Web Development: ₹9,999+<br>
+                🎨 Graphic Design: ₹1,499+<br><br>
+                Final pricing depends on your specific requirements. Book a service to get a detailed quote!`;
+            }
+
+            return `<strong>Hi there! 👋</strong><br><br>
+            I'm here to help you with ServiceHub. You can ask me about:<br><br>
+            🔍 Our available services<br>
+            📦 Your orders and bookings<br>
+            📞 Contacting service providers<br>
+            💰 Pricing information<br>
+            💬 Getting support<br><br>
+            What would you like to know?`;
+        }
+
+        // ENHANCED CALL FUNCTIONS
+        function initiateCall(providerName, callType) {
+            if (!providerName) {
+                providerName = 'Support Team';
+            }
+            
+            // Show call overlay with proper call type
+            showOutgoingCallOverlay(providerName, callType);
+            
+            // Auto-connect after 3 seconds
+            outgoingCallTimer = setTimeout(() => {
+                if (isOutgoingCall) {
+                    callAccepted(providerName);
+                }
+            }, 3000);
+        }
+
+        function instantConnect() {
+            if (outgoingCallTimer) {
+                clearTimeout(outgoingCallTimer);
+                outgoingCallTimer = null;
+            }
+            
+            document.getElementById('instant-connect-btn').style.display = 'none';
+            callAccepted(document.getElementById('outgoing-participant-name').textContent);
+        }
+
+        function callAccepted(providerName) {
+            const statusElement = document.getElementById('outgoing-call-status');
+            statusElement.textContent = 'Connected';
+            statusElement.className = 'call-status-connected';
+            
+            document.getElementById('instant-connect-btn').style.display = 'none';
+            
+            callStartTime = Date.now();
+            document.getElementById('call-timer').style.display = 'block';
+            
+            callDurationTimer = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - callStartTime) / 1000);
+                const minutes = Math.floor(elapsed / 60);
+                const seconds = elapsed % 60;
+                document.getElementById('call-timer').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function showOutgoingCallOverlay(providerName, callType) {
+            isOutgoingCall = true;
+            
+            // Set call type and provider info
+            const callTypeText = callType === 'video' ? 'Video Calling...' : 'Voice Calling...';
+            const avatarIcon = callType === 'video' ? '📹' : '📞';
+            
+            document.getElementById('outgoing-call-type').textContent = callTypeText;
+            document.getElementById('outgoing-provider-name').textContent = providerName || 'Support';
+            document.getElementById('outgoing-avatar').textContent = avatarIcon;
+            document.getElementById('outgoing-participant-name').textContent = providerName || 'Support Team';
+            
+            // Set role based on provider
+            if (providerName === 'Support Team') {
+                document.getElementById('outgoing-participant-role').textContent = 'Customer Support';
+            } else {
+                document.getElementById('outgoing-participant-role').textContent = 'Service Provider';
+            }
+            
+            const statusElement = document.getElementById('outgoing-call-status');
+            statusElement.textContent = 'Ringing...';
+            statusElement.className = '';
+            statusElement.style.color = '#667eea';
+            
+            document.getElementById('call-timer').style.display = 'none';
+            document.getElementById('instant-connect-btn').style.display = 'none';
+            
+            document.getElementById('outgoing-call-overlay').style.display = 'flex';
+
+            // Show instant connect after 1 second
+            setTimeout(() => {
+                if (isOutgoingCall) {
+                    document.getElementById('instant-connect-btn').style.display = 'block';
+                }
+            }, 1000);
+        }
+
+        function hideOutgoingCallOverlay() {
+            const overlay = document.getElementById('outgoing-call-overlay');
+            if (overlay) {
+                overlay.style.display = 'none';
+            }
+            isOutgoingCall = false;
+            
+            if (callDurationTimer) {
+                clearInterval(callDurationTimer);
+                callDurationTimer = null;
+            }
+            callStartTime = null;
+        }
+
+        function cancelOutgoingCall() {
+            if (outgoingCallTimer) {
+                clearTimeout(outgoingCallTimer);
+                outgoingCallTimer = null;
+            }
+            
+            hideOutgoingCallOverlay();
+            
+            // Add confirmation message to AI chat
+            if (aiChatOpen) {
+                addAIMessage(`📞 <strong>Call ended</strong><br>Thank you for using ServiceHub! Feel free to call again anytime.`);
+            }
+        }
+
+        // ========== NOTIFICATION SYSTEM ==========
+        function initNotificationSystem() {
+            // Request notification permission
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+
+            // Start checking for provider acceptance every 30 seconds
+            setInterval(() => {
+                checkForProviderAcceptance();
+            }, 30000);
+        }
+
+        function createDemoBooking(serviceType) {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            
+            const booking = {
+                bookingId: 'SH' + Date.now(),
+                serviceType: serviceType,
+                serviceCategory: getServiceName(serviceType),
+                customerEmail: currentUser.email,
+                customerName: currentUser.name,
+                status: 'pending',
+                bookingDate: new Date().toISOString()
+            };
+
+            // Save booking
+            const bookings = JSON.parse(localStorage.getItem('userBookings') || '[]');
+            bookings.push(booking);
+            localStorage.setItem('userBookings', JSON.stringify(bookings));
+
+            showToast(`🎉 Booking created! ID: ${booking.bookingId}. You'll be notified when a provider accepts.`);
+        }
+
+        function checkForProviderAcceptance() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            if (!currentUser.email) return;
+
+            const bookings = JSON.parse(localStorage.getItem('userBookings') || '[]');
+            const pendingBookings = bookings.filter(b => 
+                b.customerEmail === currentUser.email && 
+                b.status === 'pending'
+            );
+
+            // 30% chance of provider acceptance per check
+            if (pendingBookings.length > 0 && Math.random() > 0.7) {
+                simulateProviderAcceptance(pendingBookings[0]);
+            }
+        }
+
+        function simulateProviderAcceptance(booking) {
+            // Update booking
+            booking.status = 'accepted';
+            booking.providerName = getRandomProviderName();
+            booking.providerPhone = '+91-' + Math.floor(Math.random() * 9000000000 + 1000000000);
+            booking.acceptedAt = new Date().toISOString();
+            booking.estimatedArrival = getEstimatedArrival();
+
+            // Update localStorage
+            const allBookings = JSON.parse(localStorage.getItem('userBookings') || '[]');
+            const bookingIndex = allBookings.findIndex(b => b.bookingId === booking.bookingId);
+            if (bookingIndex !== -1) {
+                allBookings[bookingIndex] = booking;
+                localStorage.setItem('userBookings', JSON.stringify(allBookings));
+            }
+
+            // Send notifications
+            sendAllNotifications(booking);
+        }
+
+        function sendAllNotifications(booking) {
+            // Browser notification
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification('🎉 Service Provider Found!', {
+                    body: `${booking.providerName} accepted your ${booking.serviceCategory} request!`,
+                    icon: '/favicon.ico'
+                });
+            }
+
+            // Toast notification
+            showToast(`🎉 Great news! ${booking.providerName} accepted your ${booking.serviceCategory} request. ETA: ${booking.estimatedArrival}`);
+
+            // AI Chat notification with call buttons
+            if (aiChatOpen) {
+                setTimeout(() => {
+                    const callButtonsHtml = `
+                        <div class="call-action-buttons">
+                            <button class="call-btn" onclick="initiateCall('${booking.providerName}', 'voice')">
+                                📞 Call Now
+                            </button>
+                            <button class="call-btn video-call-btn" onclick="initiateCall('${booking.providerName}', 'video')">
+                                📹 Video Call
+                            </button>
+                        </div>`;
+                    
+                    addAIMessage(`🎉 <strong>Provider Found!</strong><br><br><strong>${booking.providerName}</strong> accepted your ${booking.serviceCategory} request!<br><br>📞 <strong>Phone:</strong> ${booking.providerPhone}<br>🕒 <strong>ETA:</strong> ${booking.estimatedArrival}<br><br>You can now contact your provider directly:${callButtonsHtml}`);
+                }, 2000);
+            }
+
+            // Console log simulated notifications
+            console.log(`📱 SMS Sent: ${booking.providerName} accepted booking ${booking.bookingId}`);
+            console.log(`💬 WhatsApp: Contact ${booking.providerName} at ${booking.providerPhone}`);
+            console.log(`📧 Email: Confirmation sent for ${booking.serviceCategory} booking`);
+        }
+
+        function getServiceName(serviceType) {
+            const serviceNames = {
+                'home-services': 'Home Services',
+                'digital-marketing': 'Digital Marketing', 
+                'web-development': 'Web Development',
+                'graphic-design': 'Graphic Design',
+                'content-writing': 'Content Writing',
+                'business-consulting': 'Business Consulting',
+                'health-wellness': 'Health & Wellness',
+                'education-tutoring': 'Education & Tutoring',
+                'automotive-services': 'Automotive Services',
+                'pet-services': 'Pet Services',
+                'event-planning': 'Event Planning',
+                'security-services': 'Security Services'
+            };
+            return serviceNames[serviceType] || serviceType;
+        }
+
+        function getEstimatedArrival() {
+            const now = new Date();
+            const arrival = new Date(now.getTime() + (Math.random() * 3 + 1) * 60 * 60 * 1000);
+            return arrival.toLocaleString('en-IN', { 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+        }
+
+        function showToast(message) {
+            // Remove existing toast
+            const existingToast = document.querySelector('.notification-toast');
+            if (existingToast) {
+                existingToast.remove();
+            }
+
+            // Create toast
+            const toast = document.createElement('div');
+            toast.className = 'notification-toast';
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #28a745, #20c997);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 20px rgba(40, 167, 69, 0.3);
+                z-index: 10000;
+                max-width: 400px;
+                font-weight: 600;
+                animation: slideInRight 0.3s ease;
+            `;
+            toast.innerHTML = message;
+            document.body.appendChild(toast);
+
+            // Remove after 5 seconds
+            setTimeout(() => {
+                toast.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 5000);
+        }
+
+        console.log('ServiceHub Portal with BULLETPROOF Back Button - Ready! 🚀⬅️');
+        
+    </script>
+</body>
+</html>

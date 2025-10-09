@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Powered Customer Dashboard - ServiceHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        .ai-header {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ai-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-left: 10px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .ai-assistant-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .dashboard {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .ai-insights-panel {
+            background: linear-gradient(135deg, #00b894, #00cec9);
+            color: white;
+            padding: 30px;
+            border-radius: 25px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-insights-panel::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            animation: float 20s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .ai-insights-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .ai-insights-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ai-recommendations {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .ai-recommendation {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .ai-recommendation-title {
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .ai-recommendation-desc {
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .services-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #2d3436;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .ai-filters {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .ai-filter-btn {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .ai-filter-btn.active {
+            background: #6c5ce7;
+            color: white;
+            border-color: #6c5ce7;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border-color: #6c5ce7;
+        }
+
+        .ai-match-score {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #fd79a8, #fdcb6e);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .service-badge {
+            background: #6c5ce7;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .service-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #2d3436;
+            margin-bottom: 10px;
+        }
+
+        .ai-price-section {
+            margin-bottom: 20px;
+        }
+
+        .ai-price-tag {
+            background: rgba(108, 92, 231, 0.1);
+            color: #6c5ce7;
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        .service-price {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #00b894;
+            margin-bottom: 5px;
+        }
+
+        .price-breakdown {
+            font-size: 12px;
+            color: #636e72;
+            margin-bottom: 15px;
+        }
+
+        .ai-insights {
+            background: rgba(108, 92, 231, 0.05);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border-left: 4px solid #6c5ce7;
+        }
+
+        .ai-insight-item {
+            font-size: 13px;
+            color: #6c5ce7;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .book-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .book-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .book-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(108, 92, 231, 0.4);
+        }
+
+        .ai-chatbot {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .chatbot-trigger {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(108, 92, 231, 0.3);
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(108, 92, 231, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(108, 92, 231, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(108, 92, 231, 0); }
+        }
+
+        .chatbot-window {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 350px;
+            height: 500px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            display: none;
+            flex-direction: column;
+        }
+
+        .chatbot-window.active {
+            display: flex;
+        }
+
+        .chatbot-header {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            color: white;
+            padding: 20px;
+            border-radius: 20px 20px 0 0;
+            text-align: center;
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .ai-message {
+            background: #f8f9fa;
+            padding: 12px 16px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            max-width: 80%;
+        }
+
+        .user-message {
+            background: #6c5ce7;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            max-width: 80%;
+            margin-left: auto;
+        }
+
+        .chatbot-input {
+            display: flex;
+            padding: 15px;
+            gap: 10px;
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 20px;
+            outline: none;
+        }
+
+        .chatbot-send {
+            background: #6c5ce7;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .ai-filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .chatbot-window {
+                width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="ai-header">
+        <div class="header-content">
+            <div class="logo">
+                🤖 ServiceHub
+                <span class="ai-badge">AI Powered</span>
+            </div>
+            <div class="user-info">
+                <button class="ai-assistant-btn" onclick="toggleAIAssistant()">
+                    🧠 AI Assistant
+                </button>
+                <button class="ai-assistant-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard">
+        <div class="ai-insights-panel">
+            <div class="ai-insights-content">
+                <h1 class="ai-insights-title">
+                    🧠 AI Personal Insights for You
+                </h1>
+                <p style="font-size: 16px; opacity: 0.9; margin-bottom: 20px;">
+                    Our AI has analyzed your preferences and market trends to provide personalized recommendations
+                </p>
+                
+                <div class="ai-recommendations">
+                    <div class="ai-recommendation">
+                        <div class="ai-recommendation-title">🎯 Perfect Match Found</div>
+                        <div class="ai-recommendation-desc">
+                            Based on your location and past bookings, we found 3 highly-rated home cleaning providers within 2km of your area.
+                        </div>
+                    </div>
+                    
+                    <div class="ai-recommendation">
+                        <div class="ai-recommendation-title">💰 Smart Pricing Alert</div>
+                        <div class="ai-recommendation-desc">
+                            Current demand is 25% lower than usual. Book now and save up to ₹200 on premium services.
+                        </div>
+                    </div>
+                    
+                    <div class="ai-recommendation">
+                        <div class="ai-recommendation-title">⚡ Best Booking Time</div>
+                        <div class="ai-recommendation-desc">
+                            AI predicts fastest provider response between 2-4 PM today. Average acceptance time: 3 minutes.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="services-section">
+            <h2 class="section-title">🛍️ AI-Recommended Services</h2>
+            
+            <div class="ai-filters">
+                <span style="font-weight: 600; color: #636e72;">Smart Filters:</span>
+                <button class="ai-filter-btn active" onclick="filterServices('recommended')">
+                    🤖 AI Recommended
+                </button>
+                <button class="ai-filter-btn" onclick="filterServices('trending')">
+                    📈 Trending Now
+                </button>
+                <button class="ai-filter-btn" onclick="filterServices('near-me')">
+                    📍 Near Me
+                </button>
+                <button class="ai-filter-btn" onclick="filterServices('best-price')">
+                    💰 Best Price
+                </button>
+                <button class="ai-filter-btn" onclick="filterServices('fastest')">
+                    ⚡ Fastest Service
+                </button>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card" onclick="bookService('home-cleaning')">
+                    <div class="ai-match-score">98% AI Match</div>
+                    <span class="service-badge">AI OPTIMIZED</span>
+                    <h3 class="service-title">🏠 Premium Home Cleaning</h3>
+                    
+                    <div class="ai-price-section">
+                        <div class="ai-price-tag">🤖 AI Smart Pricing</div>
+                        <div class="service-price">₹249 <small style="text-decoration: line-through; color: #999;">₹349</small></div>
+                        <div class="price-breakdown">AI saved you ₹100 • Dynamic pricing applied</div>
+                    </div>
+                    
+                    <div class="ai-insights">
+                        <div class="ai-insight-item">
+                            🎯 <strong>3 perfect providers</strong> matched in your area
+                        </div>
+                        <div class="ai-insight-item">
+                            ⚡ <strong>Average response time:</strong> 2.5 minutes
+                        </div>
+                        <div class="ai-insight-item">
+                            ⭐ <strong>AI predicted satisfaction:</strong> 4.8/5
+                        </div>
+                        <div class="ai-insight-item">
+                            📅 <strong>Best availability:</strong> Tomorrow 10-12 AM
+                        </div>
+                    </div>
+                    
+                    <button class="book-btn" onclick="bookService('home-cleaning')">
+                        🚀 Book with AI Matching
+                    </button>
+                </div>
+
+                <div class="service-card" onclick="bookService('web-development')">
+                    <div class="ai-match-score">94% AI Match</div>
+                    <span class="service-badge">AI POWERED</span>
+                    <h3 class="service-title">💻 AI-Enhanced Web Development</h3>
+                    
+                    <div class="ai-price-section">
+                        <div class="ai-price-tag">🤖 AI Optimized Pricing</div>
+                        <div class="service-price">₹8,999 <small style="text-decoration: line-through; color: #999;">₹15,999</small></div>
+                        <div class="price-breakdown">Market analysis • 44% discount applied</div>
+                    </div>
+                    
+                    <div class="ai-insights">
+                        <div class="ai-insight-item">
+                            🎯 <strong>5 expert developers</strong> available
+                        </div>
+                        <div class="ai-insight-item">
+                            📊 <strong>AI project complexity:</strong> Medium
+                        </div>
+                        <div class="ai-insight-item">
+                            ⏱️ <strong>Estimated completion:</strong> 12-15 days
+                        </div>
+                        <div class="ai-insight-item">
+                            🏆 <strong>Success prediction:</strong> 96%
+                        </div>
+                    </div>
+                    
+                    <button class="book-btn" onclick="bookService('web-development')">
+                        🤖 AI-Powered Booking
+                    </button>
+                </div>
+
+                <div class="service-card" onclick="bookService('digital-marketing')">
+                    <div class="ai-match-score">91% AI Match</div>
+                    <span class="service-badge">AI ENHANCED</span>
+                    <h3 class="service-title">📱 Smart Digital Marketing</h3>
+                    
+                    <div class="ai-price-section">
+                        <div class="ai-price-tag">🧠 AI Market Analysis</div>
+                        <div class="service-price">₹2,499 <small style="text-decoration: line-through; color: #999;">₹3,999</small></div>
+                        <div class="price-breakdown">Demand-based pricing • High ROI predicted</div>
+                    </div>
+                    
+                    <div class="ai-insights">
+                        <div class="ai-insight-item">
+                            📈 <strong>AI growth prediction:</strong> 150% engagement
+                        </div>
+                        <div class="ai-insight-item">
+                            🎯 <strong>Target audience match:</strong> 87%
+                        </div>
+                        <div class="ai-insight-item">
+                            💰 <strong>ROI prediction:</strong> 300% in 3 months
+                        </div>
+                        <div class="ai-insight-item">
+                            ⚡ <strong>Campaign setup:</strong> 24 hours
+                        </div>
+                    </div>
+                    
+                    <button class="book-btn" onclick="bookService('digital-marketing')">
+                        📊 AI-Driven Marketing
+                    </button>
+                </div>
+
+                <div class="service-card" onclick="bookService('graphic-design')">
+                    <div class="ai-match-score">89% AI Match</div>
+                    <span class="service-badge">AI CREATIVE</span>
+                    <h3 class="service-title">🎨 AI-Assisted Design</h3>
+                    
+                    <div class="ai-price-section">
+                        <div class="ai-price-tag">🎭 Creative AI Pricing</div>
+                        <div class="service-price">₹1,299 <small style="text-decoration: line-through; color: #999;">₹2,499</small></div>
+                        <div class="price-breakdown">Creative demand analysis • Fast delivery</div>
+                    </div>
+                    
+                    <div class="ai-insights">
+                        <div class="ai-insight-item">
+                            🎨 <strong>Style match confidence:</strong> 94%
+                        </div>
+                        <div class="ai-insight-item">
+                            ⚡ <strong>AI delivery prediction:</strong> 48 hours
+                        </div>
+                        <div class="ai-insight-item">
+                            🎯 <strong>Design trend alignment:</strong> 92%
+                        </div>
+                        <div class="ai-insight-item">
+                            ✨ <strong>Revision rounds needed:</strong> 1-2
+                        </div>
+                    </div>
+                    
+                    <button class="book-btn" onclick="bookService('graphic-design')">
+                        🎭 Creative AI Match
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Chatbot -->
+    <div class="ai-chatbot">
+        <button class="chatbot-trigger" onclick="toggleChatbot()">
+            🤖
+        </button>
+        
+        <div class="chatbot-window" id="chatbotWindow">
+            <div class="chatbot-header">
+                <h3>🧠 AI Assistant</h3>
+                <p style="font-size: 14px; opacity: 0.9;">Ask me anything about services!</p>
+            </div>
+            
+            <div class="chatbot-messages" id="chatMessages">
+                <div class="ai-message">
+                    👋 Hi! I'm your AI assistant. I can help you find the perfect service, compare prices, check provider availability, and answer any questions. What would you like to know?
+                </div>
+            </div>
+            
+            <div class="chatbot-input">
+                <input type="text" id="chatInput" placeholder="Ask me anything..." onkeypress="handleChatKeypress(event)">
+                <button class="chatbot-send" onclick="sendChatMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="ai-engine.js"></script>
+    <script>
+        let chatbotOpen = false;
+
+        function toggleChatbot() {
+            const chatbot = document.getElementById('chatbotWindow');
+            chatbotOpen = !chatbotOpen;
+            
+            if (chatbotOpen) {
+                chatbot.classList.add('active');
+                // Add welcome message with AI insights
+                setTimeout(() => {
+                    addAIMessage("🤖 I see you're looking at services! Based on your location, I recommend starting with home cleaning - we have 3 amazing providers with 4.9+ ratings nearby. Would you like me to show you the best options?");
+                }, 500);
+            } else {
+                chatbot.classList.remove('active');
+            }
+        }
+
+        function handleChatKeypress(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        async function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Add user message
+            addUserMessage(message);
+            input.value = '';
+            
+            // Show typing indicator
+            showTypingIndicator();
+            
+            // Generate AI response
+            setTimeout(() => {
+                hideTypingIndicator();
+                generateAIResponse(message);
+            }, 1500);
+        }
+
+        function addUserMessage(message) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'user-message';
+            messageDiv.textContent = message;
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function addAIMessage(message) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'ai-message';
+            messageDiv.innerHTML = message;
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            addAIMessage('🤖 <i>AI is analyzing your query...</i>');
+        }
+
+        function hideTypingIndicator() {
+            const messages = document.getElementById('chatMessages');
+            const lastMessage = messages.lastElementChild;
+            if (lastMessage && lastMessage.innerHTML.includes('analyzing')) {
+                messages.removeChild(lastMessage);
+            }
+        }
+
+        function generateAIResponse(userMessage) {
+            const message = userMessage.toLowerCase();
+            
+            let response = '';
+            
+            if (message.includes('price') || message.includes('cost')) {
+                response = '💰 <strong>AI Pricing Analysis:</strong><br>• Home Cleaning: ₹249 (AI saved ₹100)<br>• Web Development: ₹8,999 (44% off)<br>• Digital Marketing: ₹2,499 (Best ROI)<br><br>Our AI adjusts prices based on demand, your location, and provider availability. Would you like details on any specific service?';
+            } else if (message.includes('provider') || message.includes('who')) {
+                response = '🎯 <strong>AI Provider Matching:</strong><br>• 3 home cleaning experts (98% match)<br>• 5 web developers available<br>• 2 marketing specialists nearby<br><br>Our AI ranks providers based on ratings, location, availability, and past success rates. Want to see the top matches for any service?';
+            } else if (message.includes('time') || message.includes('fast')) {
+                response = '⚡ <strong>AI Timing Insights:</strong><br>• Fastest response: 2-4 PM (avg 3 min)<br>• Best availability: Tomorrow 10-12 AM<br>• Same-day service: 85% success rate<br><br>Our AI predicts optimal booking times based on provider patterns and current demand.';
+            } else if (message.includes('recommend') || message.includes('suggest')) {
+                response = '🧠 <strong>AI Recommendations for You:</strong><br>• <strong>Top Pick:</strong> Home Cleaning (98% match)<br>• <strong>Trending:</strong> Web Development (High demand)<br>• <strong>Best Value:</strong> Digital Marketing (300% ROI)<br><br>Based on your profile and current market trends. Should I help you book any of these?';
+            } else {
+                response = `🤖 <strong>AI Analysis Complete!</strong><br><br>I understand you're asking about "${userMessage}". Here's what I can help with:<br><br>📊 <strong>Compare Services:</strong> Get AI-powered comparisons<br>💰 <strong>Price Optimization:</strong> Find the best deals<br>🎯 <strong>Provider Matching:</strong> Perfect matches for you<br>⚡ <strong>Booking Assistance:</strong> Fast and smart booking<br><br>What specific information would you like me to provide?`;
+            }
+            
+            addAIMessage(response);
+        }
+
+        function filterServices(type) {
+            // Remove active class from all buttons
+            document.querySelectorAll('.ai-filter-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+            
+            // Show filtering animation
+            const cards = document.querySelectorAll('.service-card');
+            cards.forEach(card => {
+                card.style.opacity = '0.5';
+                card.style.transform = 'scale(0.95)';
+            });
+            
+            // AI-powered notification
+            let filterMessage = '';
+            switch(type) {
+                case 'recommended':
+                    filterMessage = '🤖 AI analyzing your preferences and showing personalized recommendations...';
+                    break;
+                case 'trending':
+                    filterMessage = '📈 AI identifying trending services based on current demand...';
+                    break;
+                case 'near-me':
+                    filterMessage = '📍 AI locating providers within 5km of your location...';
+                    break;
+                case 'best-price':
+                    filterMessage = '💰 AI comparing prices and finding the best deals for you...';
+                    break;
+                case 'fastest':
+                    filterMessage = '⚡ AI ranking providers by response time and availability...';
+                    break;
+            }
+            
+            showAINotification(filterMessage, 'info');
+            
+            // Restore cards after delay
+            setTimeout(() => {
+                cards.forEach(card => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'scale(1)';
+                });
+                showAINotification(`✅ Found ${cards.length} services matching your AI filter!`, 'success');
+            }, 1500);
+        }
+
+        function bookService(serviceType) {
+            // Store service type for booking form
+            localStorage.setItem('selectedService', serviceType);
+            
+            // AI-powered booking confirmation
+            showAINotification('🤖 AI is preparing your personalized booking experience...', 'info');
+            
+            setTimeout(() => {
+                if(confirm('🎯 AI has pre-filled your booking form with optimal settings!\n\n✅ Best providers matched\n✅ Smart pricing applied\n✅ Optimal timing suggested\n\nProceed to AI-powered booking?')) {
+                    window.location.href = 'booking-form.html';
+                }
+            }, 1000);
+        }
+
+        function showAINotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 80px;
+                right: 20px;
+                background: ${type === 'success' ? 'linear-gradient(135deg, #00b894, #00cec9)' : 'linear-gradient(135deg, #6c5ce7, #a29bfe)'};
+                color: white;
+                padding: 15px 25px;
+                border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                z-index: 10000;
+                max-width: 350px;
+                font-weight: 600;
+                font-size: 14px;
+                animation: slideIn 0.5s ease;
+            `;
+            notification.innerHTML = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.5s ease';
+                setTimeout(() => notification.remove(), 500);
+            }, 4000);
+        }
+
+        function toggleAIAssistant() {
+            showAINotification('🧠 AI Assistant activated! I can help you with:<br>• Smart service recommendations<br>• Price optimization<br>• Provider matching<br>• Booking assistance', 'info');
+            setTimeout(() => toggleChatbot(), 1000);
+        }
+
+        function logout() {
+            if(confirm('Are you sure you want to logout from AI-powered ServiceHub?')) {
+                showAINotification('👋 Thank you for using AI-powered ServiceHub! Your preferences have been saved.', 'success');
+                setTimeout(() => {
+                    window.location.href = 'customer-portal.html';
+                }, 2000);
+            }
+        }
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize AI features when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simulate AI loading and analysis
+            setTimeout(() => {
+                showAINotification('🤖 AI Analysis Complete! Found 12 services perfectly matched to your preferences.', 'success');
+            }, 2000);
+            
+            // Periodic AI insights
+            setInterval(() => {
+                const insights = [
+                    '💡 AI Tip: Book home cleaning services before 3 PM for 40% faster response!',
+                    '📈 Market Update: Web development demand increased 25% - book now for better pricing!',
+                    '🎯 Personalized: Based on your activity, digital marketing services show 300% ROI potential!',
+                    '⚡ Speed Alert: 3 providers are online now and can respond within 2 minutes!'
+                ];
+                
+                const randomInsight = insights[Math.floor(Math.random() * insights.length)];
+                showAINotification(randomInsight, 'info');
+            }, 15000);
+        });
+    </script>
+</body>
+</html>

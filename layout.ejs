@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> - MyServiceHub Provider Portal</title>
+    
+    <!-- CSS Framework -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link href="/css/dashboard.css" rel="stylesheet">
+    <link href="/css/responsive.css" rel="stylesheet">
+    
+    <!-- Chart.js for analytics -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.min.js"></script>
+    
+    <!-- Socket.IO for real-time features -->
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/provider/dashboard">
+                <i class="fas fa-briefcase"></i>
+                MyServiceHub Pro
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/provider/dashboard">
+                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/provider/orders">
+                            <i class="fas fa-shopping-cart"></i> Orders
+                            <span class="badge bg-danger ms-1" id="pendingOrdersBadge">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/provider/services">
+                            <i class="fas fa-cog"></i> Services
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/provider/analytics">
+                            <i class="fas fa-chart-bar"></i> Analytics
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/provider/chat">
+                            <i class="fas fa-comments"></i> Messages
+                            <span class="badge bg-warning ms-1" id="unreadMessagesBadge">0</span>
+                        </a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <!-- Notifications -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle position-relative" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-bell"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="notificationsBadge">
+                                0
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" id="notificationsDropdown">
+                            <li><h6 class="dropdown-header">Notifications</h6></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li id="noNotifications"><span class="dropdown-item text-muted">No new notifications</span></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Profile Menu -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <img src="<%= user.profileImage || '/images/default-avatar.png' %>" alt="Profile" class="rounded-circle" width="30" height="30">
+                            <%= user.name %>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="/provider/profile">
+                                <i class="fas fa-user"></i> Profile Settings
+                            </a></li>
+                            <li><a class="dropdown-item" href="/provider/subscription">
+                                <i class="fas fa-crown"></i> Subscription
+                            </a></li>
+                            <li><a class="dropdown-item" href="/provider/earnings">
+                                <i class="fas fa-dollar-sign"></i> Earnings
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="#" onclick="logout()">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <%- body %>
+    </main>
+    
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner d-none">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+    
+    <!-- Toast Notifications -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" id="toastContainer">
+        <!-- Dynamic toasts will be added here -->
+    </div>
+    
+    <!-- JavaScript Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="/js/dashboard.js"></script>
+    <script src="/js/notifications.js"></script>
+    
+    <!-- Page-specific scripts -->
+    <%- script %>
+    
+    <script>
+        // Initialize socket connection
+        const socket = io();
+        
+        // Join provider room for real-time notifications
+        socket.emit('join-provider-room', '<%= user.id %>');
+        
+        // Handle real-time notifications
+        socket.on('new-order', (data) => {
+            updatePendingOrdersBadge();
+            showNotification('New Order', `You have a new order for ${data.serviceTitle}`, 'info');
+        });
+        
+        socket.on('order-update', (data) => {
+            showNotification('Order Update', data.message, 'info');
+        });
+        
+        socket.on('new-message', (data) => {
+            updateMessagesBadge();
+            showNotification('New Message', 'You have a new customer message', 'info');
+        });
+        
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                fetch('/api/auth/logout', { method: 'POST' })
+                    .then(() => {
+                        localStorage.removeItem('token');
+                        window.location.href = '/provider/login';
+                    });
+            }
+        }
+    </script>
+</body>
+</html>

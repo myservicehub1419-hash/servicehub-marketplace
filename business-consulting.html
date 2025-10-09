@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Consulting Services - ServiceHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            background: linear-gradient(135deg, #2196F3 0%, #21CBF3 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #2196F3, #21CBF3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, #2196F3, #21CBF3);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(33, 150, 243, 0.4);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .service-hero {
+            text-align: center;
+            margin-bottom: 50px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+        }
+
+        .service-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .service-subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .service-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #2196F3;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .price-banner {
+            background: linear-gradient(135deg, #2196F3, #21CBF3);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .price-text {
+            font-size: 2rem;
+            font-weight: 900;
+        }
+
+        .sub-services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .sub-service-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+
+        .sub-service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: #2196F3;
+        }
+
+        .sub-service-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .sub-service-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #2196F3, #21CBF3);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+        }
+
+        .sub-service-info h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .sub-service-badge {
+            background: #2196F3;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .sub-service-description {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin: 15px 0;
+        }
+
+        .feature-list li {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #555;
+        }
+
+        .feature-icon {
+            color: #2196F3;
+        }
+
+        .sub-service-pricing {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(33, 150, 243, 0.1);
+            border-radius: 10px;
+        }
+
+        .price {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #2196F3;
+        }
+
+        .book-sub-btn {
+            background: linear-gradient(135deg, #2196F3, #21CBF3);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .book-sub-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(33, 150, 243, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .service-stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .sub-services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .service-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">💼 Business Consulting</div>
+            <a href="customer-portal.html" class="back-btn">← Back to Dashboard</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="service-hero">
+            <h1 class="service-title">💼 Business Consulting</h1>
+            <p class="service-subtitle">Strategic business guidance to accelerate your company's growth</p>
+            
+            <div class="service-stats">
+                <div class="stat">
+                    <div class="stat-value">4.8⭐</div>
+                    <div class="stat-label">Expert Rating</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">50 min</div>
+                    <div class="stat-label">Avg Response</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">840+</div>
+                    <div class="stat-label">Success</div>
+                </div>
+            </div>
+
+            <div class="price-banner">
+                <div class="price-text">Starting from ₹4,999</div>
+            </div>
+        </div>
+
+        <div class="sub-services-grid">
+            <!-- BUSINESS PLANNING -->
+            <div class="sub-service-card" onclick="bookSubService('business-planning')">
+                <div class="sub-service-header">
+                    <div class="sub-service-icon">📊</div>
+                    <div class="sub-service-info">
+                        <h3>Business Planning</h3>
+                        <span class="sub-service-badge">Strategic</span>
+                    </div>
+                </div>
+                <p class="sub-service-description">Comprehensive business plans for startups and growth companies</p>
+                
+                <ul class="feature-list">
+                    <li><span class="feature-icon">✅</span> Business Plan Development</li>
+                    <li><span class="feature-icon">✅</span> Market Analysis</li>
+                    <li><span class="feature-icon">✅</span> Financial Projections</li>
+                    <li><span class="feature-icon">✅</span> Investor Presentation</li>
+                </ul>
+
+                <div class="sub-service-pricing">
+                    <div class="price">₹4,999 - ₹50,000</div>
+                    <button class="book-sub-btn">Book Now</button>
+                </div>
+            </div>
+
+            <!-- STRATEGY CONSULTING -->
+            <div class="sub-service-card" onclick="bookSubService('strategy-consulting')">
+                <div class="sub-service-header">
+                    <div class="sub-service-icon">💡</div>
+                    <div class="sub-service-info">
+                        <h3>Strategy Consulting</h3>
+                        <span class="sub-service-badge">Growth Focus</span>
+                    </div>
+                </div>
+                <p class="sub-service-description">Strategic planning and execution for sustainable business growth</p>
+                
+                <ul class="feature-list">
+                    <li><span class="feature-icon">✅</span> Growth Strategies</li>
+                    <li><span class="feature-icon">✅</span> Competitive Analysis</li>
+                    <li><span class="feature-icon">✅</span> Market Entry Plans</li>
+                    <li><span class="feature-icon">✅</span> Strategic Roadmaps</li>
+                </ul>
+
+                <div class="sub-service-pricing">
+                    <div class="price">₹8,999 - ₹75,000</div>
+                    <button class="book-sub-btn">Book Now</button>
+                </div>
+            </div>
+
+            <!-- MARKET RESEARCH -->
+            <div class="sub-service-card" onclick="bookSubService('market-research')">
+                <div class="sub-service-header">
+                    <div class="sub-service-icon">📈</div>
+                    <div class="sub-service-info">
+                        <h3>Market Research</h3>
+                        <span class="sub-service-badge">Data Driven</span>
+                    </div>
+                </div>
+                <p class="sub-service-description">In-depth market analysis and consumer research</p>
+                
+                <ul class="feature-list">
+                    <li><span class="feature-icon">✅</span> Customer Surveys</li>
+                    <li><span class="feature-icon">✅</span> Competitor Analysis</li>
+                    <li><span class="feature-icon">✅</span> Trend Research</li>
+                    <li><span class="feature-icon">✅</span> Industry Reports</li>
+                </ul>
+
+                <div class="sub-service-pricing">
+                    <div class="price">₹6,999 - ₹40,000</div>
+                    <button class="book-sub-btn">Book Now</button>
+                </div>
+            </div>
+
+            <!-- FINANCIAL PLANNING -->
+            <div class="sub-service-card" onclick="bookSubService('financial-planning')">
+                <div class="sub-service-header">
+                    <div class="sub-service-icon">💰</div>
+                    <div class="sub-service-info">
+                        <h3>Financial Planning</h3>
+                        <span class="sub-service-badge">CFO Advisory</span>
+                    </div>
+                </div>
+                <p class="sub-service-description">Financial strategy and planning for business success</p>
+                
+                <ul class="feature-list">
+                    <li><span class="feature-icon">✅</span> Budget Planning</li>
+                    <li><span class="feature-icon">✅</span> Cash Flow Analysis</li>
+                    <li><span class="feature-icon">✅</span> Investment Advice</li>
+                    <li><span class="feature-icon">✅</span> Financial Models</li>
+                </ul>
+
+                <div class="sub-service-pricing">
+                    <div class="price">₹9,999 - ₹60,000</div>
+                    <button class="book-sub-btn">Book Now</button>
+                </div>
+            </div>
+
+            <!-- BRAND STRATEGY -->
+            <div class="sub-service-card" onclick="bookSubService('brand-strategy')">
+                <div class="sub-service-header">
+                    <div class="sub-service-icon">🎯</div>
+                    <div class="sub-service-info">
+                        <h3>Brand Strategy</h3>
+                        <span class="sub-service-badge">Brand Building</span>
+                    </div>
+                </div>
+                <p class="sub-service-description">Brand positioning and identity development strategies</p>
+                
+                <ul class="feature-list">
+                    <li><span class="feature-icon">✅</span> Brand Positioning</li>
+                    <li><span class="feature-icon">✅</span> Messaging Strategy</li>
+                    <li><span class="feature-icon">✅</span> Identity Development</li>
+                    <li><span class="feature-icon">✅</span> Brand Guidelines</li>
+                </ul>
+
+                <div class="sub-service-pricing">
+                    <div class="price">₹7,999 - ₹50,000</div>
+                    <button class="book-sub-btn">Book Now</button>
+                </div>
+            </div>
+
+            <!-- OPERATIONS CONSULTING -->
+            <div class="sub-service-card" onclick="bookSubService('operations-consulting')">
+                <div class="sub-service-header">
+                    <div class="sub-service-icon">📋</div>
+                    <div class="sub-service-info">
+                        <h3>Operations Consulting</h3>
+                        <span class="sub-service-badge">Efficiency</span>
+                    </div>
+                </div>
+                <p class="sub-service-description">Optimize operations and improve business efficiency</p>
+                
+                <ul class="feature-list">
+                    <li><span class="feature-icon">✅</span> Process Optimization</li>
+                    <li><span class="feature-icon">✅</span> Workflow Improvement</li>
+                    <li><span class="feature-icon">✅</span> Cost Reduction</li>
+                    <li><span class="feature-icon">✅</span> Quality Management</li>
+                </ul>
+
+                <div class="sub-service-pricing">
+                    <div class="price">₹5,999 - ₹45,000</div>
+                    <button class="book-sub-btn">Book Now</button>
+                </div>
+            </div>
+
+            <!-- STARTUP CONSULTING -->
+            <div class="sub-service-card" onclick="bookSubService('startup-consulting')">
+                <div class="sub-service-header">
+                    <div class="sub-service-icon">🚀</div>
+                    <div class="sub-service-info">
+                        <h3>Startup Consulting</h3>
+                        <span class="sub-service-badge">Launch Ready</span>
+                    </div>
+                </div>
+                <p class="sub-service-description">End-to-end guidance for startup launch and scaling</p>
+                
+                <ul class="feature-list">
+                    <li><span class="feature-icon">✅</span> Launch Strategy</li>
+                    <li><span class="feature-icon">✅</span> Funding Guidance</li>
+                    <li><span class="feature-icon">✅</span> Mentor Network</li>
+                    <li><span class="feature-icon">✅</span> Scaling Plans</li>
+                </ul>
+
+                <div class="sub-service-pricing">
+                    <div class="price">₹9,999 - ₹80,000</div>
+                    <button class="book-sub-btn">Book Now</button>
+                </div>
+            </div>
+
+            <!-- PERFORMANCE ANALYSIS -->
+            <div class="sub-service-card" onclick="bookSubService('performance-analysis')">
+                <div class="sub-service-header">
+                    <div class="sub-service-icon">📊</div>
+                    <div class="sub-service-info">
+                        <h3>Performance Analysis</h3>
+                        <span class="sub-service-badge">KPI Focus</span>
+                    </div>
+                </div>
+                <p class="sub-service-description">Business performance evaluation and improvement recommendations</p>
+                
+                <ul class="feature-list">
+                    <li><span class="feature-icon">✅</span> KPI Tracking</li>
+                    <li><span class="feature-icon">✅</span> Performance Metrics</li>
+                    <li><span class="feature-icon">✅</span> Improvement Plans</li>
+                    <li><span class="feature-icon">✅</span> Benchmarking</li>
+                </ul>
+
+                <div class="sub-service-pricing">
+                    <div class="price">₹4,999 - ₹35,000</div>
+                    <button class="book-sub-btn">Book Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // UPDATED BOOKING FUNCTION 
+        function bookSubService(subService) {
+            console.log('Booking sub-service:', subService);
+            localStorage.setItem('selectedSubService', subService);
+            
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) {
+                alert('Please login first to book services');
+                window.location.href = 'customer-portal.html';
+                return;
+            }
+
+            // Get current service type from URL
+            const serviceType = getServiceTypeFromURL();
+            
+            // Redirect to booking form with service details
+            window.location.href = `booking-form.html?service=${serviceType}&subService=${subService}`;
+        }
+
+        function getServiceTypeFromURL() {
+            const filename = window.location.pathname.split('/').pop();
+            return filename.replace('.html', '');
+        }
+
+        // Animation on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.sub-service-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(50px)';
+                card.style.transition = `all 0.6s ease ${index * 0.1}s`;
+                
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>

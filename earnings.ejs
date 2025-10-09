@@ -1,0 +1,1510 @@
+<% layout('layout') -%>
+
+<div class="earnings-container">
+    <div class="container-fluid">
+        <!-- Earnings Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="earnings-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h1 class="display-6 fw-bold mb-2">💰 Earnings Dashboard</h1>
+                            <p class="text-muted">Track your income, payments, and financial growth</p>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <div class="dropdown">
+                                <button class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown">
+                                    <i class="fas fa-calendar"></i> This Month
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#" data-period="7d">Last 7 Days</a></li>
+                                    <li><a class="dropdown-item active" href="#" data-period="30d">This Month</a></li>
+                                    <li><a class="dropdown-item" href="#" data-period="90d">Last 3 Months</a></li>
+                                    <li><a class="dropdown-item" href="#" data-period="1y">This Year</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="#" data-period="custom">Custom Range</a></li>
+                                </ul>
+                            </div>
+                            <button class="btn btn-success" onclick="requestWithdrawal()">
+                                <i class="fas fa-download"></i> Withdraw Funds
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 8: Financial Overview Cards -->
+        <div class="row mb-4">
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="earnings-card total-earnings">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-muted mb-2">Total Earnings</h6>
+                                <h2 class="mb-0" id="totalEarnings">₹0</h2>
+                                <div class="growth-indicator positive" id="earningsGrowth">
+                                    <i class="fas fa-arrow-up"></i> +0% this month
+                                </div>
+                            </div>
+                            <div class="earnings-icon">
+                                <i class="fas fa-coins"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="earnings-card available-balance">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-muted mb-2">Available Balance</h6>
+                                <h2 class="mb-0" id="availableBalance">₹0</h2>
+                                <div class="small text-success">
+                                    Ready for withdrawal
+                                </div>
+                            </div>
+                            <div class="earnings-icon">
+                                <i class="fas fa-wallet"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="earnings-card pending-payments">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-muted mb-2">Pending Payments</h6>
+                                <h2 class="mb-0" id="pendingPayments">₹0</h2>
+                                <div class="small text-warning">
+                                    <span id="pendingOrdersCount">0</span> orders pending
+                                </div>
+                            </div>
+                            <div class="earnings-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="earnings-card commission-saved">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="text-muted mb-2">Commission Rate</h6>
+                                <h2 class="mb-0" id="commissionRate">0%</h2>
+                                <div class="small">
+                                    <span class="text-success" id="commissionSaved">₹0 saved</span> vs Basic
+                                </div>
+                            </div>
+                            <div class="earnings-icon">
+                                <i class="fas fa-percentage"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Revenue Chart and Quick Stats -->
+        <div class="row mb-4">
+            <!-- Revenue Trend Chart -->
+            <div class="col-lg-8 mb-4">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-chart-line text-primary"></i>
+                                Revenue Trend
+                            </h5>
+                            <div class="chart-controls">
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <input type="radio" class="btn-check" name="chartType" id="earnings" value="earnings" checked>
+                                    <label class="btn btn-outline-primary" for="earnings">Earnings</label>
+                                    
+                                    <input type="radio" class="btn-check" name="chartType" id="orders" value="orders">
+                                    <label class="btn btn-outline-primary" for="orders">Orders</label>
+                                    
+                                    <input type="radio" class="btn-check" name="chartType" id="both" value="both">
+                                    <label class="btn btn-outline-primary" for="both">Both</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="revenueChart" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Metrics -->
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-target text-success"></i>
+                            Performance Metrics
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="metrics-list" id="performanceMetrics">
+                            <!-- Metrics will be loaded here -->
+                        </div>
+                        
+                        <!-- Goals Section -->
+                        <div class="goals-section mt-4">
+                            <h6 class="mb-3">Monthly Goals</h6>
+                            <div class="goal-item">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <small>Earnings Target</small>
+                                    <small class="fw-bold">₹50,000</small>
+                                </div>
+                                <div class="progress mb-2" style="height: 6px;">
+                                    <div class="progress-bar bg-success" id="earningsGoalProgress" style="width: 0%"></div>
+                                </div>
+                                <small class="text-muted" id="earningsGoalText">₹0 / ₹50,000</small>
+                            </div>
+                            
+                            <div class="goal-item mt-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <small>Orders Target</small>
+                                    <small class="fw-bold">20 orders</small>
+                                </div>
+                                <div class="progress mb-2" style="height: 6px;">
+                                    <div class="progress-bar bg-info" id="ordersGoalProgress" style="width: 0%"></div>
+                                </div>
+                                <small class="text-muted" id="ordersGoalText">0 / 20 orders</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 9: Payment History & Withdrawal Management -->
+        <div class="row mb-4">
+            <!-- Payment History -->
+            <div class="col-lg-8 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-history text-info"></i>
+                                Payment History
+                            </h5>
+                            <div class="d-flex gap-2">
+                                <select class="form-select form-select-sm" id="paymentFilter" style="width: auto;">
+                                    <option value="all">All Payments</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="withdrawn">Withdrawn</option>
+                                </select>
+                                <button class="btn btn-outline-secondary btn-sm" onclick="exportPaymentHistory()">
+                                    <i class="fas fa-download"></i> Export
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0" id="paymentHistoryTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Service</th>
+                                        <th>Customer</th>
+                                        <th>Gross Amount</th>
+                                        <th>Commission</th>
+                                        <th>Net Amount</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="paymentHistoryBody">
+                                    <!-- Payment history will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Withdrawal Management -->
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-money-bill-wave text-success"></i>
+                            Withdrawal History
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="withdrawal-summary mb-3">
+                            <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded">
+                                <div>
+                                    <h6 class="mb-0">Next Withdrawal</h6>
+                                    <small class="text-muted">Available in 2 days</small>
+                                </div>
+                                <div class="text-end">
+                                    <div class="fw-bold text-success" id="nextWithdrawalAmount">₹0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="withdrawal-list" id="withdrawalHistory">
+                            <!-- Withdrawal history will be loaded here -->
+                        </div>
+
+                        <div class="withdrawal-info mt-3">
+                            <div class="alert alert-info small">
+                                <i class="fas fa-info-circle"></i>
+                                <strong>Withdrawal Policy:</strong><br>
+                                • Minimum withdrawal: ₹500<br>
+                                • Processing time: 1-3 business days<br>
+                                • Available every Friday
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Service-wise Earnings Breakdown -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-chart-pie text-warning"></i>
+                                Earnings by Service
+                            </h5>
+                            <button class="btn btn-outline-primary btn-sm" onclick="optimizeServices()">
+                                <i class="fas fa-magic"></i> Optimize Services
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <canvas id="serviceEarningsChart" height="300"></canvas>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="service-earnings-list" id="serviceEarningsList">
+                                    <!-- Service earnings breakdown will be loaded here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 10: Growth Analytics & Business Intelligence -->
+        <div class="row mb-4">
+            <!-- Customer Analytics -->
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-users text-primary"></i>
+                            Customer Analytics
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6 text-center">
+                                <div class="customer-stat">
+                                    <h4 class="mb-0 text-primary" id="totalCustomers">0</h4>
+                                    <small class="text-muted">Total Customers</small>
+                                </div>
+                            </div>
+                            <div class="col-6 text-center">
+                                <div class="customer-stat">
+                                    <h4 class="mb-0 text-success" id="repeatCustomers">0</h4>
+                                    <small class="text-muted">Repeat Customers</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <hr>
+                        
+                        <div class="top-customers" id="topCustomers">
+                            <h6>Top Customers</h6>
+                            <!-- Top customers list will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Market Insights -->
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-brain text-warning"></i>
+                            Market Insights
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="insights-list" id="marketInsights">
+                            <!-- Market insights will be loaded here -->
+                        </div>
+                        
+                        <div class="recommendations mt-3">
+                            <h6>AI Recommendations</h6>
+                            <div class="recommendation-item">
+                                <div class="d-flex align-items-start gap-2">
+                                    <i class="fas fa-lightbulb text-warning mt-1"></i>
+                                    <div>
+                                        <small class="fw-bold">Increase prices for Web Development</small><br>
+                                        <small class="text-muted">Market analysis shows 15% price increase potential</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Withdrawal Request Modal -->
+<div class="modal fade" id="withdrawalModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success bg-opacity-10">
+                <h5 class="modal-title">
+                    <i class="fas fa-money-bill-wave text-success"></i>
+                    Request Withdrawal
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="withdrawalForm">
+                    <div class="withdrawal-summary mb-4 p-3 bg-light rounded">
+                        <div class="row">
+                            <div class="col-6">
+                                <small class="text-muted">Available Balance</small>
+                                <div class="fw-bold text-success" id="modalAvailableBalance">₹0</div>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted">Minimum Withdrawal</small>
+                                <div class="fw-bold">₹500</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="withdrawalAmount" class="form-label">Withdrawal Amount *</label>
+                        <div class="input-group">
+                            <span class="input-group-text">₹</span>
+                            <input type="number" class="form-control" id="withdrawalAmount" 
+                                   min="500" max="100000" required>
+                        </div>
+                        <div class="form-text">
+                            Enter amount between ₹500 and your available balance
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Withdrawal Method</label>
+                        <div class="withdrawal-methods">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="withdrawalMethod" 
+                                       id="bankTransfer" value="bank" checked>
+                                <label class="form-check-label" for="bankTransfer">
+                                    <i class="fas fa-university"></i> Bank Transfer
+                                    <small class="d-block text-muted">1-3 business days</small>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="withdrawalMethod" 
+                                       id="upiTransfer" value="upi">
+                                <label class="form-check-label" for="upiTransfer">
+                                    <i class="fas fa-mobile-alt"></i> UPI Transfer
+                                    <small class="d-block text-muted">Instant (₹10 processing fee)</small>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bank-details" id="bankDetails">
+                        <h6>Bank Details</h6>
+                        <div class="current-account p-3 bg-light rounded">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <strong>Account:</strong> ****1234<br>
+                                    <strong>Bank:</strong> State Bank of India
+                                </div>
+                                <div class="col-md-6">
+                                    <strong>IFSC:</strong> SBIN0001234<br>
+                                    <strong>Name:</strong> <%= user.name %>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <a href="#" class="btn btn-outline-secondary btn-sm">
+                                    <i class="fas fa-edit"></i> Update Bank Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="upi-details d-none" id="upiDetails">
+                        <h6>UPI Details</h6>
+                        <div class="mb-3">
+                            <label for="upiId" class="form-label">UPI ID</label>
+                            <input type="text" class="form-control" id="upiId" placeholder="yourname@paytm">
+                        </div>
+                    </div>
+
+                    <div class="withdrawal-fees">
+                        <div class="row small text-muted">
+                            <div class="col-6">Processing Fee:</div>
+                            <div class="col-6 text-end" id="processingFee">Free</div>
+                        </div>
+                        <div class="row small">
+                            <div class="col-6"><strong>You'll Receive:</strong></div>
+                            <div class="col-6 text-end fw-bold" id="finalAmount">₹0</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success" id="confirmWithdrawal">
+                    <i class="fas fa-check"></i> Request Withdrawal
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Date Range Modal -->
+<div class="modal fade" id="customRangeModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Select Custom Date Range</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="customRangeForm">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="startDate" class="form-label">Start Date</label>
+                            <input type="date" class="form-control" id="startDate" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="endDate" class="form-label">End Date</label>
+                            <input type="date" class="form-control" id="endDate" required>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="applyCustomRange">
+                    Apply Range
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.earnings-container {
+    padding: 2rem 0;
+    background: #f8f9fa;
+    min-height: 100vh;
+}
+
+.earnings-header {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+}
+
+.earnings-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease;
+    border-left: 4px solid;
+    height: 100%;
+}
+
+.earnings-card:hover {
+    transform: translateY(-2px);
+}
+
+.earnings-card.total-earnings {
+    border-left-color: #28a745;
+}
+
+.earnings-card.available-balance {
+    border-left-color: #007bff;
+}
+
+.earnings-card.pending-payments {
+    border-left-color: #ffc107;
+}
+
+.earnings-card.commission-saved {
+    border-left-color: #6f42c1;
+}
+
+.earnings-icon {
+    font-size: 2.5rem;
+    color: #007bff;
+    opacity: 0.7;
+}
+
+.growth-indicator {
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+}
+
+.growth-indicator.positive {
+    color: #28a745;
+}
+
+.growth-indicator.negative {
+    color: #dc3545;
+}
+
+.metrics-list .metric-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.metrics-list .metric-item:last-child {
+    border-bottom: none;
+}
+
+.metric-value {
+    font-weight: 600;
+}
+
+.metric-value.positive {
+    color: #28a745;
+}
+
+.metric-value.negative {
+    color: #dc3545;
+}
+
+.goal-item {
+    margin-bottom: 1rem;
+}
+
+.payment-row {
+    transition: background-color 0.2s ease;
+}
+
+.payment-row:hover {
+    background-color: #f8f9fa;
+}
+
+.status-badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 15px;
+    font-weight: 600;
+}
+
+.status-completed {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-withdrawn {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.withdrawal-item {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.withdrawal-item:last-child {
+    border-bottom: none;
+}
+
+.withdrawal-amount {
+    font-weight: 600;
+    color: #28a745;
+}
+
+.withdrawal-date {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.withdrawal-status {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 10px;
+}
+
+.withdrawal-status.processing {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.withdrawal-status.completed {
+    background: #d4edda;
+    color: #155724;
+}
+
+.service-earnings-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border-left: 4px solid;
+}
+
+.service-earnings-item.top-performer {
+    border-left-color: #28a745;
+    background: linear-gradient(135deg, #d4edda, #c3e6cb);
+}
+
+.service-earnings-item.average {
+    border-left-color: #ffc107;
+    background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+}
+
+.service-earnings-item.needs-attention {
+    border-left-color: #dc3545;
+    background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+}
+
+.service-title {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.service-stats {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.service-earnings {
+    text-align: right;
+}
+
+.service-amount {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #28a745;
+}
+
+.service-orders {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.customer-stat {
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+.top-customer-item {
+    display: flex;
+    justify-content: between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.top-customer-item:last-child {
+    border-bottom: none;
+}
+
+.customer-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.insight-item {
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 3px solid #007bff;
+}
+
+.insight-positive {
+    border-left-color: #28a745;
+    background: #d4edda;
+}
+
+.insight-warning {
+    border-left-color: #ffc107;
+    background: #fff3cd;
+}
+
+.insight-negative {
+    border-left-color: #dc3545;
+    background: #f8d7da;
+}
+
+.recommendation-item {
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+    border-radius: 8px;
+    border: 1px solid #ffc107;
+}
+
+.withdrawal-methods .form-check {
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.withdrawal-methods .form-check:hover {
+    background-color: #f8f9fa;
+}
+
+.withdrawal-methods .form-check-input:checked + .form-check-label {
+    color: #007bff;
+    font-weight: 600;
+}
+
+.withdrawal-fees {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .earnings-card {
+        margin-bottom: 1rem;
+    }
+    
+    .table-responsive {
+        font-size: 0.875rem;
+    }
+    
+    .chart-controls {
+        margin-top: 1rem;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let currentPeriod = '30d';
+    let revenueChart = null;
+    let serviceChart = null;
+
+    // Initialize earnings dashboard
+    loadEarningsData();
+    setupEventListeners();
+    setupRealTimeUpdates();
+
+    function setupEventListeners() {
+        // Period selection
+        document.querySelectorAll('[data-period]').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const period = this.dataset.period;
+                
+                if (period === 'custom') {
+                    showCustomRangeModal();
+                } else {
+                    currentPeriod = period;
+                    updateActivePeriod(this);
+                    loadEarningsData();
+                }
+            });
+        });
+
+        // Chart type selection
+        document.querySelectorAll('input[name="chartType"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                updateRevenueChart(this.value);
+            });
+        });
+
+        // Payment filter
+        document.getElementById('paymentFilter').addEventListener('change', function() {
+            loadPaymentHistory(this.value);
+        });
+
+        // Withdrawal form
+        document.getElementById('withdrawalAmount').addEventListener('input', calculateWithdrawalFees);
+        document.querySelectorAll('input[name="withdrawalMethod"]').forEach(radio => {
+            radio.addEventListener('change', calculateWithdrawalFees);
+        });
+
+        // Withdrawal request
+        document.getElementById('confirmWithdrawal').addEventListener('click', processWithdrawal);
+
+        // Custom date range
+        document.getElementById('applyCustomRange').addEventListener('click', applyCustomDateRange);
+    }
+
+    async function loadEarningsData() {
+        try {
+            showLoadingSpinner();
+            
+            const response = await fetch(`/api/provider/earnings?period=${currentPeriod}`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+
+            const result = await response.json();
+            
+            if (result.success) {
+                updateEarningsCards(result.data);
+                updateRevenueChart('earnings', result.data.chartData);
+                updatePerformanceMetrics(result.data.metrics);
+                loadPaymentHistory();
+                loadWithdrawalHistory();
+                updateServiceEarnings(result.data.serviceBreakdown);
+                updateCustomerAnalytics(result.data.customerData);
+                updateMarketInsights(result.data.insights);
+            }
+
+        } catch (error) {
+            console.error('Error loading earnings data:', error);
+            showNotification('Error', 'Failed to load earnings data', 'error');
+        } finally {
+            hideLoadingSpinner();
+        }
+    }
+
+    function updateEarningsCards(data) {
+        // Total Earnings
+        document.getElementById('totalEarnings').textContent = `₹${data.totalEarnings?.toLocaleString() || 0}`;
+        const earningsGrowth = data.earningsGrowth || 0;
+        const growthElement = document.getElementById('earningsGrowth');
+        growthElement.className = `growth-indicator ${earningsGrowth >= 0 ? 'positive' : 'negative'}`;
+        growthElement.innerHTML = `<i class="fas fa-arrow-${earningsGrowth >= 0 ? 'up' : 'down'}"></i> ${Math.abs(earningsGrowth)}% this month`;
+
+        // Available Balance
+        document.getElementById('availableBalance').textContent = `₹${data.availableBalance?.toLocaleString() || 0}`;
+        
+        // Pending Payments
+        document.getElementById('pendingPayments').textContent = `₹${data.pendingPayments?.toLocaleString() || 0}`;
+        document.getElementById('pendingOrdersCount').textContent = data.pendingOrdersCount || 0;
+
+        // Commission Rate
+        const commissionRate = (data.commissionRate || 0.08) * 100;
+        document.getElementById('commissionRate').textContent = `${commissionRate}%`;
+        document.getElementById('commissionSaved').textContent = `₹${data.commissionSaved?.toLocaleString() || 0} saved`;
+
+        // Update modal balance
+        document.getElementById('modalAvailableBalance').textContent = `₹${data.availableBalance?.toLocaleString() || 0}`;
+        document.getElementById('nextWithdrawalAmount').textContent = `₹${data.availableBalance?.toLocaleString() || 0}`;
+    }
+
+    function updateRevenueChart(type, chartData) {
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        
+        if (revenueChart) {
+            revenueChart.destroy();
+        }
+
+        const datasets = [];
+        
+        if (type === 'earnings' || type === 'both') {
+            datasets.push({
+                label: 'Earnings (₹)',
+                data: chartData?.earnings || [],
+                borderColor: '#28a745',
+                backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                borderWidth: 3,
+                fill: type === 'earnings',
+                tension: 0.4,
+                yAxisID: 'y'
+            });
+        }
+        
+        if (type === 'orders' || type === 'both') {
+            datasets.push({
+                label: 'Orders',
+                data: chartData?.orders || [],
+                borderColor: '#007bff',
+                backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                borderWidth: 3,
+                fill: type === 'orders',
+                tension: 0.4,
+                yAxisID: type === 'both' ? 'y1' : 'y'
+            });
+        }
+
+        revenueChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: chartData?.labels || [],
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                if (context.dataset.label.includes('₹')) {
+                                    return context.dataset.label + ': ₹' + context.parsed.y.toLocaleString();
+                                } else {
+                                    return context.dataset.label + ': ' + context.parsed.y;
+                                }
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                if (type === 'earnings' || (type === 'both' && this.chart.data.datasets[0].yAxisID === 'y')) {
+                                    return '₹' + value.toLocaleString();
+                                }
+                                return value;
+                            }
+                        }
+                    },
+                    y1: type === 'both' ? {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        beginAtZero: true,
+                        grid: {
+                            drawOnChartArea: false
+                        }
+                    } : undefined,
+                    x: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: getPeriodLabel()
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function updatePerformanceMetrics(metrics) {
+        const container = document.getElementById('performanceMetrics');
+        
+        const metricsData = [
+            {
+                label: 'Average Order Value',
+                value: `₹${metrics?.averageOrderValue?.toLocaleString() || 0}`,
+                change: metrics?.aovChange || 0,
+                icon: 'fa-dollar-sign'
+            },
+            {
+                label: 'Completion Rate',
+                value: `${metrics?.completionRate || 0}%`,
+                change: metrics?.completionChange || 0,
+                icon: 'fa-check-circle'
+            },
+            {
+                label: 'Response Time',
+                value: `${metrics?.responseTime || 0}h`,
+                change: metrics?.responseChange || 0,
+                icon: 'fa-clock'
+            },
+            {
+                label: 'Customer Rating',
+                value: `${metrics?.customerRating || 0}/5`,
+                change: metrics?.ratingChange || 0,
+                icon: 'fa-star'
+            }
+        ];
+
+        container.innerHTML = metricsData.map(metric => `
+            <div class="metric-item">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="fas ${metric.icon} text-primary"></i>
+                    <span>${metric.label}</span>
+                </div>
+                <div class="text-end">
+                    <div class="metric-value ${metric.change >= 0 ? 'positive' : 'negative'}">
+                        ${metric.value}
+                    </div>
+                    <small class="${metric.change >= 0 ? 'text-success' : 'text-danger'}">
+                        <i class="fas fa-arrow-${metric.change >= 0 ? 'up' : 'down'}"></i>
+                        ${Math.abs(metric.change)}%
+                    </small>
+                </div>
+            </div>
+        `).join('');
+
+        // Update goals progress
+        if (metrics?.monthlyEarnings && metrics?.monthlyGoal) {
+            const progress = (metrics.monthlyEarnings / metrics.monthlyGoal) * 100;
+            document.getElementById('earningsGoalProgress').style.width = `${Math.min(progress, 100)}%`;
+            document.getElementById('earningsGoalText').textContent = 
+                `₹${metrics.monthlyEarnings.toLocaleString()} / ₹${metrics.monthlyGoal.toLocaleString()}`;
+        }
+
+        if (metrics?.monthlyOrders && metrics?.ordersGoal) {
+            const progress = (metrics.monthlyOrders / metrics.ordersGoal) * 100;
+            document.getElementById('ordersGoalProgress').style.width = `${Math.min(progress, 100)}%`;
+            document.getElementById('ordersGoalText').textContent = 
+                `${metrics.monthlyOrders} / ${metrics.ordersGoal} orders`;
+        }
+    }
+
+    async function loadPaymentHistory(filter = 'all') {
+        try {
+            const response = await fetch(`/api/provider/payments?filter=${filter}&period=${currentPeriod}`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+
+            const result = await response.json();
+            
+            if (result.success) {
+                renderPaymentHistory(result.payments);
+            }
+
+        } catch (error) {
+            console.error('Error loading payment history:', error);
+        }
+    }
+
+    function renderPaymentHistory(payments) {
+        const tbody = document.getElementById('paymentHistoryBody');
+        
+        if (payments.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="8" class="text-center text-muted py-4">
+                        <i class="fas fa-inbox fa-2x mb-2"></i><br>
+                        No payment history found
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        tbody.innerHTML = payments.map(payment => `
+            <tr class="payment-row">
+                <td>
+                    <small class="text-muted">#${payment.orderId?.slice(-6) || 'N/A'}</small>
+                </td>
+                <td>
+                    <div class="fw-bold">${payment.serviceTitle || 'N/A'}</div>
+                    <small class="text-muted">${payment.serviceCategory || ''}</small>
+                </td>
+                <td>
+                    <div>${payment.customerName || 'N/A'}</div>
+                    <small class="text-muted">${payment.customerEmail || ''}</small>
+                </td>
+                <td>
+                    <span class="fw-bold">₹${payment.grossAmount?.toLocaleString() || 0}</span>
+                </td>
+                <td>
+                    <span class="text-danger">-₹${payment.commission?.toLocaleString() || 0}</span>
+                </td>
+                <td>
+                    <span class="fw-bold text-success">₹${payment.netAmount?.toLocaleString() || 0}</span>
+                </td>
+                <td>
+                    <span class="status-badge status-${payment.status}">
+                        ${formatPaymentStatus(payment.status)}
+                    </span>
+                </td>
+                <td>
+                    <small>${formatDate(payment.date)}</small>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    async function loadWithdrawalHistory() {
+        try {
+            const response = await fetch('/api/provider/withdrawals', {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+
+            const result = await response.json();
+            
+            if (result.success) {
+                renderWithdrawalHistory(result.withdrawals);
+            }
+
+        } catch (error) {
+            console.error('Error loading withdrawal history:', error);
+        }
+    }
+
+    function renderWithdrawalHistory(withdrawals) {
+        const container = document.getElementById('withdrawalHistory');
+        
+        if (withdrawals.length === 0) {
+            container.innerHTML = `
+                <div class="text-center text-muted py-3">
+                    <i class="fas fa-money-bill-wave fa-2x mb-2"></i><br>
+                    <small>No withdrawals yet</small>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = withdrawals.map(withdrawal => `
+            <div class="withdrawal-item">
+                <div>
+                    <div class="withdrawal-amount">₹${withdrawal.amount.toLocaleString()}</div>
+                    <div class="withdrawal-date">${formatDate(withdrawal.date)}</div>
+                </div>
+                <div>
+                    <span class="withdrawal-status ${withdrawal.status}">
+                        ${formatWithdrawalStatus(withdrawal.status)}
+                    </span>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function updateServiceEarnings(serviceData) {
+        if (!serviceData || serviceData.length === 0) return;
+
+        // Update pie chart
+        const ctx = document.getElementById('serviceEarningsChart').getContext('2d');
+        
+        if (serviceChart) {
+            serviceChart.destroy();
+        }
+
+        serviceChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: serviceData.map(s => s.serviceName),
+                datasets: [{
+                    data: serviceData.map(s => s.earnings),
+                    backgroundColor: [
+                        '#28a745',
+                        '#007bff',
+                        '#ffc107',
+                        '#dc3545',
+                        '#6f42c1',
+                        '#fd7e14'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ₹' + context.parsed.toLocaleString();
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Update service list
+        const container = document.getElementById('serviceEarningsList');
+        container.innerHTML = serviceData.map((service, index) => {
+            let performanceClass = 'average';
+            if (index === 0) performanceClass = 'top-performer';
+            if (index === serviceData.length - 1) performanceClass = 'needs-attention';
+
+            return `
+                <div class="service-earnings-item ${performanceClass}">
+                    <div>
+                        <div class="service-title">${service.serviceName}</div>
+                        <div class="service-stats">
+                            ${service.ordersCount} orders • ${service.avgRating}/5 rating
+                        </div>
+                    </div>
+                    <div class="service-earnings">
+                        <div class="service-amount">₹${service.earnings.toLocaleString()}</div>
+                        <div class="service-orders">${service.ordersCount} orders</div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function updateCustomerAnalytics(customerData) {
+        document.getElementById('totalCustomers').textContent = customerData?.totalCustomers || 0;
+        document.getElementById('repeatCustomers').textContent = customerData?.repeatCustomers || 0;
+
+        if (customerData?.topCustomers) {
+            const container = document.getElementById('topCustomers');
+            container.innerHTML = `<h6>Top Customers</h6>` + customerData.topCustomers.map(customer => `
+                <div class="top-customer-item">
+                    <div class="d-flex align-items-center gap-2">
+                        <img src="${customer.avatar || '/images/default-avatar.png'}" 
+                             alt="${customer.name}" class="customer-avatar">
+                        <div>
+                            <div class="fw-bold">${customer.name}</div>
+                            <small class="text-muted">${customer.ordersCount} orders</small>
+                        </div>
+                    </div>
+                    <div class="text-success fw-bold">₹${customer.totalSpent.toLocaleString()}</div>
+                </div>
+            `).join('');
+        }
+    }
+
+    function updateMarketInsights(insights) {
+        const container = document.getElementById('marketInsights');
+        
+        if (!insights || insights.length === 0) {
+            container.innerHTML = `
+                <div class="insight-item">
+                    <small>Loading market insights...</small>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = insights.map(insight => `
+            <div class="insight-item insight-${insight.type}">
+                <div class="fw-bold">${insight.title}</div>
+                <small>${insight.description}</small>
+            </div>
+        `).join('');
+    }
+
+    // Withdrawal functions
+    function requestWithdrawal() {
+        const modal = new bootstrap.Modal(document.getElementById('withdrawalModal'));
+        modal.show();
+    }
+
+    function calculateWithdrawalFees() {
+        const amount = parseFloat(document.getElementById('withdrawalAmount').value) || 0;
+        const method = document.querySelector('input[name="withdrawalMethod"]:checked').value;
+        
+        let fee = 0;
+        if (method === 'upi' && amount > 0) {
+            fee = 10; // ₹10 processing fee for UPI
+        }
+        
+        const finalAmount = amount - fee;
+        
+        document.getElementById('processingFee').textContent = fee > 0 ? `₹${fee}` : 'Free';
+        document.getElementById('finalAmount').textContent = `₹${finalAmount.toLocaleString()}`;
+        
+        // Show/hide appropriate details
+        const bankDetails = document.getElementById('bankDetails');
+        const upiDetails = document.getElementById('upiDetails');
+        
+        if (method === 'bank') {
+            bankDetails.classList.remove('d-none');
+            upiDetails.classList.add('d-none');
+        } else {
+            bankDetails.classList.add('d-none');
+            upiDetails.classList.remove('d-none');
+        }
+    }
+
+    async function processWithdrawal() {
+        const amount = parseFloat(document.getElementById('withdrawalAmount').value);
+        const method = document.querySelector('input[name="withdrawalMethod"]:checked').value;
+        
+        if (!amount || amount < 500) {
+            showNotification('Error', 'Minimum withdrawal amount is ₹500', 'error');
+            return;
+        }
+        
+        const availableBalance = parseFloat(document.getElementById('modalAvailableBalance').textContent.replace('₹', '').replace(',', ''));
+        if (amount > availableBalance) {
+            showNotification('Error', 'Insufficient balance', 'error');
+            return;
+        }
+
+        const btn = document.getElementById('confirmWithdrawal');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+        try {
+            const withdrawalData = {
+                amount,
+                method,
+                upiId: method === 'upi' ? document.getElementById('upiId').value : null
+            };
+
+            const response = await fetch('/api/provider/withdraw', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify(withdrawalData)
+            });
+
+            const result = await response.json();
+            
+            if (result.success) {
+                showNotification('Success', 'Withdrawal request submitted successfully!', 'success');
+                
+                // Close modal and refresh data
+                bootstrap.Modal.getInstance(document.getElementById('withdrawalModal')).hide();
+                document.getElementById('withdrawalForm').reset();
+                loadEarningsData();
+                
+            } else {
+                throw new Error(result.message || 'Failed to process withdrawal');
+            }
+
+        } catch (error) {
+            console.error('Error processing withdrawal:', error);
+            showNotification('Error', error.message, 'error');
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-check"></i> Request Withdrawal';
+        }
+    }
+
+    // Utility functions
+    function formatPaymentStatus(status) {
+        const statusLabels = {
+            'completed': 'Completed',
+            'pending': 'Pending',
+            'withdrawn': 'Withdrawn'
+        };
+        return statusLabels[status] || status;
+    }
+
+    function formatWithdrawalStatus(status) {
+        const statusLabels = {
+            'processing': 'Processing',
+            'completed': 'Completed',
+            'failed': 'Failed'
+        };
+        return statusLabels[status] || status;
+    }
+
+    function formatDate(dateString) {
+        return new Date(dateString).toLocaleDateString('en-IN', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
+        });
+    }
+
+    function getPeriodLabel() {
+        const labels = {
+            '7d': 'Last 7 Days',
+            '30d': 'Last 30 Days',
+            '90d': 'Last 90 Days',
+            '1y': 'This Year'
+        };
+        return labels[currentPeriod] || 'Custom Period';
+    }
+
+    function updateActivePeriod(selectedItem) {
+        document.querySelectorAll('[data-period]').forEach(item => {
+            item.classList.remove('active');
+        });
+        selectedItem.classList.add('active');
+    }
+
+    function showCustomRangeModal() {
+        const modal = new bootstrap.Modal(document.getElementById('customRangeModal'));
+        modal.show();
+    }
+
+    function applyCustomDateRange() {
+        const startDate = document.getElementById('startDate').value;
+        const endDate = document.getElementById('endDate').value;
+        
+        if (!startDate || !endDate) {
+            showNotification('Error', 'Please select both start and end dates', 'error');
+            return;
+        }
+        
+        currentPeriod = `${startDate}:${endDate}`;
+        bootstrap.Modal.getInstance(document.getElementById('customRangeModal')).hide();
+        loadEarningsData();
+    }
+
+    function setupRealTimeUpdates() {
+        socket.on('payment-received', (data) => {
+            loadEarningsData();
+            showNotification('Payment Received!', `₹${data.amount.toLocaleString()} from ${data.customerName}`, 'success');
+        });
+
+        socket.on('withdrawal-processed', (data) => {
+            loadEarningsData();
+            loadWithdrawalHistory();
+            showNotification('Withdrawal Processed', `₹${data.amount.toLocaleString()} has been transferred`, 'success');
+        });
+    }
+
+    // Export functions
+    window.exportPaymentHistory = function() {
+        const filter = document.getElementById('paymentFilter').value;
+        window.open(`/api/provider/payments/export?filter=${filter}&period=${currentPeriod}`, '_blank');
+    };
+
+    window.optimizeServices = function() {
+        showNotification('AI Analysis', 'Analyzing your services for optimization opportunities...', 'info');
+        // This would trigger AI analysis of services
+    };
+
+    // Global functions
+    window.requestWithdrawal = requestWithdrawal;
+});
+</script>

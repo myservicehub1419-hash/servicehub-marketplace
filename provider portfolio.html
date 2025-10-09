@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Setup Your Portfolio - MyServiceHub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #764ba2, #667eea);
+            color: white;
+            padding: 3rem 2.5rem 2rem 2.5rem;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .progress-bar {
+            background: rgba(255,255,255,0.2);
+            height: 6px;
+            border-radius: 3px;
+            margin-top: 1.5rem;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: white;
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .form-container {
+            padding: 3rem 2.5rem;
+        }
+        
+        .section {
+            margin-bottom: 3rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: #764ba2;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .section-description {
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group {
+            flex: 1;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        .required {
+            color: #dc3545;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.1);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .file-upload {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .file-upload:hover {
+            border-color: #764ba2;
+            background: #f8f9fa;
+        }
+        
+        .file-upload.dragover {
+            border-color: #764ba2;
+            background: #e8f0fe;
+        }
+        
+        .file-upload input[type="file"] {
+            display: none;
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #764ba2;
+        }
+        
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .portfolio-item {
+            position: relative;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            background: #f8f9fa;
+        }
+        
+        .portfolio-item img {
+            max-width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .portfolio-item .remove-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .skill-tag {
+            background: #e8f0fe;
+            color: #764ba2;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .skill-tag .remove {
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .add-skill {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .add-skill input {
+            flex: 1;
+        }
+        
+        .add-skill button {
+            background: #764ba2;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        
+        .certification-item {
+            background: #f8f9fa;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        
+        .certification-item .remove-cert {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 0.25rem 0.5rem;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        .add-certification {
+            background: #f0f8ff;
+            border: 2px dashed #764ba2;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .add-certification:hover {
+            background: #e8f0fe;
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            padding: 2rem 2.5rem;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .nav-btn {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        
+        .nav-btn.secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .nav-btn.primary {
+            background: linear-gradient(135deg, #764ba2, #667eea);
+            color: white;
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(118, 75, 162, 0.3);
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .success-message {
+            background: #d1edff;
+            border: 1px solid #b6d7ff;
+            color: #0056b3;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            text-align: center;
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .header {
+                padding: 2rem 1.5rem;
+            }
+            
+            .form-container {
+                padding: 2rem 1.5rem;
+            }
+            
+            .navigation-buttons {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎨 Setup Your Portfolio</h1>
+            <p>Showcase your skills, experience, and work to attract more customers</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+        
+        <div class="form-container">
+            <div class="success-message" id="successMessage">
+                ✅ Your portfolio has been saved successfully!
+            </div>
+            
+            <form id="portfolioForm">
+                <!-- Professional Summary Section -->
+                <div class="section">
+                    <h2 class="section-title">📝 Professional Summary</h2>
+                    <p class="section-description">Write a compelling summary that highlights your expertise and what makes you unique.</p>
+                    
+                    <div class="form-group">
+                        <label for="professionalSummary">Professional Summary <span class="required">*</span></label>
+                        <textarea id="professionalSummary" name="professionalSummary" required 
+                                placeholder="Describe your professional background, key skills, and what sets you apart from others in your field..."></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="hourlyRate">Hourly Rate (₹)</label>
+                            <input type="number" id="hourlyRate" name="hourlyRate" placeholder="500" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="availability">Availability</label>
+                            <select id="availability" name="availability">
+                                <option value="full-time">Full Time (40+ hrs/week)</option>
+                                <option value="part-time">Part Time (20-40 hrs/week)</option>
+                                <option value="weekends">Weekends Only</option>
+                                <option value="flexible">Flexible Hours</option>
+                                <option value="project-based">Project Based</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Skills Section -->
+                <div class="section">
+                    <h2 class="section-title">🛠️ Skills & Expertise</h2>
+                    <p class="section-description">Add your key skills to help customers find you for relevant services.</p>
+                    
+                    <div class="skills-container" id="skillsContainer">
+                        <!-- Skills will be added here -->
+                    </div>
+                    
+                    <div class="add-skill">
+                        <input type="text" id="skillInput" placeholder="Enter a skill (e.g., Web Design, SEO, Photography)">
+                        <button type="button" onclick="addSkill()">Add Skill</button>
+                    </div>
+                </div>
+                
+                <!-- Portfolio/Work Samples Section -->
+                <div class="section">
+                    <h2 class="section-title">🖼️ Portfolio & Work Samples</h2>
+                    <p class="section-description">Upload images of your best work to showcase your capabilities.</p>
+                    
+                    <div class="file-upload" id="portfolioUpload" onclick="document.getElementById('portfolioFiles').click()">
+                        <div class="upload-icon">📁</div>
+                        <h3>Click to Upload Portfolio Images</h3>
+                        <p>Drag & drop files here or click to browse<br>
+                        <small>Supported formats: JPG, PNG, GIF (Max 5MB each)</small></p>
+                        <input type="file" id="portfolioFiles" multiple accept="image/*" onchange="handleFileUpload(this)">
+                    </div>
+                    
+                    <div class="portfolio-grid" id="portfolioGrid">
+                        <!-- Portfolio items will be added here -->
+                    </div>
+                </div>
+                
+                <!-- Experience Section -->
+                <div class="section">
+                    <h2 class="section-title">💼 Work Experience</h2>
+                    <p class="section-description">Add your relevant work experience to build credibility.</p>
+                    
+                    <div id="experienceContainer">
+                        <div class="certification-item">
+                            <button type="button" class="remove-cert" onclick="removeExperience(this)">Remove</button>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Job Title</label>
+                                    <input type="text" name="jobTitle[]" placeholder="e.g., Senior Web Developer">
+                                </div>
+                                <div class="form-group">
+                                    <label>Company</label>
+                                    <input type="text" name="company[]" placeholder="e.g., TechCorp India">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Duration</label>
+                                    <input type="text" name="duration[]" placeholder="e.g., Jan 2020 - Present">
+                                </div>
+                                <div class="form-group">
+                                    <label>Location</label>
+                                    <input type="text" name="workLocation[]" placeholder="e.g., Mumbai, India">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea name="jobDescription[]" placeholder="Describe your key responsibilities and achievements..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="add-certification" onclick="addExperience()">
+                        <h3>+ Add Work Experience</h3>
+                        <p>Add another position to showcase your background</p>
+                    </div>
+                </div>
+                
+                <!-- Certifications Section -->
+                <div class="section">
+                    <h2 class="section-title">🏆 Certifications & Achievements</h2>
+                    <p class="section-description">Add relevant certifications, courses, and achievements.</p>
+                    
+                    <div id="certificationsContainer">
+                        <div class="certification-item">
+                            <button type="button" class="remove-cert" onclick="removeCertification(this)">Remove</button>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Certification Name</label>
+                                    <input type="text" name="certName[]" placeholder="e.g., Google Analytics Certified">
+                                </div>
+                                <div class="form-group">
+                                    <label>Issuing Organization</label>
+                                    <input type="text" name="certOrg[]" placeholder="e.g., Google">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Date Obtained</label>
+                                    <input type="month" name="certDate[]">
+                                </div>
+                                <div class="form-group">
+                                    <label>Credential URL (Optional)</label>
+                                    <input type="url" name="certUrl[]" placeholder="https://credential-link.com">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="add-certification" onclick="addCertification()">
+                        <h3>+ Add Certification</h3>
+                        <p>Add certificates, courses, or achievements</p>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <div class="navigation-buttons">
+            <button type="button" class="nav-btn secondary" onclick="goBack()">
+                ⬅️ Back to Login
+            </button>
+            <button type="button" class="nav-btn primary" id="savePortfolio" onclick="savePortfolio()">
+                🚀 Save & Continue to Dashboard
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let skills = [];
+        let portfolioImages = [];
+        
+        // Check login status on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                alert('❌ Please login first!');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Check if portfolio already completed
+            if (localStorage.getItem('portfolioCompleted') === 'true') {
+                window.location.href = 'dashboard.html';
+            }
+            
+            // Load saved portfolio data if exists
+            loadSavedPortfolio();
+            updateProgress();
+        });
+        
+        function addSkill() {
+            const skillInput = document.getElementById('skillInput');
+            const skill = skillInput.value.trim();
+            
+            if (skill && !skills.includes(skill)) {
+                skills.push(skill);
+                skillInput.value = '';
+                renderSkills();
+                updateProgress();
+            }
+        }
+        
+        function removeSkill(skill) {
+            skills = skills.filter(s => s !== skill);
+            renderSkills();
+            updateProgress();
+        }
+        
+        function renderSkills() {
+            const container = document.getElementById('skillsContainer');
+            container.innerHTML = '';
+            
+            skills.forEach(skill => {
+                const skillTag = document.createElement('div');
+                skillTag.className = 'skill-tag';
+                skillTag.innerHTML = `
+                    ${skill}
+                    <span class="remove" onclick="removeSkill('${skill}')">×</span>
+                `;
+                container.appendChild(skillTag);
+            });
+        }
+        
+        function handleFileUpload(input) {
+            const files = Array.from(input.files);
+            
+            files.forEach(file => {
+                if (file.size > 5 * 1024 * 1024) {
+                    alert(`File ${file.name} is too large. Maximum size is 5MB.`);
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    portfolioImages.push({
+                        name: file.name,
+                        data: e.target.result
+                    });
+                    renderPortfolio();
+                    updateProgress();
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+        
+        function renderPortfolio() {
+            const grid = document.getElementById('portfolioGrid');
+            grid.innerHTML = '';
+            
+            portfolioImages.forEach((image, index) => {
+                const item = document.createElement('div');
+                item.className = 'portfolio-item';
+                item.innerHTML = `
+                    <button class="remove-btn" onclick="removePortfolioImage(${index})">×</button>
+                    <img src="${image.data}" alt="${image.name}">
+                    <p>${image.name}</p>
+                `;
+                grid.appendChild(item);
+            });
+        }
+        
+        function removePortfolioImage(index) {
+            portfolioImages.splice(index, 1);
+            renderPortfolio();
+            updateProgress();
+        }
+        
+        function addExperience() {
+            const container = document.getElementById('experienceContainer');
+            const experienceItem = document.createElement('div');
+            experienceItem.className = 'certification-item';
+            experienceItem.innerHTML = `
+                <button type="button" class="remove-cert" onclick="removeExperience(this)">Remove</button>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Job Title</label>
+                        <input type="text" name="jobTitle[]" placeholder="e.g., Senior Web Developer">
+                    </div>
+                    <div class="form-group">
+                        <label>Company</label>
+                        <input type="text" name="company[]" placeholder="e.g., TechCorp India">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Duration</label>
+                        <input type="text" name="duration[]" placeholder="e.g., Jan 2020 - Present">
+                    </div>
+                    <div class="form-group">
+                        <label>Location</label>
+                        <input type="text" name="workLocation[]" placeholder="e.g., Mumbai, India">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="jobDescription[]" placeholder="Describe your key responsibilities and achievements..."></textarea>
+                </div>
+            `;
+            container.appendChild(experienceItem);
+            updateProgress();
+        }
+        
+        function removeExperience(button) {
+            button.parentElement.remove();
+            updateProgress();
+        }
+        
+        function addCertification() {
+            const container = document.getElementById('certificationsContainer');
+            const certItem = document.createElement('div');
+            certItem.className = 'certification-item';
+            certItem.innerHTML = `
+                <button type="button" class="remove-cert" onclick="removeCertification(this)">Remove</button>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Certification Name</label>
+                        <input type="text" name="certName[]" placeholder="e.g., Google Analytics Certified">
+                    </div>
+                    <div class="form-group">
+                        <label>Issuing Organization</label>
+                        <input type="text" name="certOrg[]" placeholder="e.g., Google">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Date Obtained</label>
+                        <input type="month" name="certDate[]">
+                    </div>
+                    <div class="form-group">
+                        <label>Credential URL (Optional)</label>
+                        <input type="url" name="certUrl[]" placeholder="https://credential-link.com">
+                    </div>
+                </div>
+            `;
+            container.appendChild(certItem);
+            updateProgress();
+        }
+        
+        function removeCertification(button) {
+            button.parentElement.remove();
+            updateProgress();
+        }
+        
+        function updateProgress() {
+            const form = document.getElementById('portfolioForm');
+            const formData = new FormData(form);
+            let completedFields = 0;
+            let totalFields = 7; // Professional summary, skills, portfolio, availability, etc.
+            
+            // Check professional summary
+            if (document.getElementById('professionalSummary').value.trim()) completedFields++;
+            
+            // Check skills
+            if (skills.length > 0) completedFields++;
+            
+            // Check portfolio images
+            if (portfolioImages.length > 0) completedFields++;
+            
+            // Check hourly rate
+            if (document.getElementById('hourlyRate').value) completedFields++;
+            
+            // Check availability
+            if (document.getElementById('availability').value) completedFields++;
+            
+            // Check experience
+            const jobTitles = formData.getAll('jobTitle[]');
+            if (jobTitles.some(title => title.trim())) completedFields++;
+            
+            // Check certifications
+            const certNames = formData.getAll('certName[]');
+            if (certNames.some(name => name.trim())) completedFields++;
+            
+            const progress = (completedFields / totalFields) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+        
+        function savePortfolio() {
+            const form = document.getElementById('portfolioForm');
+            const formData = new FormData(form);
+            const saveBtn = document.getElementById('savePortfolio');
+            
+            // Basic validation
+            if (!document.getElementById('professionalSummary').value.trim()) {
+                alert('❌ Professional summary is required!');
+                return;
+            }
+            
+            if (skills.length === 0) {
+                alert('❌ Please add at least one skill!');
+                return;
+            }
+            
+            // Show saving state
+            const originalText = saveBtn.textContent;
+            saveBtn.textContent = '💾 Saving Portfolio...';
+            saveBtn.disabled = true;
+            
+            // Collect all portfolio data
+            const portfolioData = {
+                professionalSummary: document.getElementById('professionalSummary').value,
+                hourlyRate: document.getElementById('hourlyRate').value,
+                availability: document.getElementById('availability').value,
+                skills: skills,
+                portfolioImages: portfolioImages,
+                experience: collectExperienceData(),
+                certifications: collectCertificationData(),
+                completedAt: new Date().toISOString()
+            };
+            
+            // Simulate saving
+            setTimeout(() => {
+                // Save to localStorage
+                localStorage.setItem('portfolioData', JSON.stringify(portfolioData));
+                localStorage.setItem('portfolioCompleted', 'true');
+                
+                // Show success
+                document.getElementById('successMessage').style.display = 'block';
+                saveBtn.textContent = '✅ Portfolio Saved!';
+                saveBtn.style.background = '#28a745';
+                
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 2000);
+                
+            }, 2000);
+        }
+        
+        function collectExperienceData() {
+            const form = document.getElementById('portfolioForm');
+            const formData = new FormData(form);
+            const experiences = [];
+            
+            const jobTitles = formData.getAll('jobTitle[]');
+            const companies = formData.getAll('company[]');
+            const durations = formData.getAll('duration[]');
+            const locations = formData.getAll('workLocation[]');
+            const descriptions = formData.getAll('jobDescription[]');
+            
+            for (let i = 0; i < jobTitles.length; i++) {
+                if (jobTitles[i].trim()) {
+                    experiences.push({
+                        jobTitle: jobTitles[i],
+                        company: companies[i],
+                        duration: durations[i],
+                        location: locations[i],
+                        description: descriptions[i]
+                    });
+                }
+            }
+            
+            return experiences;
+        }
+        
+        function collectCertificationData() {
+            const form = document.getElementById('portfolioForm');
+            const formData = new FormData(form);
+            const certifications = [];
+            
+            const certNames = formData.getAll('certName[]');
+            const certOrgs = formData.getAll('certOrg[]');
+            const certDates = formData.getAll('certDate[]');
+            const certUrls = formData.getAll('certUrl[]');
+            
+            for (let i = 0; i < certNames.length; i++) {
+                if (certNames[i].trim()) {
+                    certifications.push({
+                        name: certNames[i],
+                        organization: certOrgs[i],
+                        date: certDates[i],
+                        url: certUrls[i]
+                    });
+                }
+            }
+            
+            return certifications;
+        }
+        
+        function loadSavedPortfolio() {
+            const saved = localStorage.getItem('portfolioData');
+            if (saved) {
+                const data = JSON.parse(saved);
+                
+                // Load basic fields
+                if (data.professionalSummary) document.getElementById('professionalSummary').value = data.professionalSummary;
+                if (data.hourlyRate) document.getElementById('hourlyRate').value = data.hourlyRate;
+                if (data.availability) document.getElementById('availability').value = data.availability;
+                
+                // Load skills
+                if (data.skills) {
+                    skills = data.skills;
+                    renderSkills();
+                }
+                
+                // Load portfolio images
+                if (data.portfolioImages) {
+                    portfolioImages = data.portfolioImages;
+                    renderPortfolio();
+                }
+                
+                updateProgress();
+            }
+        }
+        
+        function goBack() {
+            if (confirm('Are you sure you want to go back? Any unsaved changes will be lost.')) {
+                window.location.href = 'login.html';
+            }
+        }
+        
+        // Add event listeners for real-time progress updates
+        document.getElementById('professionalSummary').addEventListener('input', updateProgress);
+        document.getElementById('hourlyRate').addEventListener('input', updateProgress);
+        document.getElementById('availability').addEventListener('change', updateProgress);
+        document.getElementById('skillInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                addSkill();
+            }
+        });
+        
+        // Drag and drop functionality
+        const uploadArea = document.getElementById('portfolioUpload');
+        
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            
+            const files = Array.from(e.dataTransfer.files);
+            files.forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    const event = { target: { files: [file] } };
+                    handleFileUpload(event.target);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

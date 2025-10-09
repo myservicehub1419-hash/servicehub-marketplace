@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 MyServiceHub - Provider Registration</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c, #4facfe, #00f2fe);
+            background-size: 400% 400%;
+            animation: gradientWave 8s ease infinite;
+            min-height: 100vh;
+            color: white;
+            line-height: 1.6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* ANIMATED BACKGROUND */
+        @keyframes gradientWave {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* FLOATING ORBS */
+        .floating-orbs {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            backdrop-filter: blur(10px);
+            animation: float 15s infinite ease-in-out;
+        }
+        
+        .orb:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .orb:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 60%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+        
+        .orb:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            top: 30%;
+            right: 30%;
+            animation-delay: 4s;
+        }
+        
+        .orb:nth-child(4) {
+            width: 100px;
+            height: 100px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 6s;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0.7;
+            }
+            33% {
+                transform: translateY(-30px) rotate(120deg);
+                opacity: 0.9;
+            }
+            66% {
+                transform: translateY(30px) rotate(240deg);
+                opacity: 0.8;
+            }
+        }
+        
+        /* REGISTRATION CONTAINER */
+        .registration-container {
+            background: rgba(22, 27, 34, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 480px;
+            width: 100%;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 2;
+            animation: containerSlideUp 0.8s ease;
+        }
+        
+        @keyframes containerSlideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        /* HEADER */
+        .header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+        
+        .brand-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 1.8rem;
+            color: white;
+            animation: iconPulse 2s ease infinite;
+        }
+        
+        @keyframes iconPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .brand-name {
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        
+        .brand-tagline {
+            color: #64b5f6;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .brand-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        /* FORM STYLES */
+        .registration-form {
+            margin-top: 30px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            color: #64b5f6;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 16px 18px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .form-input::placeholder,
+        .form-textarea::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .form-select {
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 15px center;
+            background-repeat: no-repeat;
+            background-size: 18px;
+            padding-right: 45px;
+        }
+        
+        .form-select option {
+            background: #1a202c;
+            color: white;
+        }
+        
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        /* SUBMIT BUTTON */
+        .submit-btn {
+            width: 100%;
+            padding: 18px 28px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 50px rgba(102, 126, 234, 0.4);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* FOOTER */
+        .form-footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .form-footer p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+        
+        .footer-link {
+            color: #64b5f6;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .footer-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* JARVIS AI ASSISTANT */
+        .ai-assistant {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+        
+        .ai-toggle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4, #45b7d1);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 1.6rem;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s ease;
+            animation: float-ai 4s ease-in-out infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* ROBOT ICON */
+        .ai-toggle::before {
+            content: '🤖';
+            font-size: 1.8rem;
+            z-index: 2;
+        }
+        
+        .ai-toggle::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: rotate 3s linear infinite;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes float-ai {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-15px) scale(1.05); }
+        }
+        
+        .ai-toggle:hover {
+            transform: scale(1.15);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* JARVIS AI CHAT WINDOW - PROPERLY SIZED */
+        .ai-chat-window {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 360px;
+            height: 420px;  /* Reduced height to fit screen */
+            border-radius: 20px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4);
+            transform: translateY(30px) scale(0.9);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            z-index: 1001;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+        }
+        
+        .ai-chat-window.active {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* JARVIS HEADER */
+        .ai-header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 50%, #45b7d1 100%);
+            color: white;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+        
+        .ai-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .ai-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 2;
+        }
+        
+        .ai-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            animation: avatarGlow 2s ease infinite alternate;
+        }
+        
+        @keyframes avatarGlow {
+            from { box-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+            to { box-shadow: 0 0 20px rgba(255, 255, 255, 0.6); }
+        }
+        
+        /* ROBOT ICON in avatar */
+        .ai-avatar::before {
+            content: '🤖';
+        }
+        
+        .ai-info h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 3px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .ai-info small {
+            opacity: 0.95;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+        }
+        
+        .ai-info small::before {
+            content: '🟢';
+            font-size: 0.6rem;
+            animation: pulse 2s ease infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .ai-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+        
+        .ai-close:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: rotate(90deg) scale(1.1);
+        }
+        
+        /* JARVIS MESSAGES - COMPACT SIZE */
+        .ai-messages {
+            height: 240px;  /* Reduced height */
+            overflow-y: auto;
+            padding: 18px;
+            background: linear-gradient(135deg, #1a202c, #2d3748);
+            color: #4ecdc4;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-size: 0.8rem;
+        }
+        
+        .ai-messages::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .ai-messages::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+        }
+        
+        .ai-messages::-webkit-scrollbar-thumb {
+            background: #4ecdc4;
+            border-radius: 2px;
+        }
+        
+        .ai-message {
+            max-width: 90%;
+            font-size: 0.75rem;
+            line-height: 1.4;
+            animation: messageSlideIn 0.4s ease;
+        }
+        
+        @keyframes messageSlideIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(12px) scale(0.95); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
+        }
+        
+        .ai-message.bot {
+            background: rgba(78, 205, 196, 0.15);
+            color: #4ecdc4;
+            padding: 10px 12px;
+            border-radius: 12px 12px 12px 4px;
+            border-left: 3px solid #4ecdc4;
+            align-self: flex-start;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(78, 205, 196, 0.3);
+            box-shadow: 0 3px 10px rgba(78, 205, 196, 0.1);
+        }
+        
+        .ai-message.user {
+            background: rgba(255, 107, 107, 0.2);
+            color: white;
+            padding: 10px 12px;
+            border-radius: 12px 12px 4px 12px;
+            align-self: flex-end;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* JARVIS INPUT AREA - COMPACT & VISIBLE */
+        .ai-input-area {
+            padding: 15px 18px;
+            background: linear-gradient(135deg, #1a202c, #2d3748);
+            border-top: 1px solid rgba(78, 205, 196, 0.3);
+            height: 110px; /* Fixed height to ensure visibility */
+        }
+        
+        .quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .quick-action {
+            background: rgba(78, 205, 196, 0.15);
+            color: #4ecdc4;
+            border: 1px solid rgba(78, 205, 196, 0.4);
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-size: 0.65rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+        
+        .quick-action:hover {
+            background: rgba(78, 205, 196, 0.3);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(78, 205, 196, 0.3);
+        }
+        
+        .ai-input-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            height: 40px; /* Fixed height */
+        }
+        
+        .ai-input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid rgba(78, 205, 196, 0.5);
+            border-radius: 20px;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            background: rgba(78, 205, 196, 0.1);
+            color: #4ecdc4;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            height: 40px;
+        }
+        
+        .ai-input::placeholder {
+            color: rgba(78, 205, 196, 0.6);
+        }
+        
+        .ai-input:focus {
+            border-color: #4ecdc4;
+            box-shadow: 0 0 0 2px rgba(78, 205, 196, 0.2);
+            background: rgba(78, 205, 196, 0.15);
+        }
+        
+        /* PROPERLY VISIBLE SEND BUTTON */
+        .ai-send {
+            background: linear-gradient(45deg, #4ecdc4, #45b7d1);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.4);
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        /* CLEAR SEND ICON */
+        .ai-send::after {
+            content: '→';
+            font-size: 1.1rem;
+            color: white;
+            font-weight: bold;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        
+        .ai-send:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(78, 205, 196, 0.6);
+            background: linear-gradient(45deg, #45b7d1, #4ecdc4);
+        }
+        
+        .ai-send:active {
+            transform: scale(0.95);
+        }
+        
+        /* MOBILE RESPONSIVE */
+        @media (max-width: 768px) {
+            .registration-container {
+                padding: 30px 25px;
+                margin: 10px;
+                max-width: 90vw;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+            
+            .brand-name {
+                font-size: 1.6rem;
+            }
+            
+            .ai-toggle {
+                width: 55px;
+                height: 55px;
+                font-size: 1.4rem;
+                right: 25px;
+                bottom: 25px;
+            }
+            
+            .ai-chat-window {
+                width: 85vw;
+                height: 60vh;
+                right: 7.5vw;
+                bottom: 85px;
+            }
+            
+            .ai-messages {
+                height: calc(60vh - 160px);
+                padding: 15px;
+            }
+            
+            .ai-input-area {
+                height: 100px;
+                padding: 12px 15px;
+            }
+            
+            .ai-send {
+                width: 38px;
+                height: 38px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* LOADING ANIMATION */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- FLOATING ORBS -->
+    <div class="floating-orbs">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+    </div>
+
+    <div class="registration-container">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="brand-icon">⚡</div>
+            <h1 class="brand-name">MYSERVICEHUB</h1>
+            <p class="brand-tagline">Join the AI Revolution</p>
+            <p class="brand-subtitle">Become a premium service provider and unlock unlimited earning potential</p>
+        </div>
+
+        <!-- REGISTRATION FORM -->
+        <form class="registration-form" onsubmit="handleRegistration(event)">
+            <!-- PERSONAL INFO -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-user"></i>
+                        First Name *
+                    </label>
+                    <input type="text" class="form-input" placeholder="Enter first name" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-user"></i>
+                        Last Name *
+                    </label>
+                    <input type="text" class="form-input" placeholder="Enter last name" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-envelope"></i>
+                        Email Address *
+                    </label>
+                    <input type="email" class="form-input" placeholder="you@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-phone"></i>
+                        Phone Number *
+                    </label>
+                    <input type="tel" class="form-input" placeholder="+91 98765 43210" required>
+                </div>
+            </div>
+
+            <!-- SERVICE DETAILS -->
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-tools"></i>
+                    Primary Service Category *
+                </label>
+                <select class="form-select" required>
+                    <option value="">Choose your expertise</option>
+                    <option value="home-cleaning">🏠 Home Cleaning</option>
+                    <option value="plumbing">🔧 Plumbing Services</option>
+                    <option value="electrical">⚡ Electrical Work</option>
+                    <option value="ac-repair">❄️ AC Repair & Service</option>
+                    <option value="carpentry">🪚 Carpentry & Furniture</option>
+                    <option value="painting">🎨 Painting Services</option>
+                    <option value="gardening">🌱 Gardening & Landscaping</option>
+                    <option value="pest-control">🐛 Pest Control</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-star"></i>
+                    Your Skills & Expertise
+                </label>
+                <textarea class="form-textarea" placeholder="Describe your skills and experience..."></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-clock"></i>
+                        Experience Level *
+                    </label>
+                    <select class="form-select" required>
+                        <option value="">Select experience</option>
+                        <option value="beginner">🌱 Beginner (0-2 years)</option>
+                        <option value="intermediate">⚡ Intermediate (2-5 years)</option>
+                        <option value="expert">🏆 Expert (5+ years)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-rupee-sign"></i>
+                        Expected Rate/Hour
+                    </label>
+                    <input type="number" class="form-input" placeholder="₹500" min="100" max="5000">
+                </div>
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-lock"></i>
+                        Create Password *
+                    </label>
+                    <input type="password" class="form-input" placeholder="Strong password" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-lock"></i>
+                        Confirm Password *
+                    </label>
+                    <input type="password" class="form-input" placeholder="Confirm password" required>
+                </div>
+            </div>
+
+            <!-- SUBMIT BUTTON -->
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-rocket"></i>
+                Launch My Provider Journey
+            </button>
+        </form>
+
+        <!-- FOOTER -->
+        <div class="form-footer">
+            <p>
+                By registering, you agree to our 
+                <a href="#" class="footer-link">Terms of Service</a> and 
+                <a href="#" class="footer-link">Privacy Policy</a>
+            </p>
+            <p style="margin-top: 15px;">
+                Already have an account? <a href="#" class="footer-link">Sign in here →</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- JARVIS AI ASSISTANT -->
+    <div class="ai-assistant">
+        <button class="ai-toggle" onclick="toggleAI()" title="JARVIS AI Assistant"></button>
+    </div>
+
+    <!-- JARVIS AI CHAT WINDOW -->
+    <div class="ai-chat-window" id="aiChat">
+        <div class="ai-header">
+            <div class="ai-info">
+                <div class="ai-avatar"></div>
+                <div>
+                    <h4>JARVIS AI Assistant</h4>
+                    <small>Online & Ready to Help</small>
+                </div>
+            </div>
+            <button class="ai-close" onclick="toggleAI()">×</button>
+        </div>
+        
+        <div class="ai-messages" id="aiMessages">
+            <div class="ai-message bot">
+                👋 **Hi! I'm JARVIS, your AI registration assistant.**
+                
+                I can help you with:
+                • **Registration process**
+                • **Plan recommendations** 
+                • **Service categories**
+                • **Earning potential**
+                
+                **What would you like to know?**
+            </div>
+        </div>
+        
+        <div class="ai-input-area">
+            <div class="quick-actions">
+                <div class="quick-action" onclick="askAI('💡 Plan Selection')">💡 Plan Selection</div>
+                <div class="quick-action" onclick="askAI('📋 Requirements')">📋 Requirements</div>
+            </div>
+            <div class="ai-input-container">
+                <input type="text" class="ai-input" id="aiInput" placeholder="Ask me anything..." onkeypress="handleAIEnter(event)">
+                <button class="ai-send" onclick="sendAIMessage()"></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Handle registration
+        function handleRegistration(event) {
+            event.preventDefault();
+            
+            const btn = event.target.querySelector('.submit-btn');
+            const originalHTML = btn.innerHTML;
+            
+            // Show loading state
+            btn.innerHTML = '<i class="fas fa-spinner spinner"></i> Processing Registration...';
+            btn.disabled = true;
+            
+            // Simulate registration process
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-check"></i> Registration Successful!';
+                
+                setTimeout(() => {
+                    showNotification('🎉 Registration completed! Redirecting to plan selection...', 'success');
+                    
+                    setTimeout(() => {
+                        // Redirect to plans page
+                        window.location.href = 'provider-plans.html';
+                    }, 2000);
+                }, 1000);
+            }, 3000);
+        }
+
+        // JARVIS AI Assistant
+        let aiOpen = false;
+
+        function toggleAI() {
+            aiOpen = !aiOpen;
+            document.getElementById('aiChat').classList.toggle('active', aiOpen);
+            
+            if (aiOpen) {
+                document.getElementById('aiInput').focus();
+            }
+        }
+
+        function sendAIMessage() {
+            const input = document.getElementById('aiInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                addAIMessage(message, 'user');
+                input.value = '';
+                
+                setTimeout(() => {
+                    const response = getAIResponse(message);
+                    addAIMessage(response, 'bot');
+                }, 1000);
+            }
+        }
+
+        function addAIMessage(text, type) {
+            const messagesContainer = document.getElementById('aiMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `ai-message ${type}`;
+            messageDiv.innerHTML = text;
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function getAIResponse(message) {
+            const msg = message.toLowerCase();
+            
+            if (msg.includes('plan') || msg.includes('selection')) {
+                return `💡 **Our AI-Powered Plans:**
+
+**🆓 Starter (Free):**
+• Basic profile & manual bookings
+• 10% platform commission
+
+**👑 AI Professional (₹399/month):**
+• AI customer matching (98% accuracy)
+• 40% more bookings
+• 5% platform commission
+
+**💎 AI Enterprise (₹899/month):**
+• Priority listing & premium features
+• 3% platform commission
+
+**Most choose AI Professional for maximum ROI!**`;
+            }
+            
+            if (msg.includes('requirement') || msg.includes('need')) {
+                return `📋 **Registration Requirements:**
+
+**📧 Basic Information:**
+• Valid email address
+• Phone number (verification)
+• Full name (as per ID)
+
+**🔧 Professional Details:**
+• Primary service category
+• Experience level & skills
+• Expected hourly rate
+
+**🔐 Account Security:**
+• Strong password (8+ characters)
+
+**⏱️ Time Required:** Only 3-5 minutes!
+
+**Ready to start?**`;
+            }
+
+            if (msg.includes('earning') || msg.includes('money')) {
+                return `💰 **Earning Potential:**
+
+**📊 Average Monthly:**
+• **Starter:** ₹15K-25K
+• **AI Professional:** ₹35K-65K
+• **AI Enterprise:** ₹60K-120K
+
+**🎯 By Service:**
+• Plumbing: ₹400-1000/hour
+• AC Repair: ₹500-1200/hour
+• Electrical: ₹350-800/hour
+
+**🚀 Success Factors:**
+• Complete profile = 60% more bookings
+• 5-star ratings = 45% higher rates
+
+**Top earner: ₹1.2L/month!**`;
+            }
+            
+            return `👋 **Welcome! I'm JARVIS, your AI assistant.**
+
+**🎯 I can help with:**
+• **💡 Plan Selection** - Which plan suits you?
+• **📋 Requirements** - What you need
+• **💰 Earnings** - Income potential
+• **🚀 Getting Started** - Step-by-step guide
+
+**🔥 Quick Facts:**
+• 98% customer satisfaction
+• 50,000+ active providers
+• 24/7 AI support
+
+**What would you like to know?** 🤖✨`;
+        }
+
+        function askAI(question) {
+            document.getElementById('aiInput').value = question;
+            sendAIMessage();
+        }
+
+        function handleAIEnter(event) {
+            if (event.key === 'Enter') {
+                sendAIMessage();
+            }
+        }
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 30px;
+                right: 30px;
+                padding: 18px 28px;
+                border-radius: 15px;
+                color: white;
+                font-weight: 600;
+                z-index: 10000;
+                animation: slideIn 0.5s ease;
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+                max-width: 380px;
+                font-size: 0.95rem;
+                backdrop-filter: blur(15px);
+            `;
+            
+            switch(type) {
+                case 'success':
+                    notification.style.background = 'linear-gradient(45deg, #4ecdc4, #45b7d1)';
+                    break;
+                case 'error':
+                    notification.style.background = 'linear-gradient(45deg, #ff6b6b, #ee5a52)';
+                    break;
+                default:
+                    notification.style.background = 'linear-gradient(45deg, #667eea, #764ba2)';
+            }
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.5s ease forwards';
+                setTimeout(() => notification.remove(), 500);
+            }, 5000);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 JARVIS AI Registration Portal Ready!');
+        });
+
+        // CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%) scale(0.9); opacity: 0; }
+                to { transform: translateX(0) scale(1); opacity: 1; }
+            }
+            
+            @keyframes slideOut {
+                from { transform: translateX(0) scale(1); opacity: 1; }
+                to { transform: translateX(100%) scale(0.9); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

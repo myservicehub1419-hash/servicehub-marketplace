@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Service - ServiceHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .booking-form {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .form-subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        .service-summary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .service-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .service-price {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .required {
+            color: #ff4757;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 18px 30px;
+            border-radius: 25px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">🚀 ServiceHub</div>
+            <a href="customer-portal.html" class="back-btn">← Back to Services</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <form class="booking-form" id="bookingForm">
+            <h1 class="form-title">📋 Book Your Service</h1>
+            <p class="form-subtitle">Fill out the details below and we'll connect you with the best service providers</p>
+
+            <div class="service-summary">
+                <div class="service-name" id="serviceName">Selected Service</div>
+                <div class="service-price" id="servicePrice">Price Range</div>
+            </div>
+
+            <!-- Personal Information -->
+            <div class="form-section">
+                <h3 class="section-title">👤 Personal Information</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fullName">Full Name <span class="required">*</span></label>
+                        <input type="text" id="fullName" name="fullName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone">Phone Number <span class="required">*</span></label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="whatsapp">WhatsApp Number</label>
+                        <input type="tel" id="whatsapp" name="whatsapp" placeholder="For service updates">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Service Location -->
+            <div class="form-section">
+                <h3 class="section-title">📍 Service Location</h3>
+                
+                <div class="form-group">
+                    <label for="address">Complete Address <span class="required">*</span></label>
+                    <textarea id="address" name="address" placeholder="House/Flat No., Street, Area, Landmark" required></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="city">City <span class="required">*</span></label>
+                        <input type="text" id="city" name="city" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pincode">PIN Code <span class="required">*</span></label>
+                        <input type="text" id="pincode" name="pincode" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Service Details -->
+            <div class="form-section">
+                <h3 class="section-title">🛠️ Service Details</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="preferredDate">Preferred Date <span class="required">*</span></label>
+                        <input type="date" id="preferredDate" name="preferredDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="preferredTime">Preferred Time <span class="required">*</span></label>
+                        <select id="preferredTime" name="preferredTime" required>
+                            <option value="">Select Time Slot</option>
+                            <option value="09:00-12:00">9:00 AM - 12:00 PM</option>
+                            <option value="12:00-15:00">12:00 PM - 3:00 PM</option>
+                            <option value="15:00-18:00">3:00 PM - 6:00 PM</option>
+                            <option value="18:00-21:00">6:00 PM - 9:00 PM</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="urgency">Service Urgency</label>
+                    <select id="urgency" name="urgency">
+                        <option value="normal">Normal (Within 3-7 days)</option>
+                        <option value="urgent">Urgent (Within 24-48 hours)</option>
+                        <option value="emergency">Emergency (Same day service)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="requirements">Specific Requirements/Description <span class="required">*</span></label>
+                    <textarea id="requirements" name="requirements" placeholder="Please describe what you need in detail..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="budget">Budget Range (Optional)</label>
+                    <select id="budget" name="budget">
+                        <option value="">Select Budget Range</option>
+                        <option value="under-1000">Under ₹1,000</option>
+                        <option value="1000-5000">₹1,000 - ₹5,000</option>
+                        <option value="5000-10000">₹5,000 - ₹10,000</option>
+                        <option value="10000-25000">₹10,000 - ₹25,000</option>
+                        <option value="25000-50000">₹25,000 - ₹50,000</option>
+                        <option value="above-50000">Above ₹50,000</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Additional Information -->
+            <div class="form-section">
+                <h3 class="section-title">ℹ️ Additional Information</h3>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="smsUpdates" name="smsUpdates" checked>
+                    <label for="smsUpdates">Send SMS updates about service status</label>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="whatsappUpdates" name="whatsappUpdates" checked>
+                    <label for="whatsappUpdates">Send WhatsApp notifications</label>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="emailUpdates" name="emailUpdates" checked>
+                    <label for="emailUpdates">Send email updates</label>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+                🚀 Submit Service Request
+            </button>
+
+            <div class="loading" id="loadingDiv">
+                <div class="loading-spinner"></div>
+                <p>Processing your request...</p>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Get service details from URL parameters
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const serviceType = urlParams.get('service');
+            const subService = urlParams.get('subService');
+
+            if (serviceType) {
+                updateServiceInfo(serviceType, subService);
+            }
+
+            // Set minimum date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('preferredDate').setAttribute('min', today);
+
+            // Pre-fill user information if available
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            if (currentUser.name) {
+                document.getElementById('fullName').value = currentUser.name;
+            }
+            if (currentUser.email) {
+                document.getElementById('email').value = currentUser.email;
+            }
+        });
+
+        function updateServiceInfo(serviceType, subService) {
+            const serviceNames = {
+                'home-services': '🏠 Home Services',
+                'digital-marketing': '📱 Digital Marketing',
+                'web-development': '💻 Web Development',
+                'graphic-design': '🎨 Graphic Design',
+                'content-writing': '✍️ Content Writing',
+                'business-consulting': '💼 Business Consulting',
+                'health-wellness': '🏥 Health & Wellness',
+                'education-tutoring': '📚 Education & Tutoring',
+                'automotive-services': '🚗 Automotive Services',
+                'pet-services': '🐕 Pet Services',
+                'event-planning': '🎉 Event Planning',
+                'security-services': '🛡️ Security Services'
+            };
+
+            const servicePrices = {
+                'home-services': 'Starting from ₹299',
+                'digital-marketing': 'Starting from ₹2,999',
+                'web-development': 'Starting from ₹9,999',
+                'graphic-design': 'Starting from ₹1,499',
+                'content-writing': 'Starting from ₹799',
+                'business-consulting': 'Starting from ₹4,999',
+                'health-wellness': 'Starting from ₹1,999',
+                'education-tutoring': 'Starting from ₹799',
+                'automotive-services': 'Starting from ₹1,299',
+                'pet-services': 'Starting from ₹599',
+                'event-planning': 'Starting from ₹9,999',
+                'security-services': 'Starting from ₹3,999'
+            };
+
+            document.getElementById('serviceName').textContent = serviceNames[serviceType] || 'Selected Service';
+            document.getElementById('servicePrice').textContent = servicePrices[serviceType] || 'Price on Request';
+
+            if (subService) {
+                document.getElementById('serviceName').textContent += ` - ${subService.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}`;
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show loading
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('loadingDiv').style.display = 'block';
+
+            // Collect form data
+            const formData = new FormData(this);
+            const bookingData = {
+                id: 'REQ-' + Date.now(),
+                serviceType: new URLSearchParams(window.location.search).get('service'),
+                subService: new URLSearchParams(window.location.search).get('subService'),
+                customerInfo: {
+                    name: formData.get('fullName'),
+                    email: formData.get('email'),
+                    phone: formData.get('phone'),
+                    whatsapp: formData.get('whatsapp')
+                },
+                location: {
+                    address: formData.get('address'),
+                    city: formData.get('city'),
+                    pincode: formData.get('pincode')
+                },
+                serviceDetails: {
+                    preferredDate: formData.get('preferredDate'),
+                    preferredTime: formData.get('preferredTime'),
+                    urgency: formData.get('urgency'),
+                    requirements: formData.get('requirements'),
+                    budget: formData.get('budget')
+                },
+                notifications: {
+                    sms: formData.get('smsUpdates') === 'on',
+                    whatsapp: formData.get('whatsappUpdates') === 'on',
+                    email: formData.get('emailUpdates') === 'on'
+                },
+                status: 'pending',
+                submittedAt: new Date().toISOString()
+            };
+
+            // Save to localStorage (simulate API call)
+            setTimeout(() => {
+                saveBookingRequest(bookingData);
+                showSuccessAndRedirect(bookingData.id);
+            }, 2000);
+        });
+
+        function saveBookingRequest(bookingData) {
+            // Save customer request
+            const existingRequests = JSON.parse(localStorage.getItem('serviceRequests') || '[]');
+            existingRequests.push(bookingData);
+            localStorage.setItem('serviceRequests', JSON.stringify(existingRequests));
+
+            // Notify service providers (simulate)
+            notifyServiceProviders(bookingData);
+        }
+
+        function notifyServiceProviders(bookingData) {
+            // Get service providers for this service type
+            const providers = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
+            const relevantProviders = providers.filter(provider => 
+                provider.services.includes(bookingData.serviceType) ||
+                provider.services.includes(bookingData.subService)
+            );
+
+            // Create notification for each provider
+            relevantProviders.forEach(provider => {
+                const notification = {
+                    id: 'NOTIF-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9),
+                    providerId: provider.id,
+                    requestId: bookingData.id,
+                    type: 'new_request',
+                    message: `New service request: ${bookingData.serviceType}`,
+                    bookingData: bookingData,
+                    createdAt: new Date().toISOString(),
+                    read: false
+                };
+
+                // Save provider notification
+                const providerNotifications = JSON.parse(localStorage.getItem('providerNotifications') || '[]');
+                providerNotifications.push(notification);
+                localStorage.setItem('providerNotifications', JSON.stringify(providerNotifications));
+            });
+
+            console.log(`Notified ${relevantProviders.length} service providers about new request`);
+        }
+
+        function showSuccessAndRedirect(requestId) {
+            // Hide loading
+            document.getElementById('loadingDiv').style.display = 'none';
+            
+            // Show success message
+            alert(`🎉 Service request submitted successfully!\n\nRequest ID: ${requestId}\n\nWe'll notify you when service providers respond to your request.`);
+            
+            // Redirect to customer portal
+            window.location.href = 'customer-portal.html';
+        }
+
+        // Auto-fill WhatsApp with phone number
+        document.getElementById('phone').addEventListener('input', function() {
+            const whatsappField = document.getElementById('whatsapp');
+            if (!whatsappField.value) {
+                whatsappField.value = this.value;
+            }
+        });
+    </script>
+</body>
+</html>

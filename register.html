@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - MyServiceHub</title>
+    <!-- Your existing CSS -->
+</head>
+<body>
+    <!-- Your existing HTML structure -->
+    
+    <form id="signupForm" onsubmit="handleSignup(event)">
+        <input type="text" id="fullName" placeholder="Full Name" required>
+        <input type="email" id="email" placeholder="Email Address" required>
+        <input type="tel" id="phone" placeholder="Phone Number" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <select id="userRole" required>
+            <option value="">Select Role</option>
+            <option value="customer">Customer</option>
+            <option value="provider">Service Provider</option>
+        </select>
+        <button type="submit">Sign Up</button>
+    </form>
+
+    <div id="message" style="display: none; padding: 10px; margin: 10px 0; border-radius: 5px;"></div>
+
+    <script>
+        // API Configuration
+        const API_BASE = 'http://localhost:5000/api';
+        
+        async function handleSignup(event) {
+            event.preventDefault();
+            
+            const messageDiv = document.getElementById('message');
+            const form = document.getElementById('signupForm');
+            
+            // Show loading
+            messageDiv.style.display = 'block';
+            messageDiv.style.backgroundColor = '#e3f2fd';
+            messageDiv.innerHTML = '⏳ Creating your account...';
+            
+            try {
+                const userData = {
+                    name: document.getElementById('fullName').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    password: document.getElementById('password').value,
+                    role: document.getElementById('userRole').value
+                };
+                
+                const response = await fetch(`${API_BASE}/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(userData)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Success - store token and redirect
+                    localStorage.setItem('authToken', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    
+                    messageDiv.style.backgroundColor = '#d4edda';
+                    messageDiv.innerHTML = `✅ Account created successfully! Welcome ${data.user.name}!`;
+                    
+                    // Redirect based on role
+                    setTimeout(() => {
+                        if (data.user.role === 'customer') {
+                            window.location.href = 'customer-portal.html';
+                        } else {
+                            window.location.href = 'provider-portal.html';
+                        }
+                    }, 2000);
+                    
+                } else {
+                    // Error
+                    messageDiv.style.backgroundColor = '#f8d7da';
+                    messageDiv.innerHTML = `❌ ${data.error}`;
+                }
+                
+            } catch (error) {
+                messageDiv.style.backgroundColor = '#f8d7da';
+                messageDiv.innerHTML = `❌ Connection error. Make sure your API server is running on port 5000.`;
+                console.error('Signup error:', error);
+            }
+        }
+    </script>
+</body>
+</html>

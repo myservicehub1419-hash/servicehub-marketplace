@@ -1,0 +1,391 @@
+<% layout('layout') -%>
+
+<div class="auth-container">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="auth-card">
+                    <!-- Registration Header -->
+                    <div class="auth-header text-center mb-4">
+                        <div class="logo mb-3">
+                            <i class="fas fa-briefcase fa-3x text-primary"></i>
+                        </div>
+                        <h2 class="mb-2">Join MyServiceHub as a Provider</h2>
+                        <p class="text-muted">Start earning by offering your services to thousands of customers</p>
+                    </div>
+
+                    <!-- Registration Progress -->
+                    <div class="registration-progress mb-4">
+                        <div class="progress" style="height: 6px;">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: 25%" id="progressBar"></div>
+                        </div>
+                        <div class="d-flex justify-content-between mt-2">
+                            <small class="text-primary fw-bold">1. Register</small>
+                            <small class="text-muted">2. Verify</small>
+                            <small class="text-muted">3. Subscribe</small>
+                            <small class="text-muted">4. Profile</small>
+                        </div>
+                    </div>
+
+                    <!-- Registration Form -->
+                    <form id="registrationForm" class="needs-validation" novalidate>
+                        <!-- Personal Information -->
+                        <div class="form-section">
+                            <h5 class="mb-3"><i class="fas fa-user"></i> Personal Information</h5>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="firstName" class="form-label">First Name *</label>
+                                    <input type="text" class="form-control" id="firstName" name="firstName" required>
+                                    <div class="invalid-feedback">Please provide your first name.</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="lastName" class="form-label">Last Name *</label>
+                                    <input type="text" class="form-control" id="lastName" name="lastName" required>
+                                    <div class="invalid-feedback">Please provide your last name.</div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address *</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                                <div class="invalid-feedback">Please provide a valid email address.</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone Number *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">+91</span>
+                                    <input type="tel" class="form-control" id="phone" name="phone" pattern="[0-9]{10}" required>
+                                    <div class="invalid-feedback">Please provide a valid 10-digit phone number.</div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password *</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="password" name="password" minlength="8" required>
+                                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <div class="form-text">Minimum 8 characters with at least one uppercase, lowercase, number and special character</div>
+                                <div class="invalid-feedback">Please provide a strong password (min 8 characters).</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="confirmPassword" class="form-label">Confirm Password *</label>
+                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                                <div class="invalid-feedback">Passwords do not match.</div>
+                            </div>
+                        </div>
+
+                        <!-- Service Information -->
+                        <div class="form-section">
+                            <h5 class="mb-3"><i class="fas fa-cog"></i> Service Information</h5>
+                            
+                            <div class="mb-3">
+                                <label for="category" class="form-label">Primary Service Category *</label>
+                                <select class="form-select" id="category" name="category" required>
+                                    <option value="">Select your main service category</option>
+                                    <option value="web_development">Web Development</option>
+                                    <option value="graphic_design">Graphic Design</option>
+                                    <option value="digital_marketing">Digital Marketing</option>
+                                    <option value="content_writing">Content Writing</option>
+                                    <option value="video_editing">Video Editing</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                <div class="invalid-feedback">Please select your service category.</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="experience" class="form-label">Experience Level *</label>
+                                <select class="form-select" id="experience" name="experience" required>
+                                    <option value="">Select your experience level</option>
+                                    <option value="fresher">Fresher (0-1 years)</option>
+                                    <option value="1-3_years">1-3 years</option>
+                                    <option value="3-5_years">3-5 years</option>
+                                    <option value="5-10_years">5-10 years</option>
+                                    <option value="10+_years">10+ years</option>
+                                </select>
+                                <div class="invalid-feedback">Please select your experience level.</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="location" class="form-label">Location *</label>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" id="city" name="city" placeholder="City" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <select class="form-select" id="state" name="state" required>
+                                            <option value="">Select State</option>
+                                            <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                            <option value="Karnataka">Karnataka</option>
+                                            <option value="Maharashtra">Maharashtra</option>
+                                            <option value="Tamil Nadu">Tamil Nadu</option>
+                                            <option value="Telangana">Telangana</option>
+                                            <!-- Add more states -->
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="invalid-feedback">Please provide your location.</div>
+                            </div>
+                        </div>
+
+                        <!-- Terms & Conditions -->
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="agreeTerms" name="agreeTerms" required>
+                                <label class="form-check-label" for="agreeTerms">
+                                    I agree to the <a href="/terms" target="_blank">Terms & Conditions</a> and <a href="/privacy" target="_blank">Privacy Policy</a> *
+                                </label>
+                                <div class="invalid-feedback">You must agree to the terms and conditions.</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="marketingEmails" name="marketingEmails">
+                                <label class="form-check-label" for="marketingEmails">
+                                    I want to receive marketing emails about new features and opportunities
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
+                                <i class="fas fa-user-plus"></i> Create Provider Account
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Login Link -->
+                    <div class="text-center mt-4">
+                        <p class="text-muted">Already have an account? 
+                            <a href="/provider/login" class="text-primary text-decoration-none">Login here</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Styles -->
+<style>
+.auth-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 2rem 0;
+}
+
+.auth-card {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    margin-top: 2rem;
+}
+
+.form-section {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid #007bff;
+}
+
+.form-section h5 {
+    color: #495057;
+    margin-bottom: 1rem;
+}
+
+.registration-progress {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 1rem;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #007bff, #0056b3);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(45deg, #0056b3, #004085);
+    transform: translateY(-1px);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+}
+
+.invalid-feedback {
+    display: block;
+}
+
+.logo i {
+    background: linear-gradient(45deg, #007bff, #0056b3);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+</style>
+
+<!-- JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('registrationForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const progressBar = document.getElementById('progressBar');
+    
+    // Password toggle functionality
+    document.getElementById('togglePassword').addEventListener('click', function() {
+        const password = document.getElementById('password');
+        const icon = this.querySelector('i');
+        
+        if (password.type === 'password') {
+            password.type = 'text';
+            icon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            password.type = 'password';
+            icon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    });
+
+    // Password confirmation validation
+    document.getElementById('confirmPassword').addEventListener('input', function() {
+        const password = document.getElementById('password').value;
+        const confirmPassword = this.value;
+        
+        if (password !== confirmPassword) {
+            this.setCustomValidity('Passwords do not match');
+            this.classList.add('is-invalid');
+        } else {
+            this.setCustomValidity('');
+            this.classList.remove('is-invalid');
+            this.classList.add('is-valid');
+        }
+    });
+
+    // Form submission
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        if (!form.checkValidity()) {
+            e.stopPropagation();
+            form.classList.add('was-validated');
+            return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+        progressBar.style.width = '50%';
+
+        try {
+            const formData = new FormData(form);
+            const data = {
+                name: `${formData.get('firstName')} ${formData.get('lastName')}`,
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                password: formData.get('password'),
+                category: formData.get('category'),
+                experienceLevel: formData.get('experience'),
+                location: {
+                    city: formData.get('city'),
+                    state: formData.get('state'),
+                    country: 'India'
+                },
+                agreeToTerms: formData.get('agreeTerms') === 'on',
+                marketingEmails: formData.get('marketingEmails') === 'on'
+            };
+
+            const response = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                // Store token
+                localStorage.setItem('token', result.token);
+                
+                progressBar.style.width = '100%';
+                
+                // Show success message
+                showNotification('Registration Successful!', 'Please verify your email and phone number to continue.', 'success');
+                
+                // Redirect to verification page
+                setTimeout(() => {
+                    window.location.href = '/provider/verify-account';
+                }, 2000);
+                
+            } else {
+                throw new Error(result.message || 'Registration failed');
+            }
+
+        } catch (error) {
+            console.error('Registration error:', error);
+            showNotification('Registration Failed', error.message, 'error');
+            progressBar.style.width = '25%';
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-user-plus"></i> Create Provider Account';
+        }
+    });
+
+    // Real-time validation
+    const inputs = form.querySelectorAll('input, select');
+    inputs.forEach(input => {
+        input.addEventListener('blur', function() {
+            if (this.checkValidity()) {
+                this.classList.remove('is-invalid');
+                this.classList.add('is-valid');
+            } else {
+                this.classList.remove('is-valid');
+                this.classList.add('is-invalid');
+            }
+        });
+    });
+});
+
+function showNotification(title, message, type) {
+    const toastContainer = document.getElementById('toastContainer');
+    const toastId = 'toast_' + Date.now();
+    
+    const bgColor = type === 'success' ? 'bg-success' : type === 'error' ? 'bg-danger' : 'bg-info';
+    
+    const toastHTML = `
+        <div id="${toastId}" class="toast ${bgColor} text-white" role="alert">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <strong>${title}</strong><br>
+                    ${message}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    `;
+    
+    toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+    
+    const toastElement = document.getElementById(toastId);
+    const toast = new bootstrap.Toast(toastElement);
+    toast.show();
+    
+    // Remove toast element after it's hidden
+    toastElement.addEventListener('hidden.bs.toast', function() {
+        this.remove();
+    });
+}
+</script>

@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Matching System - ServiceHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        .ai-header {
+            background: linear-gradient(135deg, #00b894, #00cec9);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 184, 148, 0.3);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .matching-dashboard {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .ai-matching-banner {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            color: white;
+            padding: 40px;
+            border-radius: 25px;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-matching-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            animation: aiFloat 15s linear infinite;
+        }
+
+        @keyframes aiFloat {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .banner-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .banner-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+        }
+
+        .banner-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .matching-process {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .process-step {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .process-step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .step-number {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 18px;
+        }
+
+        .step-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .step-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #2d3436;
+            margin-bottom: 15px;
+        }
+
+        .step-description {
+            color: #636e72;
+            line-height: 1.6;
+        }
+
+        .matching-demo {
+            background: white;
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+
+        .demo-title {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #2d3436;
+            margin-bottom: 30px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .demo-container {
+            display: grid;
+            grid-template-columns: 1fr 100px 1fr;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .customer-request {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+        }
+
+        .provider-match {
+            background: linear-gradient(135deg, #00b894, #00cec9);
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+        }
+
+        .ai-processing {
+            text-align: center;
+            position: relative;
+        }
+
+        .ai-brain {
+            font-size: 4rem;
+            animation: aiPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes aiPulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        .processing-text {
+            font-size: 12px;
+            color: #6c5ce7;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-top: 10px;
+        }
+
+        .request-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .request-detail {
+            font-size: 14px;
+            margin-bottom: 8px;
+            opacity: 0.9;
+        }
+
+        .match-score {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 15px;
+            border-radius: 15px;
+            margin-top: 15px;
+            text-align: center;
+            font-weight: 800;
+            backdrop-filter: blur(10px);
+        }
+
+        .ai-factors {
+            background: white;
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+
+        .factors-title {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #2d3436;
+            margin-bottom: 30px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .factors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .factor-card {
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+            border: 2px solid #e9ecef;
+            padding: 25px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .factor-card:hover {
+            border-color: #6c5ce7;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(108, 92, 231, 0.1);
+        }
+
+        .factor-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 12px;
+        }
+
+        .factor-icon {
+            font-size: 1.8rem;
+            color: #6c5ce7;
+        }
+
+        .factor-name {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #2d3436;
+        }
+
+        .factor-weight {
+            font-size: 12px;
+            background: #6c5ce7;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 700;
+            margin-left: auto;
+        }
+
+        .factor-description {
+            color: #636e72;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        .ai-performance {
+            background: linear-gradient(135deg, #fd79a8, #fdcb6e);
+            color: white;
+            padding: 40px;
+            border-radius: 25px;
+            text-align: center;
+        }
+
+        .performance-title {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 30px;
+        }
+
+        .performance-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+        }
+
+        .performance-stat {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 25px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+            font-weight: 600;
+        }
+
+        .demo-controls {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .demo-btn {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 10px;
+        }
+
+        .demo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(108, 92, 231, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .demo-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .ai-processing {
+                order: 2;
+            }
+            
+            .factors-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="ai-header">
+        <div class="header-content">
+            <div class="logo">
+                🎯 AI Matching Engine
+            </div>
+            <button onclick="window.history.back()" style="background: rgba(255,255,255,0.2); color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: 600;">← Back</button>
+        </div>
+    </header>
+
+    <div class="matching-dashboard">
+        <div class="ai-matching-banner">
+            <div class="banner-content">
+                <h1 class="banner-title">🧠 Advanced AI Provider Matching</h1>
+                <p class="banner-subtitle">98.7% accuracy in matching customers with perfect service providers</p>
+            </div>
+        </div>
+
+        <div class="matching-process">
+            <div class="process-step">
+                <div class="step-number">1</div>
+                <span class="step-icon">📋</span>
+                <h3 class="step-title">Request Analysis</h3>
+                <p class="step-description">
+                    AI analyzes customer requirements, location, budget, timing, and service complexity using natural language processing.
+                </p>
+            </div>
+
+            <div class="process-step">
+                <div class="step-number">2</div>
+                <span class="step-icon">🎯</span>
+                <h3 class="step-title">Provider Scoring</h3>
+                <p class="step-description">
+                    Advanced algorithms score all providers based on 15+ factors including expertise, location, availability, and past performance.
+                </p>
+            </div>
+
+            <div class="process-step">
+                <div class="step-number">3</div>
+                <span class="step-icon">🤖</span>
+                <h3 class="step-title">AI Matching</h3>
+                <p class="step-description">
+                    Machine learning models predict success probability and rank providers by compatibility, ensuring optimal matches.
+                </p>
+            </div>
+
+            <div class="process-step">
+                <div class="step-number">4</div>
+                <span class="step-icon">⚡</span>
+                <h3 class="step-title">Instant Delivery</h3>
+                <p class="step-description">
+                    Top 3 matches delivered within 2 minutes with confidence scores, estimated response time, and success prediction.
+                </p>
+            </div>
+        </div>
+
+        <div class="matching-demo">
+            <h2 class="demo-title">🔬 Live AI Matching Demo</h2>
+            
+            <div class="demo-container">
+                <div class="customer-request">
+                    <div class="request-title">📱 Customer Request</div>
+                    <div class="request-detail"><strong>Service:</strong> Home Deep Cleaning</div>
+                    <div class="request-detail"><strong>Location:</strong> Banjara Hills, Hyderabad</div>
+                    <div class="request-detail"><strong>Budget:</strong> ₹500-₹800</div>
+                    <div class="request-detail"><strong>Timing:</strong> Tomorrow 10 AM</div>
+                    <div class="request-detail"><strong>Special:</strong> Eco-friendly products preferred</div>
+                </div>
+
+                <div class="ai-processing">
+                    <div class="ai-brain">🧠</div>
+                    <div class="processing-text">AI Processing...</div>
+                </div>
+
+                <div class="provider-match">
+                    <div class="request-title">🎯 Best Match Found</div>
+                    <div class="request-detail"><strong>Provider:</strong> CleanPro Services</div>
+                    <div class="request-detail"><strong>Distance:</strong> 2.3 km away</div>
+                    <div class="request-detail"><strong>Rating:</strong> 4.9/5 (127 reviews)</div>
+                    <div class="request-detail"><strong>Specialty:</strong> Eco-friendly cleaning</div>
+                    <div class="request-detail"><strong>Availability:</strong> Available tomorrow</div>
+                    <div class="match-score">AI Match Score: 98.7%</div>
+                </div>
+            </div>
+
+            <div class="demo-controls">
+                <button class="demo-btn" onclick="runDemo()">🚀 Run AI Matching Demo</button>
+                <button class="demo-btn" onclick="showFactors()">📊 View AI Factors</button>
+            </div>
+        </div>
+
+        <div class="ai-factors">
+            <h2 class="factors-title">⚙️ AI Matching Factors</h2>
+            
+            <div class="factors-grid">
+                <div class="factor-card">
+                    <div class="factor-header">
+                        <span class="factor-icon">📍</span>
+                        <span class="factor-name">Location Proximity</span>
+                        <span class="factor-weight">25%</span>
+                    </div>
+                    <p class="factor-description">
+                        AI calculates travel time, distance, and location preferences to ensure optimal geographic matching.
+                    </p>
+                </div>
+
+                <div class="factor-card">
+                    <div class="factor-header">
+                        <span class="factor-icon">🎯</span>
+                        <span class="factor-name">Service Expertise</span>
+                        <span class="factor-weight">20%</span>
+                    </div>
+                    <p class="factor-description">
+                        Machine learning analyzes provider specializations, certifications, and past work quality in specific service areas.
+                    </p>
+                </div>
+
+                <div class="factor-card">
+                    <div class="factor-header">
+                        <span class="factor-icon">⏰</span>
+                        <span class="factor-name">Availability Match</span>
+                        <span class="factor-weight">15%</span>
+                    </div>
+                    <p class="factor-description">
+                        Real-time calendar analysis ensures providers are available during customer's preferred time slots.
+                    </p>
+                </div>
+
+                <div class="factor-card">
+                    <div class="factor-header">
+                        <span class="factor-icon">⭐</span>
+                        <span class="factor-name">Quality Score</span>
+                        <span class="factor-weight">15%</span>
+                    </div>
+                    <p class="factor-description">
+                        AI weighs customer ratings, reviews, completion rates, and satisfaction scores for quality assessment.
+                    </p>
+                </div>
+
+                <div class="factor-card">
+                    <div class="factor-header">
+                        <span class="factor-icon">💰</span>
+                        <span class="factor-name">Price Compatibility</span>
+                        <span class="factor-weight">10%</span>
+                    </div>
+                    <p class="factor-description">
+                        Smart pricing analysis matches provider rates with customer budgets for optimal value propositions.
+                    </p>
+                </div>
+
+                <div class="factor-card">
+                    <div class="factor-header">
+                        <span class="factor-icon">📈</span>
+                        <span class="factor-name">Success History</span>
+                        <span class="factor-weight">10%</span>
+                    </div>
+                    <p class="factor-description">
+                        Historical data analysis of provider performance with similar requests and customer types.
+                    </p>
+                </div>
+
+                <div class="factor-card">
+                    <div class="factor-header">
+                        <span class="factor-icon">🗣️</span>
+                        <span class="factor-name">Communication Style</span>
+                        <span class="factor-weight">5%</span>
+                    </div>
+                    <p class="factor-description">
+                        AI analyzes communication patterns and customer feedback to match compatible personalities.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="ai-performance">
+            <h2 class="performance-title">🏆 AI Matching Performance</h2>
+            
+            <div class="performance-stats">
+                <div class="performance-stat">
+                    <div class="stat-value">98.7%</div>
+                    <div class="stat-label">Matching Accuracy</div>
+                </div>
+                
+                <div class="performance-stat">
+                    <div class="stat-value">1.8s</div>
+                    <div class="stat-label">Average Processing Time</div>
+                </div>
+                
+                <div class="performance-stat">
+                    <div class="stat-value">94.3%</div>
+                    <div class="stat-label">Customer Satisfaction</div>
+                </div>
+                
+                <div class="performance-stat">
+                    <div class="stat-value">91.7%</div>
+                    <div class="stat-label">First Match Success</div>
+                </div>
+                
+                <div class="performance-stat">
+                    <div class="stat-value">15+</div>
+                    <div class="stat-label">AI Factors Analyzed</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function runDemo() {
+            // Simulate AI matching process
+            const aiProcessing = document.querySelector('.ai-processing');
+            const processingText = document.querySelector('.processing-text');
+            
+            const steps = [
+                'Analyzing request...',
+                'Scanning providers...',
+                'Calculating scores...',
+                'Running ML models...',
+                'Finding best match...',
+                'Match complete!'
+            ];
+            
+            let stepIndex = 0;
+            
+            const interval = setInterval(() => {
+                processingText.textContent = steps[stepIndex];
+                stepIndex++;
+                
+                if (stepIndex >= steps.length) {
+                    clearInterval(interval);
+                    
+                    // Show success animation
+                    const matchCard = document.querySelector('.provider-match');
+                    matchCard.style.transform = 'scale(1.05)';
+                    matchCard.style.boxShadow = '0 15px 35px rgba(0, 184, 148, 0.3)';
+                    
+                    setTimeout(() => {
+                        matchCard.style.transform = 'scale(1)';
+                        matchCard.style.boxShadow = 'none';
+                        processingText.textContent = 'AI Processing...';
+                    }, 1000);
+                    
+                    showAINotification('🎯 Perfect match found! AI confidence: 98.7%');
+                }
+            }, 800);
+        }
+
+        function showFactors() {
+            document.querySelector('.ai-factors').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+            
+            // Highlight factor cards
+            const factorCards = document.querySelectorAll('.factor-card');
+            factorCards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.transform = 'translateY(-5px)';
+                    card.style.borderColor = '#6c5ce7';
+                    card.style.boxShadow = '0 10px 25px rgba(108, 92, 231, 0.2)';
+                    
+                    setTimeout(() => {
+                        card.style.transform = 'translateY(0)';
+                        card.style.borderColor = '#e9ecef';
+                        card.style.boxShadow = 'none';
+                    }, 1000);
+                }, index * 200);
+            });
+        }
+
+        function showAINotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #00b894, #00cec9);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                z-index: 10000;
+                font-weight: 600;
+                font-size: 14px;
+                animation: slideIn 0.5s ease;
+            `;
+            notification.innerHTML = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.5s ease';
+                setTimeout(() => notification.remove(), 500);
+            }, 4000);
+        }
+
+        // Add animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize demo
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🧠 AI Matching System initialized');
+            
+            // Auto-run demo after 3 seconds
+            setTimeout(() => {
+                showAINotification('🤖 AI Matching Engine is ready! Click "Run Demo" to see it in action.');
+            }, 3000);
+        });
+    </script>
+</body>
+</html>

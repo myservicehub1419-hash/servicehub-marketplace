@@ -1,0 +1,648 @@
+<% layout('layout') -%>
+
+<div class="dashboard-container">
+    <div class="container-fluid">
+        <!-- Welcome Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="welcome-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h1 class="display-6 fw-bold mb-2">Welcome back, <%= user.name %>! 👋</h1>
+                            <p class="text-muted">Here's what's happening with your services today.</p>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#quickActionsModal">
+                                <i class="fas fa-plus"></i> Quick Actions
+                            </button>
+                            <button class="btn btn-primary" id="goOnlineBtn">
+                                <i class="fas fa-power-off"></i> Go Online
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Metrics Cards -->
+        <div class="row mb-4" id="metricsCards">
+            <!-- Cards will be loaded dynamically -->
+        </div>
+
+        <!-- Quick Stats Row -->
+        <div class="row mb-4">
+            <!-- Revenue Chart -->
+            <div class="col-lg-8 mb-4">
+                <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-chart-line text-primary"></i>
+                            Revenue Overview
+                        </h5>
+                        <div class="btn-group btn-group-sm" role="group">
+                            <input type="radio" class="btn-check" name="revenueFilter" id="revenue7d" value="7d" checked>
+                            <label class="btn btn-outline-primary" for="revenue7d">7D</label>
+                            
+                            <input type="radio" class="btn-check" name="revenueFilter" id="revenue30d" value="30d">
+                            <label class="btn btn-outline-primary" for="revenue30d">30D</label>
+                            
+                            <input type="radio" class="btn-check" name="revenueFilter" id="revenue12m" value="12m">
+                            <label class="btn btn-outline-primary" for="revenue12m">12M</label>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="revenueChart" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Metrics -->
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-trophy text-warning"></i>
+                            Performance
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="performance-metrics" id="performanceMetrics">
+                            <!-- Metrics will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders and Messages Row -->
+        <div class="row mb-4">
+            <!-- Recent Orders -->
+            <div class="col-lg-8 mb-4">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-shopping-cart text-success"></i>
+                            Recent Orders
+                        </h5>
+                        <a href="/provider/orders" class="btn btn-sm btn-outline-primary">View All</a>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0" id="recentOrdersTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Service</th>
+                                        <th>Customer</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Orders will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions & Notifications -->
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-bell text-info"></i>
+                            Notifications
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="notifications-list" id="notificationsList">
+                            <!-- Notifications will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Services Performance -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-cogs text-primary"></i>
+                            Services Performance
+                        </h5>
+                        <a href="/provider/services" class="btn btn-sm btn-outline-primary">Manage Services</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="row" id="servicesPerformance">
+                            <!-- Service cards will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions Modal -->
+<div class="modal fade" id="quickActionsModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Quick Actions</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-grid gap-2">
+                    <a href="/provider/services/create" class="btn btn-outline-primary">
+                        <i class="fas fa-plus"></i> Create New Service
+                    </a>
+                    <a href="/provider/portfolio" class="btn btn-outline-info">
+                        <i class="fas fa-folder"></i> Update Portfolio
+                    </a>
+                    <a href="/provider/profile" class="btn btn-outline-warning">
+                        <i class="fas fa-user-edit"></i> Edit Profile
+                    </a>
+                    <button class="btn btn-outline-success" onclick="shareProfile()">
+                        <i class="fas fa-share-alt"></i> Share Profile
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.dashboard-container {
+    padding: 2rem 0;
+    background: #f8f9fa;
+    min-height: 100vh;
+}
+
+.welcome-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+}
+
+.metric-card {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease;
+    border-left: 4px solid transparent;
+}
+
+.metric-card:hover {
+    transform: translateY(-2px);
+}
+
+.metric-card.earnings {
+    border-left-color: #28a745;
+}
+
+.metric-card.orders {
+    border-left-color: #007bff;
+}
+
+.metric-card.rating {
+    border-left-color: #ffc107;
+}
+
+.metric-card.response {
+    border-left-color: #6f42c1;
+}
+
+.metric-value {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.metric-label {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.metric-change {
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+}
+
+.metric-change.positive {
+    color: #28a745;
+}
+
+.metric-change.negative {
+    color: #dc3545;
+}
+
+.performance-metrics .metric-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.performance-metrics .metric-item:last-child {
+    border-bottom: none;
+}
+
+.service-performance-card {
+    background: white;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.status-badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 15px;
+}
+
+.online-indicator {
+    width: 10px;
+    height: 10px;
+    background: #28a745;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 0.5rem;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.notifications-list .notification-item {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.notifications-list .notification-item:hover {
+    background-color: #f8f9fa;
+}
+
+.notifications-list .notification-item:last-child {
+    border-bottom: none;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let revenueChart = null;
+    
+    // Load dashboard data
+    loadDashboardStats();
+    
+    // Set up real-time updates
+    setupRealTimeUpdates();
+    
+    // Revenue filter change
+    document.querySelectorAll('input[name="revenueFilter"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (this.checked) {
+                updateRevenueChart(this.value);
+            }
+        });
+    });
+
+    async function loadDashboardStats() {
+        try {
+            showLoadingSpinner();
+            
+            const response = await fetch('/api/provider/dashboard/stats', {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                renderMetricsCards(result.stats);
+                renderRevenueChart(result.stats.monthlyEarnings);
+                renderPerformanceMetrics(result.stats);
+                renderRecentOrders(result.stats.recentOrders);
+                renderNotifications();
+                renderServicesPerformance();
+            }
+            
+        } catch (error) {
+            console.error('Error loading dashboard stats:', error);
+            showNotification('Error', 'Failed to load dashboard data', 'error');
+        } finally {
+            hideLoadingSpinner();
+        }
+    }
+
+    function renderMetricsCards(stats) {
+        const container = document.getElementById('metricsCards');
+        
+        const cards = [
+            {
+                title: 'Total Earnings',
+                value: `₹${stats.totalEarnings?.toLocaleString() || 0}`,
+                change: '+12.5%',
+                changeType: 'positive',
+                icon: 'fas fa-rupee-sign',
+                class: 'earnings'
+            },
+            {
+                title: 'Active Orders',
+                value: stats.pendingOrders || 0,
+                change: '+3 new',
+                changeType: 'positive',
+                icon: 'fas fa-shopping-cart',
+                class: 'orders'
+            },
+            {
+                title: 'Rating',
+                value: `${stats.averageRating || 0}/5`,
+                change: `${stats.totalReviews || 0} reviews`,
+                changeType: 'neutral',
+                icon: 'fas fa-star',
+                class: 'rating'
+            },
+            {
+                title: 'Response Time',
+                value: `${stats.responseTimeAvg || 0}h`,
+                change: '-15min',
+                changeType: 'positive',
+                icon: 'fas fa-clock',
+                class: 'response'
+            }
+        ];
+
+        container.innerHTML = cards.map(card => `
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="metric-card ${card.class}">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="metric-icon">
+                            <i class="${card.icon} fa-2x text-primary"></i>
+                        </div>
+                        <div class="text-end">
+                            <div class="metric-value">${card.value}</div>
+                            <div class="metric-label">${card.title}</div>
+                        </div>
+                    </div>
+                    <div class="metric-change ${card.changeType}">
+                        <i class="fas ${card.changeType === 'positive' ? 'fa-arrow-up' : card.changeType === 'negative' ? 'fa-arrow-down' : 'fa-minus'}"></i>
+                        ${card.change}
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function renderRevenueChart(monthlyData) {
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        
+        if (revenueChart) {
+            revenueChart.destroy();
+        }
+
+        revenueChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: monthlyData?.map(item => item.month) || [],
+                datasets: [{
+                    label: 'Revenue',
+                    data: monthlyData?.map(item => item.earnings) || [],
+                    borderColor: '#007bff',
+                    backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#007bff',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return '₹' + value.toLocaleString();
+                            }
+                        }
+                    }
+                },
+                elements: {
+                    point: {
+                        hoverRadius: 8
+                    }
+                }
+            }
+        });
+    }
+
+    function renderPerformanceMetrics(stats) {
+        const container = document.getElementById('performanceMetrics');
+        
+        const metrics = [
+            {
+                label: 'Completion Rate',
+                value: `${stats.completionRate || 0}%`,
+                color: 'success'
+            },
+            {
+                label: 'Response Rate',
+                value: '98%',
+                color: 'info'
+            },
+            {
+                label: 'Customer Satisfaction',
+                value: '4.8/5',
+                color: 'warning'
+            },
+            {
+                label: 'Repeat Customers',
+                value: '35%',
+                color: 'primary'
+            }
+        ];
+
+        container.innerHTML = metrics.map(metric => `
+            <div class="metric-item">
+                <div>
+                    <div class="fw-bold">${metric.label}</div>
+                    <small class="text-muted">Last 30 days</small>
+                </div>
+                <div class="text-${metric.color} fw-bold">${metric.value}</div>
+            </div>
+        `).join('');
+    }
+
+    function renderRecentOrders(orders = []) {
+        const tbody = document.querySelector('#recentOrdersTable tbody');
+        
+        if (orders.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="text-center text-muted py-4">
+                        <i class="fas fa-inbox fa-2x mb-2"></i><br>
+                        No recent orders
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        tbody.innerHTML = orders.map(order => `
+            <tr>
+                <td>
+                    <small class="text-muted">#${order.id?.slice(-6) || 'N/A'}</small>
+                </td>
+                <td>
+                    <div class="fw-bold">${order.serviceTitle || 'N/A'}</div>
+                </td>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <img src="/images/default-avatar.png" alt="Customer" class="rounded-circle me-2" width="24" height="24">
+                        <small>${order.customerName || 'N/A'}</small>
+                    </div>
+                </td>
+                <td>
+                    <span class="fw-bold">₹${order.amount?.toLocaleString() || 0}</span>
+                </td>
+                <td>
+                    <span class="badge ${getStatusBadgeClass(order.status)}">${order.status || 'pending'}</span>
+                </td>
+                <td>
+                    <a href="/provider/orders/${order.id}" class="btn btn-sm btn-outline-primary">View</a>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    function getStatusBadgeClass(status) {
+        const statusClasses = {
+            'pending': 'bg-warning text-dark',
+            'accepted': 'bg-info',
+            'in_progress': 'bg-primary',
+            'delivered': 'bg-success',
+            'completed': 'bg-success',
+            'cancelled': 'bg-danger'
+        };
+        return statusClasses[status] || 'bg-secondary';
+    }
+
+    function renderNotifications() {
+        // This would typically load from API
+        const container = document.getElementById('notificationsList');
+        container.innerHTML = `
+            <div class="notification-item">
+                <div class="fw-bold">New order received</div>
+                <small class="text-muted">2 minutes ago</small>
+            </div>
+            <div class="notification-item">
+                <div class="fw-bold">Payment processed</div>
+                <small class="text-muted">1 hour ago</small>
+            </div>
+            <div class="notification-item">
+                <div class="fw-bold">Profile viewed</div>
+                <small class="text-muted">3 hours ago</small>
+            </div>
+        `;
+    }
+
+    function renderServicesPerformance() {
+        // This would typically load from API
+        const container = document.getElementById('servicesPerformance');
+        container.innerHTML = `
+            <div class="col-md-4">
+                <div class="service-performance-card">
+                    <h6>Web Development</h6>
+                    <div class="d-flex justify-content-between">
+                        <small>Orders: 15</small>
+                        <small class="text-success">₹45,000</small>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function setupRealTimeUpdates() {
+        // Socket.IO real-time updates would go here
+        socket.on('dashboard-update', function(data) {
+            // Update specific dashboard elements
+            updateDashboardElement(data);
+        });
+    }
+
+    // Go Online/Offline toggle
+    document.getElementById('goOnlineBtn').addEventListener('click', function() {
+        const isOnline = this.classList.contains('btn-success');
+        
+        if (isOnline) {
+            this.classList.remove('btn-success');
+            this.classList.add('btn-primary');
+            this.innerHTML = '<i class="fas fa-power-off"></i> Go Online';
+        } else {
+            this.classList.remove('btn-primary');
+            this.classList.add('btn-success');
+            this.innerHTML = '<span class="online-indicator"></span> Online';
+        }
+        
+        // Update online status via API
+        updateOnlineStatus(!isOnline);
+    });
+
+    async function updateOnlineStatus(isOnline) {
+        try {
+            await fetch('/api/provider/online-status', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({ online: isOnline })
+            });
+        } catch (error) {
+            console.error('Error updating online status:', error);
+        }
+    }
+});
+
+function shareProfile() {
+    const profileUrl = `${window.location.origin}/provider/profile/<%= user.id %>`;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: 'My Service Provider Profile',
+            text: 'Check out my services on MyServiceHub',
+            url: profileUrl
+        });
+    } else {
+        // Fallback - copy to clipboard
+        navigator.clipboard.writeText(profileUrl).then(() => {
+            showNotification('Success', 'Profile URL copied to clipboard!', 'success');
+        });
+    }
+}
+</script>

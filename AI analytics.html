@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Analytics Dashboard - ServiceHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        .ai-header {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .analytics-dashboard {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .ai-insights-banner {
+            background: linear-gradient(135deg, #00b894, #00cec9);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .banner-title {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+
+        .banner-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .metric-card {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .metric-icon {
+            font-size: 2rem;
+            background: rgba(108, 92, 231, 0.1);
+            color: #6c5ce7;
+            padding: 10px;
+            border-radius: 12px;
+        }
+
+        .metric-trend {
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 15px;
+            text-transform: uppercase;
+        }
+
+        .trend-up {
+            background: rgba(0, 184, 148, 0.1);
+            color: #00b894;
+        }
+
+        .trend-down {
+            background: rgba(225, 112, 85, 0.1);
+            color: #e17055;
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #2d3436;
+            margin-bottom: 5px;
+        }
+
+        .metric-label {
+            color: #636e72;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .ai-prediction {
+            background: rgba(108, 92, 231, 0.05);
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border-left: 4px solid #6c5ce7;
+        }
+
+        .prediction-text {
+            font-size: 13px;
+            color: #6c5ce7;
+            font-weight: 600;
+        }
+
+        .charts-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .chart-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #2d3436;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chart-placeholder {
+            height: 300px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #636e72;
+            font-weight: 600;
+            font-size: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-placeholder::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M10,80 Q20,60 30,70 T50,65 T70,55 T90,45" stroke="%236c5ce7" stroke-width="3" fill="none"/></svg>') no-repeat center;
+            background-size: 80%;
+            opacity: 0.3;
+        }
+
+        .ai-insights-panel {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .insights-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #2d3436;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .insight-item {
+            background: rgba(108, 92, 231, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #6c5ce7;
+        }
+
+        .insight-category {
+            font-size: 12px;
+            font-weight: 700;
+            color: #6c5ce7;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .insight-text {
+            color: #2d3436;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .insight-confidence {
+            font-size: 12px;
+            color: #00b894;
+            font-weight: 700;
+            margin-top: 8px;
+        }
+
+        .performance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+        }
+
+        .performance-card {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .performance-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #2d3436;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .performance-metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .performance-metric:last-child {
+            border-bottom: none;
+        }
+
+        .metric-name {
+            color: #636e72;
+            font-weight: 600;
+        }
+
+        .metric-score {
+            font-weight: 800;
+            color: #2d3436;
+        }
+
+        .score-excellent {
+            color: #00b894;
+        }
+
+        .score-good {
+            color: #fdcb6e;
+        }
+
+        .score-average {
+            color: #e17055;
+        }
+
+        .ai-recommendations {
+            background: linear-gradient(135deg, #fd79a8, #fdcb6e);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+
+        .recommendations-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .recommendation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .recommendation-item {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .recommendation-title {
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .recommendation-desc {
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .performance-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="ai-header">
+        <div class="header-content">
+            <div class="logo">
+                🧠 AI Analytics Dashboard
+            </div>
+            <button onclick="window.history.back()" style="background: rgba(255,255,255,0.2); color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: 600;">← Back</button>
+        </div>
+    </header>
+
+    <div class="analytics-dashboard">
+        <div class="ai-insights-banner">
+            <h1 class="banner-title">🤖 AI-Powered Business Intelligence</h1>
+            <p class="banner-subtitle">Real-time analytics with predictive insights and automated recommendations</p>
+        </div>
+
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-icon">📊</span>
+                    <span class="metric-trend trend-up">+23% ↗</span>
+                </div>
+                <div class="metric-value">₹2,47,650</div>
+                <div class="metric-label">Total Revenue (30d)</div>
+                <div class="ai-prediction">
+                    <div class="prediction-text">🤖 AI predicts 15% growth next month based on booking trends</div>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-icon">🎯</span>
+                    <span class="metric-trend trend-up">+18% ↗</span>
+                </div>
+                <div class="metric-value">347</div>
+                <div class="metric-label">Total Bookings</div>
+                <div class="ai-prediction">
+                    <div class="prediction-text">🧠 Peak booking time: 2-4 PM weekdays (AI optimization)</div>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-icon">⭐</span>
+                    <span class="metric-trend trend-up">+0.3 ↗</span>
+                </div>
+                <div class="metric-value">4.87</div>
+                <div class="metric-label">Average Rating</div>
+                <div class="ai-prediction">
+                    <div class="prediction-text">🌟 AI sentiment: 94% customer satisfaction rate</div>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-icon">⚡</span>
+                    <span class="metric-trend trend-up">-12% ↗</span>
+                </div>
+                <div class="metric-value">2.3 min</div>
+                <div class="metric-label">Avg Response Time</div>
+                <div class="ai-prediction">
+                    <div class="prediction-text">🚀 AI routing improved response time by 35%</div>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-icon">🎪</span>
+                    <span class="metric-trend trend-up">+31% ↗</span>
+                </div>
+                <div class="metric-value">89.2%</div>
+                <div class="metric-label">Service Success Rate</div>
+                <div class="ai-prediction">
+                    <div class="prediction-text">📈 AI quality control increased success by 12%</div>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-icon">👥</span>
+                    <span class="metric-trend trend-up">+44% ↗</span>
+                </div>
+                <div class="metric-value">1,247</div>
+                <div class="metric-label">Active Customers</div>
+                <div class="ai-prediction">
+                    <div class="prediction-text">🎯 AI targeting brought 312 new customers this month</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="charts-section">
+            <div class="chart-container">
+                <h3 class="chart-title">📈 AI Revenue Forecast</h3>
+                <div class="chart-placeholder">
+                    🤖 AI analyzing revenue patterns and market trends...
+                    <br><small>Interactive charts with real-time data processing</small>
+                </div>
+            </div>
+
+            <div class="ai-insights-panel">
+                <h3 class="insights-title">🧠 AI Insights</h3>
+                
+                <div class="insight-item">
+                    <div class="insight-category">Market Opportunity</div>
+                    <div class="insight-text">Home cleaning services show 67% higher demand in your area compared to city average. Consider expanding team.</div>
+                    <div class="insight-confidence">AI Confidence: 91%</div>
+                </div>
+
+                <div class="insight-item">
+                    <div class="insight-category">Pricing Optimization</div>
+                    <div class="insight-text">Increase web development pricing by 15%. Market analysis shows customers willing to pay premium for quality.</div>
+                    <div class="insight-confidence">AI Confidence: 87%</div>
+                </div>
+
+                <div class="insight-item">
+                    <div class="insight-category">Customer Behavior</div>
+                    <div class="insight-text">85% of repeat customers book within 2 weeks. Implement follow-up automation for better retention.</div>
+                    <div class="insight-confidence">AI Confidence: 94%</div>
+                </div>
+
+                <div class="insight-item">
+                    <div class="insight-category">Demand Prediction</div>
+                    <div class="insight-text">Digital marketing services will spike 40% in next 15 days. Prepare additional resources.</div>
+                    <div class="insight-confidence">AI Confidence: 89%</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="performance-grid">
+            <div class="performance-card">
+                <h3 class="performance-title">🎯 AI Performance Metrics</h3>
+                
+                <div class="performance-metric">
+                    <span class="metric-name">Provider Matching Accuracy</span>
+                    <span class="metric-score score-excellent">96.8%</span>
+                </div>
+                
+                <div class="performance-metric">
+                    <span class="metric-name">Price Optimization Success</span>
+                    <span class="metric-score score-excellent">91.3%</span>
+                </div>
+                
+                <div class="performance-metric">
+                    <span class="metric-name">Demand Prediction Accuracy</span>
+                    <span class="metric-score score-excellent">89.7%</span>
+                </div>
+                
+                <div class="performance-metric">
+                    <span class="metric-name">Customer Satisfaction AI</span>
+                    <span class="metric-score score-excellent">94.2%</span>
+                </div>
+                
+                <div class="performance-metric">
+                    <span class="metric-name">Automated Response Rate</span>
+                    <span class="metric-score score-good">87.5%</span>
+                </div>
+            </div>
+
+            <div class="performance-card">
+                <h3 class="performance-title">📊 Service Categories Performance</h3>
+                
+                <div class="performance-metric">
+                    <span class="metric-name">🏠 Home Services</span>
+                    <span class="metric-score score-excellent">₹98,450</span>
+                </div>
+                
+                <div class="performance-metric">
+                    <span class="metric-name">💻 Web Development</span>
+                    <span class="metric-score score-excellent">₹76,230</span>
+                </div>
+                
+                <div class="performance-metric">
+                    <span class="metric-name">📱 Digital Marketing</span>
+                    <span class="metric-score score-good">₹45,680</span>
+                </div>
+                
+                <div class="performance-metric">
+                    <span class="metric-name">🎨 Graphic Design</span>
+                    <span class="metric-score score-good">₹27,290</span>
+                </div>
+                
+                <div class="performance-metric">
+                    <span class="metric-name">💼 Business Consulting</span>
+                    <span class="metric-score score-average">₹18,450</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="ai-recommendations">
+            <h2 class="recommendations-title">🚀 AI-Powered Recommendations</h2>
+            
+            <div class="recommendation-grid">
+                <div class="recommendation-item">
+                    <div class="recommendation-title">🎯 Optimize Peak Hours</div>
+                    <div class="recommendation-desc">
+                        AI detected 73% higher booking success between 2-4 PM. Implement dynamic pricing during peak hours to maximize revenue.
+                    </div>
+                </div>
+                
+                <div class="recommendation-item">
+                    <div class="recommendation-title">📱 Mobile App Priority</div>
+                    <div class="recommendation-desc">
+                        67% of your customers use mobile devices. Developing a mobile app could increase bookings by 35% based on AI analysis.
+                    </div>
+                </div>
+                
+                <div class="recommendation-item">
+                    <div class="recommendation-title">🤖 Chatbot Enhancement</div>
+                    <div class="recommendation-desc">
+                        AI chatbot handles 89% of initial queries successfully. Adding voice support could improve customer experience by 28%.
+                    </div>
+                </div>
+                
+                <div class="recommendation-item">
+                    <div class="recommendation-title">📈 Expand Service Areas</div>
+                    <div class="recommendation-desc">
+                        Market analysis shows untapped demand in 3 nearby areas. Expansion could increase revenue by ₹45,000/month.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // AI Analytics JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simulate real-time data updates
+            setInterval(updateMetrics, 10000);
+            
+            // Initialize AI insights
+            generateAIInsights();
+        });
+
+        function updateMetrics() {
+            console.log('🤖 AI updating metrics in real-time...');
+            
+            // Simulate metric updates
+            const metrics = document.querySelectorAll('.metric-value');
+            metrics.forEach(metric => {
+                // Add subtle animation to show live updates
+                metric.style.transform = 'scale(1.05)';
+                metric.style.color = '#00b894';
+                
+                setTimeout(() => {
+                    metric.style.transform = 'scale(1)';
+                    metric.style.color = '#2d3436';
+                }, 200);
+            });
+        }
+
+        function generateAIInsights() {
+            console.log('🧠 AI generating business insights...');
+            
+            const insights = [
+                {
+                    category: 'Market Trend',
+                    text: 'AI detected 23% increase in demand for eco-friendly cleaning services.',
+                    confidence: 88
+                },
+                {
+                    category: 'Customer Pattern',
+                    text: 'Weekend bookings show 45% higher completion rates than weekdays.',
+                    confidence: 92
+                },
+                {
+                    category: 'Revenue Opportunity',
+                    text: 'Bundled services generate 67% more revenue per customer.',
+                    confidence: 85
+                }
+            ];
+            
+            // Simulate AI processing delay
+            setTimeout(() => {
+                console.log('💡 AI insights generated:', insights);
+            }, 1500);
+        }
+
+        // Real-time chart updates (would integrate with Chart.js or similar)
+        function updateCharts() {
+            console.log('📊 AI updating predictive charts...');
+        }
+
+        // AI notification system
+        function showAINotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                z-index: 10000;
+                font-weight: 600;
+                font-size: 14px;
+            `;
+            notification.innerHTML = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
+
+        // Simulate AI notifications
+        setTimeout(() => {
+            showAINotification('🤖 AI detected unusual spike in bookings - consider scaling resources');
+        }, 3000);
+
+        setTimeout(() => {
+            showAINotification('📈 Revenue forecast updated: +18% growth predicted for next quarter');
+        }, 8000);
+    </script>
+</body>
+</html>

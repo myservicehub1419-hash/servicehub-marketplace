@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Services - ServiceHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            background: linear-gradient(135deg, #434343 0%, #000000 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #434343, #000000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, #434343, #000000);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(67, 67, 67, 0.4);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .service-hero {
+            text-align: center;
+            margin-bottom: 50px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+        }
+
+        .service-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .service-subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .service-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #434343;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .price-banner {
+            background: linear-gradient(135deg, #434343, #000000);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .price-text {
+            font-size: 2rem;
+            font-weight: 900;
+        }
+
+        .sub-services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .sub-service-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+
+        .sub-service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: #434343;
+        }
+
+        .sub-service-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .sub-service-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #434343, #000000);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+        }
+
+        .sub-service-info h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .sub-service-badge {
+            background: #434343;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .sub-service-description {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin: 15px 0;
+        }
+
+        .feature-list li {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #555;
+        }
+
+        .feature-icon {
+            color: #434343;
+        }
+
+        .sub-service-pricing {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(67, 67, 67, 0.1);
+            border-radius: 10px;
+        }
+
+        .price {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #434343;
+        }
+
+        .book-sub-btn {
+            background: linear-gradient(135deg, #434343, #000000);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .book-sub-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(67, 67, 67, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .service-stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .sub-services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .service-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">🛡️ Security Services</div>
+            <a href="customer-portal.html" class="back-btn">← Back to Dashboard</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="service-hero">
+            <h1 class="service-title">🛡️ Security Services</h1>
+            <p class="service-subtitle">Professional security and protection services for your peace of mind</p>
+            
+            <div class="service-stats">
+                <div class="stat">
+                    <div class="stat-value">4.7⭐</div>
+                    <div class="stat-label">Expert Rating</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">15 min</div>
+                    <div class="stat-label">Avg Response</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">1.2k+</div>
+                    <div class="stat-label">Protected</div>
+                </div>
+            </div>
+
+            <div class="price-banner">
+                <div class="price-text">Starting from ₹2,999</div>
+            </div>
+        </div>
+
+        <div class="sub-services-grid">
+            <!-- PERSONAL SECURITY -->
+            <div class="sub-service-card" onclick="bookSubService('personal-security')">
+                <div class="sub-service-header">
+                    <div class="sub-service-icon">👤</div>
+                    <div class="sub-service-info">
+                        <h3>Personal Security</h3>
+                        <span class="sub-service-badge">VIP Protection</span>
+                    </div>
+                </div>
+                <p class="sub-service-description">Professional personal bodyguard and protection services</p>
+                
+                <ul class="feature-list">
+                    <li><span class="feature-icon">✅</span> Personal Bodyguards</li>
+                    <li><span class="feature-icon">✅</span> VIP Protection</li>
+                    <li><span class="feature-icon">✅</span> Event Security</li>
+                    <li><span class="feature-icon">✅</span> Travel Security</li>
+                </ul>
+
+                <div class="sub-service-pricing">
+                    <div class="price">₹5,999 - ₹50,000</div>
+                    <button class="book-sub-btn">Book Now</button>
+                </div>
+            </div>
+
+            <!-- HOME SECURITY -->
+            <div class="sub-service-card" onclick="bookSubService('home-security-guard')">
+                <div class="sub-service-header">
+                    <div class="sub-service-icon">🏠</div>
+                    <div class="sub-service-info">
+                        <h3>Home Security</h3>
+                        <span class="sub-service-badge">24/7 Protection</span>
+                    </div>
+                </div>
+                <p class="sub-service-description">Residential security guards and home protection</p>
+                
+                <ul class="feature-list">
+                    <li><span class="feature-icon">✅</span> Security Guards</li>
+                    <li><span class="feature-icon">✅</span> CCTV Monitoring</li>
+                    <li><span class="feature-icon">✅</span> Access Control</li>
+                    <li><span class="feature-icon">✅</span> Emergency Response</li>
+                </ul>
+
+                <div class="sub-service-pricing">
+                    <div class="price">₹2,999 - ₹25,000</div>
+                    <button class="book-sub-btn">Book Now</button>
+                </div>
+            </div>
+
+            <!-- OFFICE SECURITY -->
+            <div class="sub-service-card" onclick="bookSubService('office-security')">
+                <div class="sub-service-header">
+                    <div class="sub-service-icon">🏢</div>
+                    <div class="sub-service-info">
+                        <h3>Office Security</h3>
+                        <span class="sub-service-badge">Business Protection</span>
+                    </div>
+                </div>
+                <p class="sub-service-description">Commercial office and business security services</p>
+                
+                <ul class="feature-list">
+                    <li><span class="feature-icon">✅</span> Office Guards</li>
+                    <li><span class="feature-icon">✅</span> Asset Protection</li>
+                    <li><span class="feature-icon">✅</span> Visitor Management</li>
+                    <li><span class="feature-icon">✅</span> Night Security</li>
+                </ul>
+
+                <div class="sub-service-pricing">
+                    <div class="price">₹4,999 - ₹40,000</div>
+                    <button class="book-sub-btn">Book Now</button>
+                </div>
+            </div>
+
+            <!-- EVENT SECURITY -->
+            <div class="sub-service-card" onclick="bookSubService('event-security-service')">
+                <div class="sub-service-header">
+                    <div class="sub-service-icon">🎪</div>
+                    <div class="sub-service-info">
+                        <h3>Event Security</h3>
+                        <span class="sub-service-badge">Crowd Control</span>
+                    </div>
+                </div>
+                <p class="sub-service-description">Professional event security and crowd management</p>
+                
+                <ul class="feature-list">
+                    <li><span class="feature-icon">✅</span> Crowd Control</li>
+                    <li><span class="feature-icon">✅</span> Entry Management</li>
+                    <li><span class="feature-icon">✅</span> VIP Protection</li>
+                    <li><span class="feature-icon">✅</span> Emergency Planning</li>
+                </ul>
+
+                <div class="sub-service-pricing">
+                    <div class="price">₹8,999 - ₹75,000</div>
+                    <button class="book-sub-btn">Book Now</button>
+                </div>
+            </div>
+
+            <!-- SECURITY CONSULTATION -->
+            <div class="sub-service-card" onclick="bookSubService('security-consultation')">
+                <div class="sub-service-header">
+                    <div class="sub-service-icon">📋</div>
+                    <div class="sub-service-info">
+                        <h3>Security Consultation</h3>
+                        <span class="sub-service-badge">Expert Analysis</span>
+                    </div>
+                </div>
+                <p class="sub-service-description">Professional security assessment and consultation</p>
+                
+                <ul class="feature-list">
+                    <li><span class="feature-icon">✅</span> Security Assessment</li>
+                    <li><span class="feature-icon">✅</span> Risk Analysis</li>
+                    <li><span class="feature-icon">✅</span> System Design</li>
+                    <li><span class="feature-icon">✅</span> Training Programs</li>
+                </ul>
+
+                <div class="sub-service-pricing">
+                    <div class="price">₹2,999 - ₹15,000</div>
+                    <button class="book-sub-btn">Book Now</button>
+                </div>
+            </div>
+
+            <!-- SURVEILLANCE SERVICES -->
+            <div class="sub-service-card" onclick="bookSubService('surveillance-services')">
+                <div class="sub-service-header">
+                    <div class="sub-service-icon">📹</div>
+                    <div class="sub-service-info">
+                        <h3>Surveillance Services</h3>
+                        <span class="sub-service-badge">Tech Monitoring</span>
+                    </div>
+                </div>
+                <p class="sub-service-description">Advanced surveillance and monitoring systems</p>
+                
+                <ul class="feature-list">
+                    <li><span class="feature-icon">✅</span> CCTV Installation</li>
+                    <li><span class="feature-icon">✅</span> Remote Monitoring</li>
+                    <li><span class="feature-icon">✅</span> Motion Detection</li>
+                    <li><span class="feature-icon">✅</span> Alert Systems</li>
+                </ul>
+
+                <div class="sub-service-pricing">
+                    <div class="price">₹6,999 - ₹60,000</div>
+                    <button class="book-sub-btn">Book Now</button>
+                </div>
+            </div>
+
+            <!-- FIRE SAFETY -->
+            <div class="sub-service-card" onclick="bookSubService('fire-safety')">
+                <div class="sub-service-header">
+                    <div class="sub-service-icon">🔥</div>
+                    <div class="sub-service-info">
+                        <h3>Fire Safety</h3>
+                        <span class="sub-service-badge">Emergency Ready</span>
+                    </div>
+                </div>
+                <p class="sub-service-description">Fire safety systems and emergency response services</p>
+                
+                <ul class="feature-list">
+                    <li><span class="feature-icon">✅</span> Fire Alarm Systems</li>
+                    <li><span class="feature-icon">✅</span> Extinguisher Service</li>
+                    <li><span class="feature-icon">✅</span> Emergency Evacuation</li>
+                    <li><span class="feature-icon">✅</span> Safety Training</li>
+                </ul>
+
+                <div class="sub-service-pricing">
+                    <div class="price">₹3,999 - ₹30,000</div>
+                    <button class="book-sub-btn">Book Now</button>
+                </div>
+            </div>
+
+            <!-- CYBER SECURITY -->
+            <div class="sub-service-card" onclick="bookSubService('cyber-security')">
+                <div class="sub-service-header">
+                    <div class="sub-service-icon">💻</div>
+                    <div class="sub-service-info">
+                        <h3>Cyber Security</h3>
+                        <span class="sub-service-badge">Digital Protection</span>
+                    </div>
+                </div>
+                <p class="sub-service-description">Digital security and data protection services</p>
+                
+                <ul class="feature-list">
+                    <li><span class="feature-icon">✅</span> Network Security</li>
+                    <li><span class="feature-icon">✅</span> Data Protection</li>
+                    <li><span class="feature-icon">✅</span> Threat Assessment</li>
+                    <li><span class="feature-icon">✅</span> Security Audit</li>
+                </ul>
+
+                <div class="sub-service-pricing">
+                    <div class="price">₹9,999 - ₹1,00,000</div>
+                    <button class="book-sub-btn">Book Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // UPDATED BOOKING FUNCTION 
+        function bookSubService(subService) {
+            console.log('Booking sub-service:', subService);
+            localStorage.setItem('selectedSubService', subService);
+            
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) {
+                alert('Please login first to book services');
+                window.location.href = 'customer-portal.html';
+                return;
+            }
+
+            // Get current service type from URL
+            const serviceType = getServiceTypeFromURL();
+            
+            // Redirect to booking form with service details
+            window.location.href = `booking-form.html?service=${serviceType}&subService=${subService}`;
+        }
+
+        function getServiceTypeFromURL() {
+            const filename = window.location.pathname.split('/').pop();
+            return filename.replace('.html', '');
+        }
+
+        // Animation on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.sub-service-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(50px)';
+                card.style.transition = `all 0.6s ease ${index * 0.1}s`;
+                
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>

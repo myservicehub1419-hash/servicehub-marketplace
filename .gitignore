@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+
+# Environment variables
+.env
+.env.local
+
+# Logs
+logs
+*.log
+
+# Uploads (keep structure but ignore files)
+uploads/*
+!uploads/.gitkeep
+
+# Temporary files
+temp/
+tmp/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Build files
+build/
+dist/

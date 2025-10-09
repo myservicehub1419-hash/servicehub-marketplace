@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Development Services - ServiceHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .service-hero {
+            text-align: center;
+            margin-bottom: 50px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+        }
+
+        .service-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .service-subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .service-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .price-banner {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .price-text {
+            font-size: 2rem;
+            font-weight: 900;
+        }
+
+        .sub-services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .sub-service-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+
+        .sub-service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .sub-service-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .sub-service-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+        }
+
+        .sub-service-info h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .sub-service-badge {
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .sub-service-description {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin: 15px 0;
+        }
+
+        .feature-list li {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #555;
+        }
+
+        .feature-icon {
+            color: #667eea;
+        }
+
+        .sub-service-pricing {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 10px;
+        }
+
+        .price {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #667eea;
+        }
+
+        .book-sub-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .book-sub-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .service-stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .sub-services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .service-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">💻 Web Development</div>
+            <a href="customer-portal.html" class="back-btn">← Back to Dashboard</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="service-hero">
+            <h1 class="service-title">💻 Web Development</h1>
+            <p class="service-subtitle">Build powerful websites and applications for your business</p>
+            
+            <div class="service-stats">
+                <div class="stat">
+                    <div class="stat-value">4.7⭐</div>
+                    <div class="stat-label">Expert Rating</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">5 hrs</div>
+                    <div class="stat-label">Avg Response</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">850+</div>
+                    <div class="stat-label">Projects</div>
+                </div>
+            </div>
+
+            <div class="price-banner">
+                <div class="price-text">Starting from ₹9,999</div>
+            </div>
+        </div>
+
+        <div class="sub-services-grid">
+            <!-- WEBSITE DESIGN -->
+            <div class="sub-service-card" onclick="bookSubService('website-design')">
+                <div class="sub-service-header">
+                    <div class="sub-service-icon">🌐</div>
+                    <div class="sub-service-info">
+                        <h3>Website Design</h3>
+                        <span class="sub-service-badge">Most Popular</span>
+                    </div>
+                </div>
+                <p class="sub-service-description">Professional responsive websites tailored to your business needs</p>
+                
+                <ul class="feature-list">
+                    <li><span class="feature-icon">✅</span> Responsive Design</li>
+                    <li><span class="feature-icon">✅</span> Custom Layouts</li>
+                    <li><span class="feature-icon">✅</span> SEO Optimization</li>
+                    <li><span class="feature-icon">✅</span> Speed Optimization</li>
+                </ul>
+
+                <div class="sub-service-pricing">
+                    <div class="price">₹9,999 - ₹99,999</div>
+                    <button class="book-sub-btn">Book Now</button>
+                </div>
+            </div>
+
+            <!-- MOBILE APP DEVELOPMENT -->
+            <div class="sub-service-card" onclick="bookSubService('mobile-app-development')">
+                <div class="sub-service-header">
+                    <div class="sub-service-icon">📱</div>
+                    <div class="sub-service-info">
+                        <h3>Mobile App Development</h3>
+                        <span class="sub-service-badge">High Demand</span>
+                    </div>
+                </div>
+                <p class="sub-service-description">Native and cross-platform mobile applications</p>
+                
+                <ul class="feature-list">
+                    <li><span class="feature-icon">✅</span> Android & iOS</li>
+                    <li><span class="feature-icon">✅</span> React Native</li>
+                    <li><span class="feature-icon">✅</span> Flutter Development</li>
+                    <li><span class="feature-icon">✅</span> App Store Deployment</li>
+                </ul>
+
+                <div class="sub-service-pricing">
+                    <div class="price">₹25,000 - ₹2,50,000</div>
+                    <button class="book-sub-btn">Book Now</button>
+                </div>
+            </div>
+
+            <!-- E-COMMERCE DEVELOPMENT -->
+            <div class="sub-service-card" onclick="bookSubService('ecommerce-development')">
+                <div class="sub-service-header">
+                    <div class="sub-service-icon">🛒</div>
+                    <div class="sub-service-info">
+                        <h3>E-commerce Development</h3>
+                        <span class="sub-service-badge">Revenue Focus</span>
+                    </div>
+                </div>
+                <p class="sub-service-description">Complete online store solutions with payment integration</p>
+                
+                <ul class="feature-list">
+                    <li><span class="feature-icon">✅</span> Shopping Cart</li>
+                    <li><span class="feature-icon">✅</span> Payment Gateway</li>
+                    <li><span class="feature-icon">✅</span> Inventory Management</li>
+                    <li><span class="feature-icon">✅</span> Admin Dashboard</li>
+                </ul>
+
+                <div class="sub-service-pricing">
+                    <div class="price">₹15,000 - ₹1,50,000</div>
+                    <button class="book-sub-btn">Book Now</button>
+                </div>
+            </div>
+
+            <!-- LANDING PAGE CREATION -->
+            <div class="sub-service-card" onclick="bookSubService('landing-page-creation')">
+                <div class="sub-service-header">
+                    <div class="sub-service-icon">⚡</div>
+                    <div class="sub-service-info">
+                        <h3>Landing Page Creation</h3>
+                        <span class="sub-service-badge">Quick Delivery</span>
+                    </div>
+                </div>
+                <p class="sub-service-description">High-converting landing pages for marketing campaigns</p>
+                
+                <ul class="feature-list">
+                    <li><span class="feature-icon">✅</span> Conversion Optimized</li>
+                    <li><span class="feature-icon">✅</span> A/B Testing Ready</li>
+                    <li><span class="feature-icon">✅</span> Mobile Responsive</li>
+                    <li><span class="feature-icon">✅</span> Analytics Integration</li>
+                </ul>
+
+                <div class="sub-service-pricing">
+                    <div class="price">₹4,999 - ₹25,000</div>
+                    <button class="book-sub-btn">Book Now</button>
+                </div>
+            </div>
+
+            <!-- UI/UX DESIGN -->
+            <div class="sub-service-card" onclick="bookSubService('ui-ux-design')">
+                <div class="sub-service-header">
+                    <div class="sub-service-icon">🎨</div>
+                    <div class="sub-service-info">
+                        <h3>UI/UX Design</h3>
+                        <span class="sub-service-badge">Design Focus</span>
+                    </div>
+                </div>
+                <p class="sub-service-description">User interface and experience design for better engagement</p>
+                
+                <ul class="feature-list">
+                    <li><span class="feature-icon">✅</span> User Research</li>
+                    <li><span class="feature-icon">✅</span> Wireframing</li>
+                    <li><span class="feature-icon">✅</span> Prototyping</li>
+                    <li><span class="feature-icon">✅</span> Usability Testing</li>
+                </ul>
+
+                <div class="sub-service-pricing">
+                    <div class="price">₹8,999 - ₹75,000</div>
+                    <button class="book-sub-btn">Book Now</button>
+                </div>
+            </div>
+
+            <!-- WORDPRESS DEVELOPMENT -->
+            <div class="sub-service-card" onclick="bookSubService('wordpress-development')">
+                <div class="sub-service-header">
+                    <div class="sub-service-icon">🔧</div>
+                    <div class="sub-service-info">
+                        <h3>WordPress Development</h3>
+                        <span class="sub-service-badge">CMS Expert</span>
+                    </div>
+                </div>
+                <p class="sub-service-description">Custom WordPress themes and plugin development</p>
+                
+                <ul class="feature-list">
+                    <li><span class="feature-icon">✅</span> Custom Themes</li>
+                    <li><span class="feature-icon">✅</span> Plugin Development</li>
+                    <li><span class="feature-icon">✅</span> Site Migration</li>
+                    <li><span class="feature-icon">✅</span> Performance Optimization</li>
+                </ul>
+
+                <div class="sub-service-pricing">
+                    <div class="price">₹5,999 - ₹50,000</div>
+                    <button class="book-sub-btn">Book Now</button>
+                </div>
+            </div>
+
+            <!-- PAYMENT INTEGRATION -->
+            <div class="sub-service-card" onclick="bookSubService('payment-integration')">
+                <div class="sub-service-header">
+                    <div class="sub-service-icon">💳</div>
+                    <div class="sub-service-info">
+                        <h3>Payment Integration</h3>
+                        <span class="sub-service-badge">Secure</span>
+                    </div>
+                </div>
+                <p class="sub-service-description">Secure payment gateway integration for online transactions</p>
+                
+                <ul class="feature-list">
+                    <li><span class="feature-icon">✅</span> Multiple Gateways</li>
+                    <li><span class="feature-icon">✅</span> SSL Security</li>
+                    <li><span class="feature-icon">✅</span> Multi-currency</li>
+                    <li><span class="feature-icon">✅</span> Transaction Reports</li>
+                </ul>
+
+                <div class="sub-service-pricing">
+                    <div class="price">₹2,999 - ₹15,000</div>
+                    <button class="book-sub-btn">Book Now</button>
+                </div>
+            </div>
+
+            <!-- WEBSITE SECURITY -->
+            <div class="sub-service-card" onclick="bookSubService('website-security')">
+                <div class="sub-service-header">
+                    <div class="sub-service-icon">🔒</div>
+                    <div class="sub-service-info">
+                        <h3>Website Security</h3>
+                        <span class="sub-service-badge">Protection</span>
+                    </div>
+                </div>
+                <p class="sub-service-description">Comprehensive website security and malware protection</p>
+                
+                <ul class="feature-list">
+                    <li><span class="feature-icon">✅</span> SSL Certificates</li>
+                    <li><span class="feature-icon">✅</span> Malware Scanning</li>
+                    <li><span class="feature-icon">✅</span> Security Audits</li>
+                    <li><span class="feature-icon">✅</span> Firewall Setup</li>
+                </ul>
+
+                <div class="sub-service-pricing">
+                    <div class="price">₹3,999 - ₹20,000</div>
+                    <button class="book-sub-btn">Book Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // UPDATED BOOKING FUNCTION 
+        function bookSubService(subService) {
+            console.log('Booking sub-service:', subService);
+            localStorage.setItem('selectedSubService', subService);
+            
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) {
+                alert('Please login first to book services');
+                window.location.href = 'customer-portal.html';
+                return;
+            }
+
+            // Get current service type from URL
+            const serviceType = getServiceTypeFromURL();
+            
+            // Redirect to booking form with service details
+            window.location.href = `booking-form.html?service=${serviceType}&subService=${subService}`;
+        }
+
+        function getServiceTypeFromURL() {
+            const filename = window.location.pathname.split('/').pop();
+            return filename.replace('.html', '');
+        }
+
+        // Animation on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.sub-service-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(50px)';
+                card.style.transition = `all 0.6s ease ${index * 0.1}s`;
+                
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>
