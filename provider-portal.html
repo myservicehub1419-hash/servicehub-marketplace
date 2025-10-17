@@ -3,1033 +3,2083 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🚀 Provider Portal - MyServiceHub AI</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    
+    <title>ServiceHub - Provider Portal</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            color: white;
-            line-height: 1.6;
             overflow-x: hidden;
+            position: relative;
         }
-        
-        /* FLOATING PARTICLES */
-        .particles-container {
+
+        /* Animated Background Particles */
+        .particles {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
+            z-index: 1;
             pointer-events: none;
         }
-        
+
         .particle {
             position: absolute;
-            width: 4px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
-            animation: particleFloat 20s infinite linear;
+            animation: float 15s infinite linear;
         }
-        
-        @keyframes particleFloat {
+
+        @keyframes float {
             0% {
-                transform: translateY(100vh) translateX(0px) scale(0);
+                transform: translateY(100vh) rotate(0deg);
                 opacity: 0;
             }
             10% {
                 opacity: 1;
-                transform: scale(1);
             }
             90% {
                 opacity: 1;
             }
             100% {
-                transform: translateY(-100px) translateX(100px) scale(0);
+                transform: translateY(-100px) rotate(360deg);
                 opacity: 0;
             }
         }
-        
-        /* HEADER */
+
+        /* Header */
         .header {
-            text-align: center;
-            padding: 50px 20px;
             position: relative;
-            z-index: 2;
-        }
-        
-        .logo {
-            font-size: 3.5rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, #ffffff, #f8f9fa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 15px;
-            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        }
-        
-        .tagline {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-            opacity: 0.95;
-            font-weight: 500;
-        }
-        
-        .subtitle {
-            font-size: 1.1rem;
-            opacity: 0.8;
-            margin-bottom: 40px;
-        }
-        
-        /* MAIN CONTENT */
-        .main-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            position: relative;
-            z-index: 2;
-        }
-        
-        /* HERO SECTION */
-        .hero-section {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-        
-        .hero-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #ffffff, #f8f9fa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .hero-description {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            max-width: 600px;
-            margin: 0 auto 40px;
-            line-height: 1.7;
-        }
-        
-        .cta-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        .cta-button {
-            padding: 16px 32px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            border: none;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            font-family: 'Inter', sans-serif;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .cta-button.primary {
-            background: linear-gradient(45deg, #4CAF50, #66BB6A);
-            color: white;
-            box-shadow: 0 8px 30px rgba(76, 175, 80, 0.3);
-        }
-        
-        .cta-button.secondary {
-            background: rgba(255, 255, 255, 0.15);
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
         }
-        
-        .cta-button::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: all 0.6s ease;
+
+        .header h1 {
+            color: #333;
+            font-size: 1.8rem;
+            font-weight: 700;
         }
-        
-        .cta-button:hover::before {
-            width: 300px;
-            height: 300px;
+
+        .header p {
+            color: #666;
+            margin-top: 0.5rem;
         }
-        
-        .cta-button:hover {
-            transform: translateY(-5px) scale(1.05);
+
+        /* Breadcrumb Navigation */
+        .breadcrumb {
+            display: none;
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         }
-        
-        .cta-button.primary:hover {
-            box-shadow: 0 15px 40px rgba(76, 175, 80, 0.5);
-        }
-        
-        .cta-button.secondary:hover {
-            background: rgba(255, 255, 255, 0.25);
-            box-shadow: 0 15px 40px rgba(255, 255, 255, 0.2);
-        }
-        
-        /* FEATURES GRID */
-        .features-section {
-            margin-bottom: 60px;
-        }
-        
-        .section-title {
-            text-align: center;
-            font-size: 2.2rem;
-            font-weight: 800;
-            margin-bottom: 50px;
-            background: linear-gradient(135deg, #ffffff, #f8f9fa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-        
-        .feature-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 30px;
-            text-align: center;
-            transition: all 0.4s ease;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-10px);
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
-        }
-        
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 20px;
+
+        .breadcrumb.active {
             display: block;
         }
-        
-        .feature-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-        }
-        
-        .feature-description {
-            opacity: 0.9;
-            line-height: 1.6;
-        }
-        
-        /* STATS SECTION */
-        .stats-section {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border-radius: 25px;
-            padding: 40px;
-            margin-bottom: 60px;
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            text-align: center;
-        }
-        
-        .stat-item {
-            padding: 20px;
-        }
-        
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 900;
-            background: linear-gradient(45deg, #4CAF50, #66BB6A);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
-        }
-        
-        .stat-label {
-            font-size: 1rem;
-            opacity: 0.9;
-            font-weight: 600;
-        }
-        
-        /* SUCCESS STORIES */
-        .stories-section {
-            margin-bottom: 60px;
-        }
-        
-        .stories-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 25px;
-        }
-        
-        .story-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 25px;
-            transition: all 0.3s ease;
-        }
-        
-        .story-card:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-5px);
-        }
-        
-        .story-quote {
-            font-style: italic;
-            margin-bottom: 15px;
-            font-size: 1rem;
-            line-height: 1.6;
-        }
-        
-        .story-author {
-            font-weight: 600;
-            font-size: 0.9rem;
+
+        .breadcrumb-nav {
             display: flex;
             align-items: center;
             gap: 10px;
+            color: #666;
         }
-        
-        .author-avatar {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(45deg, #4CAF50, #66BB6A);
-            border-radius: 50%;
+
+        .breadcrumb-nav a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .breadcrumb-nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Main Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Section Toggle */
+        .section-toggle {
             display: flex;
-            align-items: center;
             justify-content: center;
-            color: white;
-            font-weight: 700;
+            margin-bottom: 2rem;
+            gap: 1rem;
         }
-        
-        /* AI ASSISTANT */
-        .ai-assistant {
+
+        .toggle-btn {
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .toggle-btn.active {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Sections */
+        .section {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.6s ease-out;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Welcome Message */
+        .welcome-message {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 15px;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .welcome-message h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .welcome-message p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* AI Chatbot */
+        .ai-chatbot {
             position: fixed;
             bottom: 20px;
             right: 20px;
             z-index: 1000;
         }
-        
-        .ai-toggle {
+
+        .chatbot-toggle {
             width: 60px;
             height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #667eea, #764ba2);
             border: none;
+            border-radius: 50%;
             color: white;
             font-size: 1.5rem;
             cursor: pointer;
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease;
-            animation: float-ai 3s ease-in-out infinite;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            animation: bounce 2s infinite;
         }
-        
-        @keyframes float-ai {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
         }
-        
-        .ai-toggle:hover {
+
+        .chatbot-toggle:hover {
             transform: scale(1.1);
-            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
         }
-        
-        /* AI CHAT WINDOW */
-        .ai-chat-window {
-            position: fixed;
-            bottom: 95px;
-            right: 20px;
+
+        .chatbot-window {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
             width: 350px;
-            height: 450px;
+            height: 400px;
             background: white;
             border-radius: 15px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-            transform: translateY(20px) scale(0.95);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            z-index: 1001;
-            overflow: hidden;
-        }
-        
-        .ai-chat-window.active {
-            transform: translateY(0) scale(1);
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        .ai-header {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .ai-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .ai-avatar {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-        }
-        
-        .ai-info h4 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 2px;
-        }
-        
-        .ai-info small {
-            opacity: 0.9;
-            font-size: 0.8rem;
-        }
-        
-        .ai-close {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 50%;
-            width: 35px;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-        
-        .ai-close:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-        
-        .ai-messages {
-            height: 280px;
-            overflow-y: auto;
-            padding: 15px;
-            color: #333;
-            display: flex;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            display: none;
             flex-direction: column;
-            gap: 12px;
+            animation: chatSlideIn 0.3s ease-out;
         }
-        
-        .ai-message {
-            max-width: 85%;
-            font-size: 0.85rem;
-            line-height: 1.4;
-            animation: messageSlideIn 0.3s ease;
+
+        @keyframes chatSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
-        
-        @keyframes messageSlideIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .ai-message.bot {
-            background: #f0f8ff;
-            padding: 12px 15px;
-            border-radius: 15px 15px 15px 5px;
-            border-left: 3px solid #667eea;
-            align-self: flex-start;
-        }
-        
-        .ai-message.user {
-            background: linear-gradient(45deg, #667eea, #764ba2);
+
+        .chatbot-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
-            padding: 12px 15px;
-            border-radius: 15px 15px 5px 15px;
-            align-self: flex-end;
+            padding: 1rem;
+            border-radius: 15px 15px 0 0;
+            text-align: center;
+            font-weight: bold;
         }
-        
-        .ai-input-area {
-            padding: 15px;
-            border-top: 1px solid #f0f0f0;
-            background: #fafafa;
-        }
-        
-        .quick-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 12px;
-        }
-        
-        .quick-action {
-            background: rgba(102, 126, 234, 0.1);
-            color: #667eea;
-            border: 1px solid rgba(102, 126, 234, 0.2);
-            padding: 6px 10px;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-        
-        .quick-action:hover {
-            background: #667eea;
-            color: white;
-            transform: translateY(-2px);
-        }
-        
-        .ai-input-container {
-            display: flex;
-            gap: 8px;
-            align-items: flex-end;
-        }
-        
-        .ai-input {
+
+        .chatbot-messages {
             flex: 1;
-            padding: 8px 12px;
+            padding: 1rem;
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+
+        .chatbot-input {
+            display: flex;
+            padding: 1rem;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 10px;
             border: 1px solid #ddd;
             border-radius: 20px;
             outline: none;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.85rem;
-            transition: all 0.3s ease;
         }
-        
-        .ai-input:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-        
-        .ai-send {
-            background: linear-gradient(45deg, #667eea, #764ba2);
+
+        .chatbot-input button {
+            margin-left: 10px;
+            padding: 10px 15px;
+            background: #667eea;
             color: white;
             border: none;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
+            border-radius: 20px;
             cursor: pointer;
+        }
+
+        /* Step Flows */
+        .step-flow {
+            margin: 2rem 0;
+        }
+
+        .step {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .step-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50%;
+            line-height: 40px;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .step-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-description {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        /* Form Styling */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Form Grid Layout */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Provider Type Selection */
+        .provider-type-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0 2rem 0;
+        }
+
+        .provider-type-card {
+            background: white;
+            border: 3px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .provider-type-card:hover,
+        .provider-type-card.selected {
+            border-color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .provider-type-card h4 {
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .provider-type-card p {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .provider-type-card .icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        /* Conditional Fields */
+        .conditional-field {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .conditional-field.show {
+            display: block;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-secondary {
+            background: rgba(108, 117, 125, 0.1);
+            color: #6c757d;
+            border: 2px solid #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #6c757d;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.6);
+        }
+
+        /* Plan Cards */
+        .plans-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .plan-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .plan-card:hover,
+        .plan-card.selected {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .plan-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .plan-price {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .plan-subtitle {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .plan-features {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+        }
+
+        .plan-features li {
+            padding: 0.5rem 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .plan-features li:before {
+            content: "✓ ";
+            color: #28a745;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .plan-badge {
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .plans-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .plans-header h3 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .plans-header p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        /* Thank You Message */
+        .thank-you-message {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border-radius: 20px;
+            animation: thankYouAnimation 1.5s ease-in-out;
+            box-shadow: 0 20px 60px rgba(40, 167, 69, 0.3);
+        }
+
+        @keyframes thankYouAnimation {
+            0% { 
+                transform: scale(0.5) rotate(-5deg); 
+                opacity: 0; 
+            }
+            50% { 
+                transform: scale(1.05) rotate(2deg); 
+                opacity: 0.9; 
+            }
+            100% { 
+                transform: scale(1) rotate(0deg); 
+                opacity: 1; 
+            }
+        }
+
+        .thank-you-message h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .thank-you-message p {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+        .success-features {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .success-features h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .success-features ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .success-features li {
+            padding: 0.5rem 0;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .success-features li:before {
+            content: "🎯 ";
+            margin-right: 10px;
+        }
+
+        /* Auto redirect message */
+        .auto-redirect {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 2rem;
+            text-align: center;
+            color: white;
+            font-weight: 500;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.7; }
+        }
+
+        /* Login Section Specific Styles */
+        .login-container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .login-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .dashboard-card h3 {
+            color: #333;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dashboard-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Dashboard Section Pages */
+        .dashboard-section {
+            display: none;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        .dashboard-section.active {
+            display: block;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .section-header h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Content Cards */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
-            font-size: 0.85rem;
+            text-align: center;
         }
-        
-        .ai-send:hover {
-            transform: scale(1.1);
+
+        .content-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
         }
-        
-        /* MOBILE RESPONSIVE */
+
+        .content-card h4 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .content-card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: #999;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #666;
+        }
+
+        .empty-state p {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            gap: 1rem;
+        }
+
+        .nav-buttons .btn {
+            flex: 1;
+            max-width: 200px;
+        }
+
+        .back-to-dashboard {
+            margin-bottom: 2rem;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .logo {
-                font-size: 2.5rem;
+            .container {
+                padding: 0 0.5rem;
             }
             
-            .hero-title {
-                font-size: 2rem;
+            .section {
+                padding: 1rem;
             }
             
-            .hero-description {
-                font-size: 1.1rem;
+            .chatbot-window {
+                width: 300px;
+                height: 350px;
             }
             
-            .cta-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .cta-button {
-                width: 100%;
-                max-width: 300px;
-                justify-content: center;
-            }
-            
-            .features-grid {
+            .plans-container {
                 grid-template-columns: 1fr;
-                gap: 20px;
             }
             
-            .feature-card {
-                padding: 25px 20px;
+            .dashboard-grid {
+                grid-template-columns: 1fr;
             }
             
-            .ai-chat-window {
-                width: 90vw;
-                right: 5vw;
-                height: 70vh;
+            .content-grid {
+                grid-template-columns: 1fr;
             }
             
-            .ai-messages {
-                height: calc(70vh - 140px);
+            .provider-type-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
-
 <body>
-    <!-- FLOATING PARTICLES -->
-    <div class="particles-container" id="particlesContainer"></div>
+    <!-- Animated Background Particles -->
+    <div class="particles" id="particles"></div>
 
-    <!-- HEADER -->
-    <div class="header">
-        <h1 class="logo">MyServiceHub AI</h1>
-        <p class="tagline">Transform Your Service Business</p>
-        <p class="subtitle">Join thousands of providers earning more with AI-powered customer matching</p>
+    <!-- Header -->
+    <header class="header">
+        <h1>🚀 ServiceHub Provider Portal</h1>
+        <p>AI-powered platform for service providers - Join thousands of successful professionals</p>
+    </header>
+
+    <!-- Breadcrumb Navigation -->
+    <div class="breadcrumb" id="breadcrumb">
+        <div class="breadcrumb-nav">
+            <a href="#" onclick="showDashboard()">🏠 Dashboard</a>
+            <span>></span>
+            <span id="current-section">Current Section</span>
+        </div>
     </div>
 
-    <!-- MAIN CONTENT -->
-    <div class="main-content">
-        <!-- HERO SECTION -->
-        <div class="hero-section">
-            <h2 class="hero-title">🚀 Ready to Grow Your Business?</h2>
-            <p class="hero-description">
-                Join the smartest provider platform in India. Our AI matches you with perfect customers, 
-                optimizes your earnings, and helps you build a 5-star reputation automatically.
-            </p>
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Section Toggle -->
+        <div class="section-toggle">
+            <button class="toggle-btn active" onclick="showSection('registration')" id="reg-btn">
+                📝 Registration & Onboarding
+            </button>
+            <button class="toggle-btn" onclick="showSection('login')" id="login-btn">
+                🔐 Login & Dashboard
+            </button>
+        </div>
+
+        <!-- Registration Section -->
+        <div id="registration-section" class="section active">
+            <!-- Welcome Message -->
+            <div class="welcome-message">
+                <h2>🤖 Welcome to AI-Powered Provider Onboarding!</h2>
+                <p>Join thousands of successful service providers. Our AI assistant will guide you through every step of your journey to success.</p>
+            </div>
+
+            <!-- Registration Flow -->
+            <div class="step-flow">
+                <!-- Step 1: Registration -->
+                <div class="step active" id="step-1">
+                    <div class="step-header">
+                        <div class="step-number">1</div>
+                        <h3 class="step-title">Create Your Provider Account</h3>
+                        <p class="step-description">Register with AI-assisted validation and instant email verification</p>
+                    </div>
+
+                    <form id="registration-form">
+                        <!-- Provider Type Selection -->
+                        <div class="form-group">
+                            <label>Select Provider Type *</label>
+                            <div class="provider-type-grid">
+                                <div class="provider-type-card" onclick="selectProviderType('individual')">
+                                    <span class="icon">👤</span>
+                                    <h4>Individual Provider</h4>
+                                    <p>Solo service provider working independently</p>
+                                </div>
+                                <div class="provider-type-card" onclick="selectProviderType('freelancer')">
+                                    <span class="icon">💼</span>
+                                    <h4>Freelancer</h4>
+                                    <p>Professional freelancer offering specialized services</p>
+                                </div>
+                                <div class="provider-type-card" onclick="selectProviderType('company')">
+                                    <span class="icon">🏢</span>
+                                    <h4>Company</h4>
+                                    <p>Registered business with team of professionals</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Personal Information -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name *</label>
+                                <input type="text" id="firstName" name="firstName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name *</label>
+                                <input type="text" id="lastName" name="lastName" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number *</label>
+                                <input type="tel" id="phone" name="phone" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" required placeholder="Enter your password" />
+  </div>
+  <div class="form-group">
+    <label for="confirmPassword">Confirm Password</label>
+    <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password" />
+  </div>
+</div>
+
+
+                        <!-- Company Information (conditional) -->
+                        <div id="company-fields" class="conditional-field">
+                            <div class="form-group">
+                                <label for="companyName">Company Name *</label>
+                                <input type="text" id="companyName" name="companyName" placeholder="Enter your company name">
+                            </div>
+                            <div class="form-group">
+                                <label for="companyWebsite">Company Website</label>
+                                <input type="url" id="companyWebsite" name="companyWebsite" placeholder="https://www.example.com">
+                            </div>
+                        </div>
+
+                        <!-- Service Information -->
+                        <div class="form-group">
+                            <label for="serviceCategory">Service Category *</label>
+                            <select id="serviceCategory" name="serviceCategory" required>
+                                <option value="">Select a category</option>
+                                <option value="home-services">Home Services</option>
+                                <option value="beauty-wellness">Beauty & Wellness</option>
+                                <option value="tutoring">Tutoring & Education</option>
+                                <option value="business-services">Business Services</option>
+                                <option value="technology">Technology & IT</option>
+                                <option value="automotive">Automotive</option>
+                                <option value="events">Events & Entertainment</option>
+                                <option value="health-fitness">Health & Fitness</option>
+                                <option value="creative-services">Creative Services</option>
+                                <option value="consulting">Consulting</option>
+                                <option value="legal-services">Legal Services</option>
+                                <option value="financial-services">Financial Services</option>
+                            </select>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="experience">Years of Experience *</label>
+                                <select id="experience" name="experience" required>
+                                    <option value="">Select experience level</option>
+                                    <option value="1-2">1-2 years</option>
+                                    <option value="3-5">3-5 years</option>
+                                    <option value="6-10">6-10 years</option>
+                                    <option value="10+">10+ years</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="serviceArea">Primary Service Area *</label>
+                                <input type="text" id="serviceArea" name="serviceArea" placeholder="e.g., Mumbai, Delhi, Bangalore" required>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="nav-buttons">
+                        <button class="btn btn-primary" onclick="nextStep(1)">
+                            Continue to Plans 🚀
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Premium Plans & Payment -->
+                <div class="step" id="step-2">
+                    <div class="step-header">
+                        <div class="step-number">2</div>
+                        <h3 class="step-title">Choose Your Plan</h3>
+                        <p class="step-description">AI-powered features tailored to your provider type</p>
+                    </div>
+
+                    <!-- Individual Provider Plans -->
+                    <div id="individual-plans" class="plans-section" style="display: none;">
+                        <div class="plans-header">
+                            <h3>👤 Individual Provider Plans</h3>
+                            <p>Perfect for solo service providers working independently</p>
+                        </div>
+                        <div class="plans-container">
+                            <div class="plan-card" onclick="selectPlan('individual-basic')">
+                                <div class="plan-name">🌱 Basic Individual</div>
+                                <div class="plan-price">₹599/month</div>
+                                <div class="plan-subtitle">Perfect for getting started</div>
+                                <ul class="plan-features">
+                                    <li>Up to 5 service requests/month</li>
+                                    <li>Basic profile listing</li>
+                                    <li>Email notifications</li>
+                                    <li>Customer reviews system</li>
+                                    <li>Basic chat support</li>
+                                    <li>Mobile app access</li>
+                                </ul>
+                            </div>
+                            <div class="plan-card" onclick="selectPlan('individual-pro')">
+                                <div class="plan-badge">Popular</div>
+                                <div class="plan-name">⭐ Pro Individual</div>
+                                <div class="plan-price">₹1,199/month</div>
+                                <div class="plan-subtitle">Most popular for individuals</div>
+                                <ul class="plan-features">
+                                    <li>Up to 15 service requests/month</li>
+                                    <li>AI profile optimization</li>
+                                    <li>Priority listing in search</li>
+                                    <li>Advanced analytics dashboard</li>
+                                    <li>Smart pricing suggestions</li>
+                                    <li>Marketing tools & templates</li>
+                                    <li>Priority customer support</li>
+                                </ul>
+                            </div>
+                            <div class="plan-card" onclick="selectPlan('individual-premium')">
+                                <div class="plan-name">💎 Premium Individual</div>
+                                <div class="plan-price">₹1,999/month</div>
+                                <div class="plan-subtitle">Maximum growth potential</div>
+                                <ul class="plan-features">
+                                    <li>Unlimited service requests</li>
+                                    <li>AI business consultant</li>
+                                    <li>Top listing priority</li>
+                                    <li>Advanced marketing automation</li>
+                                    <li>Revenue optimization AI</li>
+                                    <li>Dedicated account manager</li>
+                                    <li>Custom branding options</li>
+                                    <li>API access for integrations</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Freelancer Plans -->
+                    <div id="freelancer-plans" class="plans-section" style="display: none;">
+                        <div class="plans-header">
+                            <h3>💼 Freelancer Plans</h3>
+                            <p>Designed for professional freelancers and skilled specialists</p>
+                        </div>
+                        <div class="plans-container">
+                            <div class="plan-card" onclick="selectPlan('freelancer-starter')">
+                                <div class="plan-name">🚀 Freelancer Starter</div>
+                                <div class="plan-price">₹899/month</div>
+                                <div class="plan-subtitle">Build your freelance business</div>
+                                <ul class="plan-features">
+                                    <li>Up to 10 project proposals/month</li>
+                                    <li>Professional portfolio showcase</li>
+                                    <li>Skill verification badges</li>
+                                    <li>Project management tools</li>
+                                    <li>Client communication hub</li>
+                                    <li>Invoice generation</li>
+                                    <li>Time tracking features</li>
+                                </ul>
+                            </div>
+                            <div class="plan-card" onclick="selectPlan('freelancer-professional')">
+                                <div class="plan-badge">Recommended</div>
+                                <div class="plan-name">🎯 Freelancer Professional</div>
+                                <div class="plan-price">₹1,699/month</div>
+                                <div class="plan-subtitle">Scale your freelance career</div>
+                                <ul class="plan-features">
+                                    <li>Up to 25 project proposals/month</li>
+                                    <li>AI-powered project matching</li>
+                                    <li>Advanced portfolio analytics</li>
+                                    <li>Client relationship management</li>
+                                    <li>Automated contract templates</li>
+                                    <li>Multi-currency payment support</li>
+                                    <li>Social media integration</li>
+                                    <li>Milestone tracking system</li>
+                                </ul>
+                            </div>
+                            <div class="plan-card" onclick="selectPlan('freelancer-expert')">
+                                <div class="plan-name">🏆 Freelancer Expert</div>
+                                <div class="plan-price">₹2,999/month</div>
+                                <div class="plan-subtitle">Enterprise-level freelancing</div>
+                                <ul class="plan-features">
+                                    <li>Unlimited project proposals</li>
+                                    <li>AI business development assistant</li>
+                                    <li>Premium client introductions</li>
+                                    <li>Advanced financial reporting</li>
+                                    <li>Team collaboration tools</li>
+                                    <li>White-label client portals</li>
+                                    <li>Priority dispute resolution</li>
+                                    <li>Dedicated success manager</li>
+                                    <li>Industry networking events</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Company Plans -->
+                    <div id="company-plans" class="plans-section" style="display: none;">
+                        <div class="plans-header">
+                            <h3>🏢 Company Plans</h3>
+                            <p>Comprehensive solutions for businesses and service companies</p>
+                        </div>
+                        <div class="plans-container">
+                            <div class="plan-card" onclick="selectPlan('company-growth')">
+                                <div class="plan-name">📈 Company Growth</div>
+                                <div class="plan-price">₹2,499/month</div>
+                                <div class="plan-subtitle">Perfect for growing businesses</div>
+                                <ul class="plan-features">
+                                    <li>Up to 5 team members</li>
+                                    <li>Unlimited service requests</li>
+                                    <li>Team management dashboard</li>
+                                    <li>Multi-location support</li>
+                                    <li>Lead distribution system</li>
+                                    <li>Company branding options</li>
+                                    <li>Performance analytics</li>
+                                    <li>Customer support priority</li>
+                                </ul>
+                            </div>
+                            <div class="plan-card" onclick="selectPlan('company-scale')">
+                                <div class="plan-badge">Best Value</div>
+                                <div class="plan-name">🚀 Company Scale</div>
+                                <div class="plan-price">₹4,999/month</div>
+                                <div class="plan-subtitle">Scale your business operations</div>
+                                <ul class="plan-features">
+                                    <li>Up to 15 team members</li>
+                                    <li>AI-powered lead qualification</li>
+                                    <li>Advanced team scheduling</li>
+                                    <li>Multi-service category support</li>
+                                    <li>CRM integration</li>
+                                    <li>Custom workflow automation</li>
+                                    <li>Revenue optimization tools</li>
+                                    <li>Dedicated account manager</li>
+                                    <li>API access & integrations</li>
+                                </ul>
+                            </div>
+                            <div class="plan-card" onclick="selectPlan('company-enterprise')">
+                                <div class="plan-name">🏆 Company Enterprise</div>
+                                <div class="plan-price">₹9,999/month</div>
+                                <div class="plan-subtitle">Enterprise-grade solutions</div>
+                                <ul class="plan-features">
+                                    <li>Unlimited team members</li>
+                                    <li>AI business intelligence suite</li>
+                                    <li>Custom AI model training</li>
+                                    <li>White-label platform options</li>
+                                    <li>Advanced security features</li>
+                                    <li>Multi-brand management</li>
+                                    <li>Enterprise integrations</li>
+                                    <li>Dedicated success team</li>
+                                    <li>Custom feature development</li>
+                                    <li>SLA guarantees</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="nav-buttons">
+                        <button class="btn btn-secondary" onclick="prevStep(2)">← Back</button>
+                        <button class="btn btn-primary" onclick="processPayment()">
+                            Continue to Payment 💳
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Account Setup -->
+                <div class="step" id="step-3">
+                    <div class="step-header">
+                        <div class="step-number">3</div>
+                        <h3 class="step-title">Complete Your Professional Profile</h3>
+                        <p class="step-description">AI-assisted profile optimization for maximum visibility</p>
+                    </div>
+
+                    <form id="profile-form">
+                        <div class="form-group">
+                            <label for="bio">Professional Bio *</label>
+                            <textarea id="bio" name="bio" rows="4" placeholder="Describe your expertise, services, and what makes you unique..." required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="skills">Key Skills (comma-separated) *</label>
+                            <input type="text" id="skills" name="skills" placeholder="e.g., Plumbing, Electrical Work, Home Repair, Customer Service" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="workSamples">Portfolio/Work Samples (URLs)</label>
+                                <textarea id="workSamples" name="workSamples" rows="3" placeholder="Add links to your portfolio, website, or work samples..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="certifications">Certifications & Licenses</label>
+                                <textarea id="certifications" name="certifications" rows="3" placeholder="List your professional certifications and licenses..."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="serviceAreas">Additional Service Areas</label>
+                                <input type="text" id="serviceAreas" name="serviceAreas" placeholder="e.g., Pune, Thane, Gurgaon">
+                            </div>
+                            <div class="form-group">
+                                <label for="availability">Availability</label>
+                                <select id="availability" name="availability">
+                                    <option value="">Select availability</option>
+                                    <option value="full-time">Full-time (40+ hours/week)</option>
+                                    <option value="part-time">Part-time (20-40 hours/week)</option>
+                                    <option value="weekends">Weekends only</option>
+                                    <option value="flexible">Flexible schedule</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="nav-buttons">
+                        <button class="btn btn-secondary" onclick="prevStep(3)">← Back</button>
+                        <button class="btn btn-primary" onclick="completeRegistration()">
+                            Complete Registration ✅
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Thank You Message -->
+                <div class="step" id="thank-you-step">
+                    <div class="thank-you-message">
+                        <h2>🎉 Thank You for Joining ServiceHub!</h2>
+                        <p>🎊 Congratulations! Your provider account has been successfully created.</p>
+                        <p>📧 Your login credentials have been sent to your email address.</p>
+                        
+                        <div class="success-features">
+                            <h3>✨ What's Next?</h3>
+                            <ul>
+                                <li>Our AI system is analyzing your profile for optimal matches</li>
+                                <li>You'll receive personalized job recommendations via email</li>
+                                <li>Your profile is now live and visible to potential customers</li>
+                                <li>AI-powered notifications will keep you updated on opportunities</li>
+                            </ul>
+                        </div>
+
+                        <div class="auto-redirect">
+                            🔄 Automatically redirecting to login section in <span id="countdown">5</span> seconds...
+                        </div>
+                        
+                        <button class="btn" style="background: white; color: #28a745; margin-top: 2rem; font-weight: bold;" onclick="proceedToLogin()">
+                            ▶️ Go to Login Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login Section -->
+        <div id="login-section" class="section">
+            <!-- Welcome Message -->
+            <div class="welcome-message">
+                <h2>🔐 Welcome Back, Professional!</h2>
+                <p>Access your AI-powered dashboard and manage your growing business with intelligent insights.</p>
+            </div>
+
+            <!-- Login Form Container -->
+            <div class="login-container" id="login-form-container">
+                <div class="login-form">
+                    <div class="step-header">
+                        <h3 class="step-title">Sign In to Your Dashboard</h3>
+                        <p class="step-description">Enter your credentials to access your personalized provider portal</p>
+                    </div>
+
+                    <form id="login-form" onsubmit="return false;">
+                        <div class="form-group">
+                            <label for="loginEmail">Email Address *</label>
+                            <input type="email" id="loginEmail" name="loginEmail" required placeholder="Enter your email">
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Password *</label>
+                            <input type="password" id="loginPassword" name="loginPassword" required placeholder="Enter your password">
+                        </div>
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary" onclick="processLogin()" style="width: 100%;" id="loginBtn">
+                                🚀 Access Dashboard
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Dashboard -->
+            <div class="dashboard" id="dashboard">
+                <div class="welcome-message" style="background: linear-gradient(135deg, #28a745, #20c997);">
+                    <h2>🎯 Welcome to Your Provider Dashboard!</h2>
+                    <p>Your AI-powered business command center is ready. Let's grow your success together!</p>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="dashboard-card" onclick="navigateTo('view-orders')">
+                        <h3><span class="card-icon">📋</span> View Orders</h3>
+                        <p><strong>New Service Requests</strong><br>AI-matched leads waiting for your response. Our intelligent system will pre-qualify opportunities based on your expertise and location.</p>
+                    </div>
+
+                    <div class="dashboard-card" onclick="navigateTo('accept-orders')">
+                        <h3><span class="card-icon">✅</span> Accept Orders</h3>
+                        <p><strong>Contact Customers</strong><br>Connect with customers instantly using AI-powered communication tools. Smart templates and automated responses will help you close deals faster.</p>
+                    </div>
+
+                    <div class="dashboard-card" onclick="navigateTo('complete-jobs')">
+                        <h3><span class="card-icon">💰</span> Complete Jobs</h3>
+                        <p><strong>Get Paid</strong><br>Track active projects and receive seamless payments. AI will monitor job progress and optimize your earning potential with smart recommendations.</p>
+                    </div>
+
+                    <div class="dashboard-card" onclick="navigateTo('build-reputation')">
+                        <h3><span class="card-icon">⭐</span> Build Reputation</h3>
+                        <p><strong>More Orders</strong><br>Manage reviews and ratings with AI-powered reputation management. Enhanced visibility will lead to increased bookings and higher earnings.</p>
+                    </div>
+
+                    <div class="dashboard-card" onclick="navigateTo('grow-business')">
+                        <h3><span class="card-icon">📈</span> Grow Business</h3>
+                        <p><strong>Higher Earnings</strong><br>Access AI insights, marketing tools, and growth strategies. Optimize your services for maximum profitability and customer satisfaction.</p>
+                    </div>
+
+                    <div class="dashboard-card" onclick="navigateTo('analytics')">
+                        <h3><span class="card-icon">📊</span> Analytics & Reports</h3>
+                        <p><strong>Business Intelligence</strong><br>Comprehensive AI-generated reports, performance metrics, and personalized growth recommendations to scale your business.</p>
+                    </div>
+                </div>
+
+                <div class="nav-buttons" style="justify-content: center; margin-top: 3rem;">
+                    <button class="btn btn-secondary" onclick="logout()">
+                        🚪 Logout
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dashboard Section Pages -->
             
-            <div class="cta-buttons">
-                <button class="cta-button primary" onclick="window.location.href='provider-registration.html'">
-                    <i class="fas fa-rocket"></i>
-                    <span>Join as Provider</span>
-                </button>
-                <button class="cta-button secondary" onclick="window.location.href='provider-login.html'">
-                    <i class="fas fa-sign-in-alt"></i>
-                    <span>Already a Provider? Login</span>
-                </button>
-            </div>
-        </div>
+            <!-- View Orders Section -->
+            <div class="dashboard-section" id="view-orders-section">
+                <div class="back-to-dashboard">
+                    <button class="btn btn-secondary" onclick="showDashboard()">← Back to Dashboard</button>
+                </div>
+                
+                <div class="section-header">
+                    <h2>📋 View Orders - New Service Requests</h2>
+                    <p>AI-matched opportunities waiting for your response. Smart filtering ensures quality leads.</p>
+                </div>
 
-        <!-- FEATURES SECTION -->
-        <div class="features-section">
-            <h3 class="section-title">🤖 AI-Powered Features</h3>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <span class="feature-icon">🎯</span>
-                    <h4 class="feature-title">Smart Customer Matching</h4>
-                    <p class="feature-description">
-                        Our AI analyzes customer needs and matches them with your exact skills and location. 
-                        98% accuracy rate, 40% more bookings guaranteed.
-                    </p>
-                </div>
-                
-                <div class="feature-card">
-                    <span class="feature-icon">📈</span>
-                    <h4 class="feature-title">Earnings Optimization</h4>
-                    <p class="feature-description">
-                        Get real-time insights on pricing, peak hours, and service demand. 
-                        Average providers increase earnings by 45% in first 3 months.
-                    </p>
-                </div>
-                
-                <div class="feature-card">
-                    <span class="feature-icon">⭐</span>
-                    <h4 class="feature-title">Reputation Management</h4>
-                    <p class="feature-description">
-                        AI helps you maintain perfect 5-star ratings by predicting customer satisfaction 
-                        and suggesting improvement areas before issues arise.
-                    </p>
-                </div>
-                
-                <div class="feature-card">
-                    <span class="feature-icon">💰</span>
-                    <h4 class="feature-title">Instant Payments</h4>
-                    <p class="feature-description">
-                        Secure, fast payments processed within 2 hours. Multiple payment methods, 
-                        transparent pricing, zero hidden fees.
-                    </p>
-                </div>
-                
-                <div class="feature-card">
-                    <span class="feature-icon">📊</span>
-                    <h4 class="feature-title">Business Analytics</h4>
-                    <p class="feature-description">
-                        Track your growth with detailed analytics, customer insights, and AI-powered 
-                        recommendations for business expansion.
-                    </p>
-                </div>
-                
-                <div class="feature-card">
-                    <span class="feature-icon">🛡️</span>
-                    <h4 class="feature-title">Full Protection</h4>
-                    <p class="feature-description">
-                        Complete insurance coverage, verified customers only, 24/7 support, 
-                        and dispute resolution with AI assistance.
-                    </p>
+                <div class="empty-state">
+                    <h3>🎯 Ready for Your First Orders!</h3>
+                    <p>Once customers start requesting your services, their details will appear here. Our AI system will match you with the most relevant opportunities based on your skills, location, and availability.</p>
+                    <br>
+                    <p><strong>What you'll see here:</strong></p>
+                    <p>• Customer details and service requirements<br>
+                    • Budget range and timeline information<br>
+                    • AI compatibility scores<br>
+                    • Quick response and bidding tools</p>
                 </div>
             </div>
-        </div>
 
-        <!-- STATS SECTION -->
-        <div class="stats-section">
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-number">15,000+</div>
-                    <div class="stat-label">Active Providers</div>
+            <!-- Accept Orders Section -->
+            <div class="dashboard-section" id="accept-orders-section">
+                <div class="back-to-dashboard">
+                    <button class="btn btn-secondary" onclick="showDashboard()">← Back to Dashboard</button>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number">98%</div>
-                    <div class="stat-label">Customer Satisfaction</div>
+                
+                <div class="section-header">
+                    <h2>✅ Accept Orders - Contact Customers</h2>
+                    <p>AI-powered communication tools to connect with customers and close deals faster.</p>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number">₹45K</div>
-                    <div class="stat-label">Average Monthly Earnings</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">40%</div>
-                    <div class="stat-label">Earnings Increase</div>
+
+                <div class="content-grid">
+                    <div class="content-card">
+                        <h4>🤖 AI Response Templates</h4>
+                        <p>Smart templates will be automatically customized for each customer inquiry. Increase response rate with AI-generated personalized messages.</p>
+                        <button class="btn btn-primary">Coming Soon</button>
+                    </div>
+                    <div class="content-card">
+                        <h4>📞 Smart Communication Hub</h4>
+                        <p>Centralized messaging system with auto-translation, scheduling integration, and follow-up reminders powered by AI.</p>
+                        <button class="btn btn-primary">Coming Soon</button>
+                    </div>
+                    <div class="content-card">
+                        <h4>💬 Live Chat Support</h4>
+                        <p>Real-time chat with customers featuring AI assistance for pricing, scheduling, and service recommendations.</p>
+                        <button class="btn btn-primary">Coming Soon</button>
+                    </div>
+                    <div class="content-card">
+                        <h4>📊 Customer Insights</h4>
+                        <p>AI-analyzed customer profiles showing preferences, budget patterns, and optimal communication times.</p>
+                        <button class="btn btn-primary">Coming Soon</button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- SUCCESS STORIES -->
-        <div class="stories-section">
-            <h3 class="section-title">🌟 Success Stories</h3>
-            <div class="stories-grid">
-                <div class="story-card">
-                    <p class="story-quote">
-                        "MyServiceHub AI changed my life! From ₹15K to ₹60K per month in just 4 months. 
-                        The AI matching is incredible - I only get high-quality customers now."
-                    </p>
-                    <div class="story-author">
-                        <div class="author-avatar">R</div>
-                        <div>
-                            <strong>Rajesh Kumar</strong><br>
-                            <small>Home Cleaning Services, Delhi</small>
-                        </div>
-                    </div>
+            <!-- Complete Jobs Section -->
+            <div class="dashboard-section" id="complete-jobs-section">
+                <div class="back-to-dashboard">
+                    <button class="btn btn-secondary" onclick="showDashboard()">← Back to Dashboard</button>
                 </div>
                 
-                <div class="story-card">
-                    <p class="story-quote">
-                        "The AI recommendations helped me optimize my pricing and service timing. 
-                        Now I'm the #1 rated AC repair provider in my area with 150+ five-star reviews!"
-                    </p>
-                    <div class="story-author">
-                        <div class="author-avatar">P</div>
-                        <div>
-                            <strong>Priya Sharma</strong><br>
-                            <small>AC Repair Services, Mumbai</small>
-                        </div>
-                    </div>
+                <div class="section-header">
+                    <h2>💰 Complete Jobs - Get Paid</h2>
+                    <p>Track active projects and receive seamless payments with AI-optimized earning potential.</p>
+                </div>
+
+                <div class="empty-state">
+                    <h3>💼 Your Active Jobs Will Appear Here</h3>
+                    <p>Once you start working on projects, you'll be able to track progress, manage payments, and optimize your earnings through this dashboard.</p>
+                    <br>
+                    <p><strong>Features you'll have access to:</strong></p>
+                    <p>• Real-time job progress tracking<br>
+                    • Automated invoicing and payment collection<br>
+                    • AI-powered earning optimization<br>
+                    • Payment history and analytics</p>
+                </div>
+            </div>
+
+            <!-- Build Reputation Section -->
+            <div class="dashboard-section" id="build-reputation-section">
+                <div class="back-to-dashboard">
+                    <button class="btn btn-secondary" onclick="showDashboard()">← Back to Dashboard</button>
                 </div>
                 
-                <div class="story-card">
-                    <p class="story-quote">
-                        "Started as a side business, now it's my full-time career! The platform's AI 
-                        helps me manage 20+ jobs per week efficiently while maintaining quality."
-                    </p>
-                    <div class="story-author">
-                        <div class="author-avatar">A</div>
-                        <div>
-                            <strong>Amit Patel</strong><br>
-                            <small>Plumbing Services, Bangalore</small>
-                        </div>
+                <div class="section-header">
+                    <h2>⭐ Build Reputation - More Orders</h2>
+                    <p>AI-powered reputation management for enhanced visibility and increased bookings.</p>
+                </div>
+
+                <div class="content-grid">
+                    <div class="content-card">
+                        <h4>🎯 Smart Review Management</h4>
+                        <p>AI will automatically request reviews at optimal times and provide response templates for feedback management.</p>
+                        <button class="btn btn-primary">Coming Soon</button>
                     </div>
+                    <div class="content-card">
+                        <h4>📸 Portfolio Optimizer</h4>
+                        <p>AI will analyze your work samples and suggest improvements for maximum visual impact and customer engagement.</p>
+                        <button class="btn btn-primary">Coming Soon</button>
+                    </div>
+                    <div class="content-card">
+                        <h4>🏆 Badge & Certification</h4>
+                        <p>Earn verified badges through AI assessment and showcase certifications to build customer trust and credibility.</p>
+                        <button class="btn btn-primary">Coming Soon</button>
+                    </div>
+                    <div class="content-card">
+                        <h4>📊 Reputation Analytics</h4>
+                        <p>Track reputation metrics, competitor analysis, and AI-driven insights to improve your market positioning.</p>
+                        <button class="btn btn-primary">Coming Soon</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grow Business Section -->
+            <div class="dashboard-section" id="grow-business-section">
+                <div class="back-to-dashboard">
+                    <button class="btn btn-secondary" onclick="showDashboard()">← Back to Dashboard</button>
+                </div>
+                
+                <div class="section-header">
+                    <h2>📈 Grow Business - Higher Earnings</h2>
+                    <p>AI insights, marketing tools, and growth strategies for maximum profitability.</p>
+                </div>
+
+                <div class="content-grid">
+                    <div class="content-card">
+                        <h4>🧠 AI Business Consultant</h4>
+                        <p>Personal AI advisor will provide growth strategies, market opportunities, and competitive insights tailored to your business.</p>
+                        <button class="btn btn-primary">Coming Soon</button>
+                    </div>
+                    <div class="content-card">
+                        <h4>📱 Marketing Automation</h4>
+                        <p>AI-powered social media management, local SEO, and targeted advertising to attract more customers.</p>
+                        <button class="btn btn-primary">Coming Soon</button>
+                    </div>
+                    <div class="content-card">
+                        <h4>🎯 Lead Generation</h4>
+                        <p>Advanced AI algorithms will identify and target potential customers based on behavior patterns and service needs.</p>
+                        <button class="btn btn-primary">Coming Soon</button>
+                    </div>
+                    <div class="content-card">
+                        <h4>📈 Performance Insights</h4>
+                        <p>Comprehensive business analytics showing growth trends, revenue optimization opportunities, and market predictions.</p>
+                        <button class="btn btn-primary">Coming Soon</button>
+                    </div>
+                    <div class="content-card">
+                        <h4>🤝 Partnership Opportunities</h4>
+                        <p>AI will match you with complementary service providers for cross-referrals and collaborative business growth.</p>
+                        <button class="btn btn-primary">Coming Soon</button>
+                    </div>
+                    <div class="content-card">
+                        <h4>🎓 Skill Development</h4>
+                        <p>Personalized training recommendations and certification programs to expand your service offerings and expertise.</p>
+                        <button class="btn btn-primary">Coming Soon</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Section -->
+            <div class="dashboard-section" id="analytics-section">
+                <div class="back-to-dashboard">
+                    <button class="btn btn-secondary" onclick="showDashboard()">← Back to Dashboard</button>
+                </div>
+                
+                <div class="section-header">
+                    <h2>📊 Analytics & Reports - Business Intelligence</h2>
+                    <p>Comprehensive AI-generated reports and personalized growth recommendations.</p>
+                </div>
+
+                <div class="empty-state">
+                    <h3>📈 Your Business Analytics Dashboard</h3>
+                    <p>Once you start receiving and completing orders, detailed analytics and insights will be available here to help you grow your business.</p>
+                    <br>
+                    <p><strong>Analytics you'll have access to:</strong></p>
+                    <p>• Revenue and customer behavior analytics<br>
+                    • Performance metrics and efficiency scores<br>
+                    • Market intelligence and competitive analysis<br>
+                    • AI-powered predictive insights<br>
+                    • Custom reports and business KPIs</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- AI ASSISTANT -->
-    <div class="ai-assistant">
-        <button class="ai-toggle" onclick="toggleAI()">🤖</button>
-    </div>
-
-    <!-- AI CHAT WINDOW -->
-    <div class="ai-chat-window" id="aiChat">
-        <div class="ai-header">
-            <div class="ai-info">
-                <div class="ai-avatar">🤖</div>
-                <div>
-                    <h4>AI Provider Assistant</h4>
-                    <small>Online • Ready to help!</small>
+    <!-- AI Chatbot -->
+    <div class="ai-chatbot">
+        <button class="chatbot-toggle" onclick="toggleChatbot()">🤖</button>
+        <div class="chatbot-window" id="chatbot-window">
+            <div class="chatbot-header">
+                🤖 AI Assistant
+            </div>
+            <div class="chatbot-messages" id="chatbot-messages">
+                <div style="background: #e3f2fd; padding: 10px; border-radius: 10px; margin-bottom: 10px;">
+                    <strong>AI:</strong> Hello! I'm your personal AI assistant. I can help you with:
+                    <ul style="margin: 10px 0; padding-left: 20px;">
+                        <li>Registration guidance</li>
+                        <li>Plan recommendations</li>
+                        <li>Profile optimization</li>
+                        <li>Business growth tips</li>
+                        <li>Technical support</li>
+                    </ul>
+                    How can I assist you today?
                 </div>
             </div>
-            <button class="ai-close" onclick="toggleAI()">×</button>
-        </div>
-        
-        <div class="ai-messages" id="aiMessages">
-            <div class="ai-message bot">
-                🚀 **Welcome to MyServiceHub AI!**
-                
-                Ready to transform your service business with AI?
-                
-                **What I can help with:**
-                • Explain how AI matching works
-                • Show earning potential & success stories
-                • Guide you through the signup process
-                • Answer questions about our platform
-                
-                **Quick Facts:**
-                ✅ 15,000+ successful providers
-                ✅ Average 40% earnings increase
-                ✅ 98% customer satisfaction
-                ✅ AI matches you with perfect customers
-                
-                **Ready to get started or have questions?** 😊
-            </div>
-        </div>
-        
-        <div class="ai-input-area">
-            <div class="quick-actions">
-                <div class="quick-action" onclick="askAI('How does AI matching work?')">🤖 AI Matching</div>
-                <div class="quick-action" onclick="askAI('How much can I earn?')">💰 Earnings</div>
-                <div class="quick-action" onclick="askAI('How do I get started?')">🚀 Get Started</div>
-                <div class="quick-action" onclick="askAI('Is it really free?')">🆓 Pricing</div>
-            </div>
-            <div class="ai-input-container">
-                <input type="text" class="ai-input" id="aiInput" placeholder="Ask me anything..." onkeypress="handleAIEnter(event)">
-                <button class="ai-send" onclick="sendAIMessage()">
-                    <i class="fas fa-paper-plane"></i>
-                </button>
+            <div class="chatbot-input">
+                <input type="text" id="chatbot-input" placeholder="Ask me anything..." onkeypress="handleChatKeypress(event)">
+                <button onclick="sendChatMessage()">Send</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Create particles
+        let countdownTimer;
+        let currentUser = null;
+        let currentSection = null;
+        let selectedProviderType = null;
+
+        // Initialize particles
         function createParticles() {
-            const container = document.getElementById('particlesContainer');
+            const particlesContainer = document.getElementById('particles');
             for (let i = 0; i < 50; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
                 particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 20 + 's';
-                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
-                container.appendChild(particle);
+                particle.style.width = Math.random() * 6 + 2 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particlesContainer.appendChild(particle);
             }
         }
 
-        // AI Assistant
-        let aiOpen = false;
-
-        function toggleAI() {
-            aiOpen = !aiOpen;
-            document.getElementById('aiChat').classList.toggle('active', aiOpen);
+        // Provider Type Selection
+        function selectProviderType(type) {
+            // Remove previous selection
+            document.querySelectorAll('.provider-type-card').forEach(card => card.classList.remove('selected'));
             
-            if (aiOpen) {
-                document.getElementById('aiInput').focus();
+            // Select new type
+            event.target.closest('.provider-type-card').classList.add('selected');
+            selectedProviderType = type;
+            
+            // Show/hide company fields
+            const companyFields = document.getElementById('company-fields');
+            if (type === 'company') {
+                companyFields.classList.add('show');
+                // Make company fields required
+                document.getElementById('companyName').setAttribute('required', 'required');
+            } else {
+                companyFields.classList.remove('show');
+                // Remove required attribute
+                document.getElementById('companyName').removeAttribute('required');
+                // Clear values
+                document.getElementById('companyName').value = '';
+                document.getElementById('companyWebsite').value = '';
+            }
+            
+            // Update plan display for step 2
+            updatePlanDisplay(type);
+            
+            simulateAI('provider-type', `Great choice! ${type} providers have excellent opportunities on our platform.`);
+        }
+
+        function updatePlanDisplay(providerType) {
+            // Hide all plan sections
+            document.querySelectorAll('.plans-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Show relevant plan section
+            if (providerType === 'individual') {
+                document.getElementById('individual-plans').style.display = 'block';
+            } else if (providerType === 'freelancer') {
+                document.getElementById('freelancer-plans').style.display = 'block';
+            } else if (providerType === 'company') {
+                document.getElementById('company-plans').style.display = 'block';
             }
         }
 
-        function sendAIMessage() {
-            const input = document.getElementById('aiInput');
+        // Section Management
+        function showSection(sectionName) {
+            // Update toggle buttons
+            document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
+            if (sectionName === 'registration') {
+                document.getElementById('reg-btn').classList.add('active');
+            } else {
+                document.getElementById('login-btn').classList.add('active');
+            }
+
+            // Show/hide sections
+            document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
+            document.getElementById(sectionName + '-section').classList.add('active');
+
+            // Hide breadcrumb and dashboard sections
+            document.getElementById('breadcrumb').classList.remove('active');
+            document.querySelectorAll('.dashboard-section').forEach(section => section.classList.remove('active'));
+
+            // Reset sections when switching
+            if (sectionName === 'registration') {
+                showStep(1);
+            } else if (sectionName === 'login') {
+                // Reset login section
+                document.getElementById('login-form-container').style.display = 'block';
+                document.getElementById('dashboard').classList.remove('active');
+                document.getElementById('loginEmail').value = '';
+                document.getElementById('loginPassword').value = '';
+                document.getElementById('loginBtn').textContent = '🚀 Access Dashboard';
+                document.getElementById('loginBtn').disabled = false;
+            }
+        }
+
+        // Step Management
+        function showStep(stepNumber) {
+            document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+            if (stepNumber === 'thank-you') {
+                document.getElementById('thank-you-step').classList.add('active');
+            } else {
+                document.getElementById('step-' + stepNumber).classList.add('active');
+            }
+        }
+
+        function nextStep(currentStep) {
+            if (validateStep(currentStep)) {
+                if (currentStep === 1 && selectedProviderType) {
+                    updatePlanDisplay(selectedProviderType);
+                }
+                showStep(currentStep + 1);
+                simulateAI('step-advance', currentStep);
+            }
+        }
+
+        function prevStep(currentStep) {
+            showStep(currentStep - 1);
+        }
+
+        function validateStep(stepNumber) {
+            if (stepNumber === 1) {
+                // Check provider type selection
+                if (!selectedProviderType) {
+                    alert('Please select a provider type');
+                    return false;
+                }
+
+                // Check required form fields
+                const form = document.getElementById('registration-form');
+                const inputs = form.querySelectorAll('input[required], select[required]');
+                for (let input of inputs) {
+                    if (!input.value.trim()) {
+                        alert('Please fill in all required fields');
+                        input.focus();
+                        return false;
+                    }
+                }
+
+                // Validate company website if provided
+                const companyWebsite = document.getElementById('companyWebsite').value;
+                if (companyWebsite && !isValidURL(companyWebsite)) {
+                    alert('Please enter a valid website URL (e.g., https://www.example.com)');
+                    document.getElementById('companyWebsite').focus();
+                    return false;
+                }
+
+                simulateAI('validation', 'Registration details validated successfully!');
+            }
+            return true;
+        }
+
+        function isValidURL(string) {
+            try {
+                new URL(string);
+                return true;
+            } catch (_) {
+                return false;
+            }
+        }
+
+        let selectedPlan = null;
+
+        function selectPlan(planName) {
+            // Remove previous selection
+            document.querySelectorAll('.plan-card').forEach(card => card.classList.remove('selected'));
+            
+            // Select new plan
+            event.target.closest('.plan-card').classList.add('selected');
+            selectedPlan = planName;
+            
+            simulateAI('plan-selection', `Excellent choice! The ${planName.replace('-', ' ')} plan is perfect for your needs.`);
+        }
+
+        function processPayment() {
+            if (!selectedPlan) {
+                alert('Please select a plan first');
+                return;
+            }
+            
+            // Simulate payment processing
+            const btn = event.target;
+            btn.textContent = 'Processing Payment...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                btn.textContent = 'Continue to Payment 💳';
+                btn.disabled = false;
+                nextStep(2);
+                simulateAI('payment', 'Payment processed successfully! Your plan is now active.');
+            }, 2000);
+        }
+
+        function completeRegistration() {
+            const form = document.getElementById('profile-form');
+            const bio = document.getElementById('bio').value;
+            const skills = document.getElementById('skills').value;
+            
+            if (!bio || !skills) {
+                alert('Please fill in at least your bio and skills');
+                return;
+            }
+            
+            // Store user data
+            const firstName = document.getElementById('firstName').value;
+            const email = document.getElementById('email').value;
+            const companyName = document.getElementById('companyName').value;
+            currentUser = { 
+                firstName, 
+                email, 
+                plan: selectedPlan, 
+                providerType: selectedProviderType,
+                companyName: companyName || null
+            };
+            
+            // Simulate profile processing
+            const btn = event.target;
+            btn.textContent = 'Creating Profile...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                showStep('thank-you');
+                startCountdown();
+                simulateAI('registration-complete', 'Welcome to ServiceHub! Your profile has been optimized using AI for maximum visibility.');
+                btn.textContent = 'Complete Registration ✅';
+                btn.disabled = false;
+            }, 2000);
+        }
+
+        function startCountdown() {
+            let count = 5;
+            const countdownElement = document.getElementById('countdown');
+            
+            countdownTimer = setInterval(() => {
+                count--;
+                countdownElement.textContent = count;
+                
+                if (count <= 0) {
+                    clearInterval(countdownTimer);
+                    proceedToLogin();
+                }
+            }, 1000);
+        }
+
+        function proceedToLogin() {
+            if (countdownTimer) {
+                clearInterval(countdownTimer);
+            }
+            showSection('login');
+            simulateAI('redirect', 'Redirected to login section. Welcome back!');
+        }
+
+        function processLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!email || !password) {
+                alert('Please enter both email and password');
+                return;
+            }
+            
+            // Simulate login process
+            const btn = document.getElementById('loginBtn');
+            btn.textContent = '🔄 Signing In...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                // Hide login form and show dashboard
+                document.getElementById('login-form-container').style.display = 'none';
+                document.getElementById('dashboard').classList.add('active');
+                
+                // Update welcome message if user is from registration
+                if (currentUser && currentUser.email === email) {
+                    const welcomeMsg = document.querySelector('#dashboard .welcome-message h2');
+                    if (currentUser.companyName) {
+                        welcomeMsg.innerHTML = `🎯 Welcome ${currentUser.firstName} from ${currentUser.companyName}!`;
+                    } else {
+                        welcomeMsg.innerHTML = `🎯 Welcome ${currentUser.firstName}! Your Provider Dashboard is Ready!`;
+                    }
+                }
+                
+                simulateAI('login', 'Welcome to your dashboard! Your AI-powered business tools are ready.');
+                showToast('🎉 Dashboard loaded successfully!', 'success');
+                
+                // Reset button state
+                btn.textContent = '🚀 Access Dashboard';
+                btn.disabled = false;
+            }, 1500);
+        }
+
+        function navigateTo(section) {
+            const sectionNames = {
+                'view-orders': 'New Service Requests',
+                'accept-orders': 'Contact Customers',
+                'complete-jobs': 'Get Paid',
+                'build-reputation': 'More Orders',
+                'grow-business': 'Higher Earnings',
+                'analytics': 'Business Intelligence'
+            };
+            
+            // Hide dashboard and show specific section
+            document.getElementById('dashboard').classList.remove('active');
+            document.getElementById(section + '-section').classList.add('active');
+            
+            // Show breadcrumb
+            document.getElementById('breadcrumb').classList.add('active');
+            document.getElementById('current-section').textContent = sectionNames[section];
+            
+            currentSection = section;
+            
+            simulateAI('navigation', `Loading ${sectionNames[section]}...`);
+            showToast(`Loading ${sectionNames[section]}...`, 'info');
+            
+            // Simulate loading
+            setTimeout(() => {
+                showToast(`${sectionNames[section]} loaded successfully! 🎉`, 'success');
+            }, 1000);
+        }
+
+        function showDashboard() {
+            // Hide all dashboard sections
+            document.querySelectorAll('.dashboard-section').forEach(section => section.classList.remove('active'));
+            
+            // Show main dashboard
+            document.getElementById('dashboard').classList.add('active');
+            
+            // Hide breadcrumb
+            document.getElementById('breadcrumb').classList.remove('active');
+            
+            currentSection = null;
+            showToast('Welcome back to your dashboard! 🏠', 'info');
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                // Reset dashboard
+                document.getElementById('dashboard').classList.remove('active');
+                document.querySelectorAll('.dashboard-section').forEach(section => section.classList.remove('active'));
+                document.getElementById('login-form-container').style.display = 'block';
+                document.getElementById('breadcrumb').classList.remove('active');
+                
+                // Clear form
+                document.getElementById('loginEmail').value = '';
+                document.getElementById('loginPassword').value = '';
+                
+                // Reset button
+                const btn = document.getElementById('loginBtn');
+                btn.textContent = '🚀 Access Dashboard';
+                btn.disabled = false;
+                
+                // Reset user
+                currentUser = null;
+                currentSection = null;
+                
+                simulateAI('logout', 'You have been successfully logged out. Thank you for using ServiceHub!');
+                showToast('Logged out successfully! 👋', 'info');
+            }
+        }
+
+        // AI Chatbot
+        function toggleChatbot() {
+            const window = document.getElementById('chatbot-window');
+            window.style.display = window.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        function handleChatKeypress(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chatbot-input');
             const message = input.value.trim();
             
-            if (message) {
-                addAIMessage(message, 'user');
-                input.value = '';
-                
-                setTimeout(() => {
-                    const response = getAIResponse(message);
-                    addAIMessage(response, 'bot');
-                }, 800);
-            }
-        }
-
-        function addAIMessage(text, type) {
-            const messagesContainer = document.getElementById('aiMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `ai-message ${type}`;
-            messageDiv.textContent = text;
+            if (!message) return;
             
-            messagesContainer.appendChild(messageDiv);
+            const messagesContainer = document.getElementById('chatbot-messages');
+            
+            // Add user message
+            messagesContainer.innerHTML += `
+                <div style="background: #667eea; color: white; padding: 10px; border-radius: 10px; margin: 5px 0; text-align: right;">
+                    <strong>You:</strong> ${message}
+                </div>
+            `;
+            
+            input.value = '';
+            
+            // Simulate AI response based on current context
+            setTimeout(() => {
+                let aiResponse = "I'm here to help you succeed!";
+                
+                if (currentSection) {
+                    const contextResponses = {
+                        'view-orders': "I can help you prepare for incoming service requests and improve your response strategy!",
+                        'accept-orders': "Would you like tips on how to communicate effectively with potential customers?",
+                        'complete-jobs': "I can help you optimize your workflow and pricing strategies for better earnings.",
+                        'build-reputation': "Let me suggest ways to build a strong reputation and attract more customers!",
+                        'grow-business': "I can provide insights on growing your service business and expanding your reach.",
+                        'analytics': "Once you have data, I'll help you understand your business metrics and performance."
+                    };
+                    aiResponse = contextResponses[currentSection] || aiResponse;
+                } else {
+                    const generalResponses = [
+                        "I can help you optimize your profile for better visibility! Would you like specific tips?",
+                        "Let me know if you need help with the registration process or platform features.",
+                        "I'm here to guide you through building a successful service business!",
+                        "Would you like recommendations on pricing strategies or customer communication?",
+                        "I can help you understand how to maximize your success on the platform.",
+                        "Feel free to ask about any features or how to get started with your first orders!"
+                    ];
+                    aiResponse = generalResponses[Math.floor(Math.random() * generalResponses.length)];
+                }
+                
+                messagesContainer.innerHTML += `
+                    <div style="background: #e3f2fd; padding: 10px; border-radius: 10px; margin: 5px 0;">
+                        <strong>AI:</strong> ${aiResponse}
+                    </div>
+                `;
+                
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 1000);
+            
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
 
-        function getAIResponse(message) {
-            const msg = message.toLowerCase();
+        function simulateAI(context, message) {
+            console.log(`AI Context: ${context} - ${message}`);
             
-            if (msg.includes('matching') || msg.includes('ai') || msg.includes('how')) {
-                return `🤖 **AI Matching Explained:**
-
-Our revolutionary AI system:
-
-📊 **Analyzes Your Profile:**
-• Skills, experience, location
-• Service quality & ratings
-• Availability & preferences
-• Pricing & specializations
-
-🎯 **Finds Perfect Customers:**
-• Matches customer needs with your expertise
-• Considers location, budget, timing
-• Filters out low-quality requests
-• Prioritizes repeat customers
-
-📈 **Results:**
-• 98% match accuracy rate
-• 40% more bookings on average
-• 60% reduction in time wasted
-• Higher customer satisfaction
-
-**It's like having a personal business manager working 24/7!** 🚀`;
-            }
-            
-            if (msg.includes('earn') || msg.includes('money') || msg.includes('income')) {
-                return `💰 **Earnings Potential:**
-
-**Average Monthly Earnings by Experience:**
-
-🆕 **New Providers:**
-• Month 1: ₹8K-15K (learning phase)
-• Month 3: ₹18K-28K (AI optimization kicks in)
-• Month 6: ₹25K-40K (established reputation)
-
-⭐ **Experienced Providers:**
-• With AI: ₹35K-65K/month
-• Top performers: ₹80K-1.2L/month
-• Enterprise users: ₹1.5L+/month
-
-**Success Factors:**
-• AI matching = more customers
-• Reputation management = higher rates
-• Analytics insights = better decisions
-• Platform tools = time savings
-
-**Real Example:** Rajesh went from ₹15K → ₹60K in 4 months! 📈
-
-Ready to start your earning journey? 🚀`;
-            }
-            
-            if (msg.includes('start') || msg.includes('signup') || msg.includes('join')) {
-                return `🚀 **Getting Started is Easy:**
-
-**Step-by-Step Process:**
-
-**1. 📝 Quick Registration (2 mins)**
-• Basic info & contact details
-• Choose your services
-• Set your service area
-
-**2. 💰 Select Your Plan**
-• Free Starter (basic features)
-• AI Professional (recommended - ₹499/month)
-• AI Enterprise (advanced - ₹899/month)
-
-**3. 🔧 Complete Profile Setup**
-• Add photos & portfolio
-• Set pricing & availability
-• Verify credentials
-
-**4. 🎯 Go Live & Start Earning!**
-• AI starts matching customers
-• Accept jobs you want
-• Get paid instantly
-
-**Ready to begin?** Click "Join as Provider" button above! 
-
-**Questions about any step?** Just ask me! 😊`;
-            }
-            
-            if (msg.includes('free') || msg.includes('cost') || msg.includes('price')) {
-                return `🆓 **Transparent Pricing:**
-
-**FREE to Start:**
-• ✅ Create your profile
-• ✅ List basic services
-• ✅ Accept manual bookings
-• ✅ Standard payment processing
-• ❌ No AI features
-
-**AI Professional (₹499/month):**
-• ✅ Everything in Free
-• ✅ AI customer matching
-• ✅ Earnings optimization
-• ✅ Reputation management
-• ✅ Business analytics
-• ✅ Priority support
-
-**AI Enterprise (₹899/month):**
-• ✅ Everything in Professional
-• ✅ Advanced AI predictions
-• ✅ Market analysis
-• ✅ Dedicated account manager
-• ✅ Custom integrations
-
-**ROI Promise:** Most providers earn back their plan cost in the first week! 
-
-**Start free, upgrade when you see results!** 💎`;
-            }
-            
-            return `🎯 **Hi! I'm your AI assistant.**
-
-I can help you with:
-
-🤖 **Platform Features**: How AI matching works
-💰 **Earnings Info**: Income potential & success stories  
-🚀 **Getting Started**: Step-by-step signup process
-🆓 **Pricing**: Plans, costs & value comparison
-📊 **Success Stories**: Real provider experiences
-❓ **Any Questions**: Just ask me anything!
-
-**Quick Stats:**
-• 15,000+ active providers
-• 40% average earnings increase
-• 98% customer satisfaction
-• AI matches you with perfect customers
-
-**Ready to join the AI revolution?** Click "Join as Provider" above! 🚀
-
-What would you like to know? 😊`;
-        }
-
-        function askAI(question) {
-            document.getElementById('aiInput').value = question;
-            sendAIMessage();
-        }
-
-        function handleAIEnter(event) {
-            if (event.key === 'Enter') {
-                sendAIMessage();
+            // Show contextual feedback
+            if (context === 'validation') {
+                showToast(message, 'success');
+            } else if (context === 'plan-selection' || context === 'provider-type') {
+                showToast(message, 'info');
             }
         }
 
-        // Initialize
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                padding: 15px 25px;
+                background: ${type === 'success' ? '#28a745' : type === 'info' ? '#17a2b8' : '#ffc107'};
+                color: white;
+                border-radius: 25px;
+                z-index: 10000;
+                font-weight: 600;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+                animation: toastSlide 0.5s ease-out;
+            `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'toastSlide 0.5s ease-out reverse';
+                setTimeout(() => toast.remove(), 500);
+            }, 3000);
+        }
+
+        // Add CSS animation for toast
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes toastSlide {
+                from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+                to { opacity: 1; transform: translateX(-50%) translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
             createParticles();
-            console.log('🚀 Provider Portal Ready!');
+            simulateAI('init', 'AI Assistant initialized and ready to help!');
+            
+            // Add form submission handling
+            document.getElementById('login-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                processLogin();
+            });
         });
     </script>
 </body>
